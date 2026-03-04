@@ -17,6 +17,20 @@ function App() {
       </div>
 
       <Calendar />
+
+      <div
+      className="mood-orb"
+      onClick={() => {
+        if (mode === "architectural") setMode("water");
+        else if (mode === "water") setMode("macro");
+        else setMode("architectural");
+      }}
+     ></div>
+
+
+
+
+
     </div>
   );
 }

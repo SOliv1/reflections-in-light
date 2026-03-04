@@ -1,3 +1,10 @@
+
+.App {
+  transition: background 0.6s ease,
+  color 0.6s ease,
+  filter 0.6s ease;
+}
+
 .mode-architectural {
   --mode-accent: rgba(255, 245, 230, 0.35); /* warm white */
   --mode-shadow: rgba(255, 255, 255, 0.2);
@@ -36,3 +43,126 @@ button:hover {
   transform: scale(1.03);
 }
 
+/* Mood Orb */
+
+.mood-orb {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 64px;
+  height: 64px;
+
+  border-radius: 58% 42% 60% 40% / 55% 45% 58% 42%;
+
+  /*background:
+    linear-gradient(135deg, rgba(255, 180, 220, 0.35), rgba(180, 220, 255, 0.35)),
+    linear-gradient(45deg, rgba(255, 255, 200, 0.4), rgba(200, 255, 255, 0.25)),
+    radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.9), rgba(200, 200, 200, 0.25)); */
+
+
+  background:
+  linear-gradient(135deg,
+    rgba(255, 150, 200, 0.55),   /* rose streak */
+    rgba(120, 220, 255, 0.45)    /* aqua streak */
+  ),
+  linear-gradient(45deg,
+    rgba(255, 230, 150, 0.45),   /* gold shimmer */
+    rgba(255, 180, 220, 0.35)    /* rose-gold blend */
+  ),
+  radial-gradient(circle at 30% 30%,
+    rgba(255, 255, 255, 0.95),   /* bright glass core */
+    rgba(200, 200, 200, 0.25)    /* soft fade */
+  );
+
+
+  border: 2px solid rgba(255, 255, 255, 0.55);
+
+  box-shadow:
+    0 0 26px var(--mode-glow),
+    inset 0 0 18px rgba(255, 255, 255, 0.55);
+
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+  transition: transform 0.4s ease, box-shadow 0.4s ease, background 0.4s ease;
+}
+
+    /* Water (blue glass + cool green) */
+.mode-water .mood-orb {
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(180, 220, 255, 0.9),
+    rgba(120, 180, 220, 0.35)
+  );
+}
+
+    /* Macro (rose + gold) */
+.mode-macro .mood-orb {
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(255, 200, 230, 0.9),
+    rgba(255, 160, 190, 0.35)
+  );
+}
+
+.mode-architectural .mood-orb {
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(255, 245, 230, 0.9),
+    rgba(230, 215, 200, 0.35)
+  );
+}
+
+
+.mood-orb:hover {
+  transform: scale(1.06);
+}
+
+.mood-orb:active {
+  transform: scale(0.94);
+}
+    /* Shimmer */
+@keyframes orb-shimmer {
+  0% {
+    box-shadow: 0 0 18px var(--mode-glow);
+  }
+  50% {
+    box-shadow: 0 0 26px var(--mode-glow);
+  }
+  100% {
+    box-shadow: 0 0 18px var(--mode-glow);
+  }
+}
+    /* Ripple */
+@keyframes orb-ripple {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.04);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+    /* Orb-sparkle */
+@keyframes orb-sparkle {
+  0% {filter: brightness(1);}
+ 50% {filter: brightness(1.25);}
+ 100% {filter: brightness(1);}
+}
+
+    /* Mode Specific animations(mode) */
+.mode-architectural .mood-orb {
+  animation: orb-shimmer 3.5s ease-in-out infinite;
+}
+
+.mode-water .mood-orb {
+  animation: orb-ripple 4s ease-in-out infinite;
+}
+
+.mode-macro .mood-orb {
+  animation: orb-sparkle 2.8s ease-in-out infinite;
+}
