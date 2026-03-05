@@ -5,6 +5,15 @@
   filter 0.6s ease;
 }
 
+.App-logo {
+  height: 48px;
+  width: auto;
+  margin-right: 12px;
+  border-radius: 50%;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
+}
+
+
 .mode-architectural {
   --mode-accent: rgba(255, 245, 230, 0.35); /* warm white */
   --mode-shadow: rgba(255, 255, 255, 0.2);
