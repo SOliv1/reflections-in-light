@@ -12,7 +12,7 @@
 }
 
 .mode-water {
-    --mode-accent:rgba(120, 180, 255, 6.35);
+    --mode-accent:rgba(120, 180, 255, 0.35);
     --mode-shadow:rgba(0, 60, 120, 0.15);
     --mode-glow:rgba(150, 200, 255, 0.25);
 }
@@ -44,7 +44,6 @@ button:hover {
 }
 
 /* Mood Orb */
-
 .mood-orb {
   position: fixed;
   bottom: 24px;
@@ -54,19 +53,33 @@ button:hover {
 
   border-radius: 58% 42% 60% 40% / 55% 45% 58% 42%;
 
-  /* Deepened jewel-tone streaks */
+  /* Narrow stained-glass beams */
   background:
-    linear-gradient(135deg,
-      rgba(255, 120, 180, 0.65),
-      rgba(120, 220, 255, 0.55)
+    /* Aqua beam – deeper, richer, more visible */
+    linear-gradient(25deg,
+      rgba(70, 180, 255, 0.98) 20%,
+      rgba(70, 180, 255, 0.55) 40%,
+      transparent 60%
     ),
-    linear-gradient(45deg,
-      rgba(255, 220, 140, 0.55),
-      rgba(255, 160, 200, 0.45)
+
+    /* Rose beam */
+    linear-gradient(150deg,
+      rgba(255, 120, 180, 0.92) 20%,
+      rgba(255, 120, 180, 0.20) 40%,
+      transparent 60%
     ),
-    radial-gradient(circle at 30% 30%,
-      rgba(255, 255, 255, 0.95),
-      rgba(200, 200, 200, 0.25)
+
+    /* Gold beam */
+    linear-gradient(75deg,
+      rgba(255, 220, 140, 0.90) 15%,
+      rgba(255, 220, 140, 0.18) 35%,
+      transparent 55%
+    ),
+
+    /* Glass core */
+    radial-gradient(circle at 32% 28%,
+      rgba(255, 255, 255, 0.88),
+      rgba(200, 200, 200, 0.18)
     );
 
   border: 2px solid rgba(255, 255, 255, 0.55);
@@ -81,6 +94,7 @@ button:hover {
   transition: transform 0.4s ease, box-shadow 0.4s ease, background 0.4s ease;
 }
 
+/* Drifting shimmer */
 @keyframes orb-drift {
   0% { background-position: 0% 0%; }
   50% { background-position: 100% 100%; }
@@ -92,11 +106,12 @@ button:hover {
   animation: orb-drift 16s ease-in-out infinite;
 }
 
+/* Mode glow tuning */
 .mode-architectural .mood-orb {
   filter: hue-rotate(0deg) saturate(1.1) brightness(1.05);
 }
 
- .mode-water .mood-orb {
+.mode-water .mood-orb {
   filter: hue-rotate(25deg) saturate(1.3) brightness(1.1);
 }
 
@@ -104,25 +119,7 @@ button:hover {
   filter: hue-rotate(-25deg) saturate(1.35) brightness(1.1);
 }
 
-
-    /* Macro (rose + gold) */
-.mode-macro .mood-orb {
-  background: radial-gradient(
-    circle at 30% 30%,
-    rgba(255, 200, 230, 0.9),
-    rgba(255, 160, 190, 0.35)
-  );
-}
-
-.mode-architectural .mood-orb {
-  background: radial-gradient(
-    circle at 30% 30%,
-    rgba(255, 245, 230, 0.9),
-    rgba(230, 215, 200, 0.35)
-  );
-}
-
-
+/* Hover + active */
 .mood-orb:hover {
   transform: scale(1.06);
 }
@@ -130,49 +127,32 @@ button:hover {
 .mood-orb:active {
   transform: scale(0.94);
 }
-    /* Shimmer */
+
+/* Shimmer */
 @keyframes orb-shimmer {
-  0% {
-    box-shadow: 0 0 18px var(--mode-glow);
-  }
-  50% {
-    box-shadow: 0 0 26px var(--mode-glow);
-  }
-  100% {
-    box-shadow: 0 0 18px var(--mode-glow);
-  }
+  0% { box-shadow: 0 0 18px var(--mode-glow); }
+  50% { box-shadow: 0 0 26px var(--mode-glow); }
+  100% { box-shadow: 0 0 18px var(--mode-glow); }
 }
-    /* Ripple */
+
+/* Ripple */
 @keyframes orb-ripple {
-  0% {
-    transform: scale(1);
-  }
-
-  50% {
-    transform: scale(1.04);
-  }
-
-  100% {
-    transform: scale(1);
-  }
+  0% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+  100% { transform: scale(1); }
 }
 
-    /* Orb-sparkle */
+/* Sparkle */
 @keyframes orb-sparkle {
-  0% {filter: brightness(1);}
- 50% {filter: brightness(1.25);}
- 100% {filter: brightness(1);}
+  0% { filter: brightness(1); }
+  50% { filter: brightness(1.25); }
+  100% { filter: brightness(1); }
 }
 
-    /* Mode Specific animations(mode) */
-.mode-architectural .mood-orb {
-  animation: orb-shimmer 3.5s ease-in-out infinite;
+.mood-orb:hover {
+  transform: scale(1.06);
 }
 
-.mode-water .mood-orb {
-  animation: orb-ripple 4s ease-in-out infinite;
-}
-
-.mode-macro .mood-orb {
-  animation: orb-sparkle 2.8s ease-in-out infinite;
+.mood-orb:active {
+  transform: scale(0.94);
 }
