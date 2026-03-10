@@ -3,6 +3,7 @@
 import React from "react";
 import './Constellation.css';
 
+
 const Constellation = () => {
     return (
         <div className="constellation-container">
@@ -16,6 +17,7 @@ const Constellation = () => {
              {/* ⭐ Twinkling stars & Shooting Star */}
             <div className="shooting-star"></div>
         </div>
+
 
     );
 };

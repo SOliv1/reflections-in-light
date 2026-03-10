@@ -3,12 +3,35 @@ import Constellation from "./components/Constellation";
 import Calendar from "./components/Calendar";
 import "./App.css";
 import logo from './assets/logo.png';
-
-
+import { useEffect } from "react";
 
 
 function App() {
   const [mode, setMode] = useState("architectural");
+
+
+  useEffect(() => {
+    let ticking = false;
+
+    const handleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          document.documentElement.style.setProperty(
+            "--scroll",
+            window.scrollY
+          );
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   return (
     <div className={`App mode-${mode}`}>
@@ -40,7 +63,7 @@ function App() {
 
 
     </div>
-  );
+  )
 }
 
 export default App;

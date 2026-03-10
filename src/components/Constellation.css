@@ -1,12 +1,22 @@
+html, body {
+  overscroll-behavior:none;
+  height: 100%;
+}
+
+body {
+  /*position: fixed; */
+  width: 100%;
+  overflow-x: hidden;
+}
+
 /* Constellation wrapper behind the whole calendar */
 .constellation-wrapper {
-  position: absolute;
+  position: fixed;
   inset: 0;
+  width: 100vw;
+  height: 100vh;
   overflow: hidden;
   z-index: 1;
-  height: 100%;
-  width: 100%;
-  /*background: rgba(255, 0, 0, 0.2); /* TEMP TEST */
 }
 
 /* Evening veil overlay */
@@ -24,6 +34,25 @@
   opacity: 1;
 }
 
+/* Desktop Overlay */
+@media (min-width: 601px) {
+  .constellation-overlay {
+    background: rgba(44, 18, 72, 0.28);   /* magical amethyst haze */
+    backdrop-filter: blur(3px) brightness(0.88) contrast(1.22) saturate(1.18);
+  }
+}
+
+
+
+/* Mobile Overlay */
+@media (max-width: 600px) {
+  .constellation-overlay {
+    background: rgba(18, 12, 32, 0.18); /* deep indigo‑plum velvet */
+    backdrop-filter: blur(2px) brightness(0.88) contrast(1.12);
+  }
+}
+
+
 /* Interactivity */
 .constellation-wrapper.interactive {
   pointer-events: auto;
@@ -33,6 +62,7 @@
   pointer-events: none;
 }
 
+
 /* DOM star container */
 .constellation-container {
   position: absolute;
@@ -41,13 +71,16 @@
   height: 100%;
   pointer-events: none;
   z-index: 2;
+  gap: 1.2vw;
+  transform:translateZ(0);
+  will-change: transform;
 }
 
 /* Stars twinkle */
 .star {
   position: absolute;
-  width: 4px;
-  height: 4px;
+  width: min(1vw, 4px);
+  height: min(1vw, 4px);
   border-radius: 50%;
   background: white;
   box-shadow:
@@ -106,5 +139,18 @@
     opacity: 0;
   }
 }
+
+
+/* Parallax does not cause jank  */
+
+@media (max-width: 600px) {
+  .constellation-container {
+    transform: translateY(calc(var(--scroll) * 0.1));
+  }
+}
+
+
+
+
 
 
