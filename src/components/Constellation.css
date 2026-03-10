@@ -43,7 +43,7 @@
   z-index: 2;
 }
 
-
+/* Stars twinkle */
 .star {
   position: absolute;
   width: 4px;
@@ -64,5 +64,47 @@
   100% { opacity: 0.6; transform: scale(1); }
 }
 
+/* SHOOTING STAR */
+
+.shooting-star {
+  position: absolute;
+  top: 15%;
+  /* ⭐ start higher in the sky */
+  left: -20%;
+  /* ⭐ start further off-screen */
+  width: 180px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, white);
+  opacity: 0.9;
+  transform: rotate(12deg);
+  /* ⭐ gentle upward tilt */
+  animation: shoot 4s ease-in-out infinite;
+  animation-delay: 4s;
+}
+
+@keyframes shoot {
+  0% {
+    transform: translateX(0) translateY(0) rotate(10deg);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  40% {
+    transform: translateX(700px) translateY(-40px) rotate(10deg);
+    /* ⭐ negative Y = moves UP slightly */
+    opacity: 0.9;
+  }
+
+  60% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
 
 

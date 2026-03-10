@@ -13,6 +13,8 @@ const Constellation = () => {
             <div className="star" style={{ top: '9%', left: '78%' }}></div>
             <div className="star" style={{ top: '12%', left: '35%' }}></div>
             <div className="star" style={{ top: '14%', left: '70%' }}></div>
+             {/* ⭐ Twinkling stars & Shooting Star */}
+            <div className="shooting-star"></div>
         </div>
 
     );
