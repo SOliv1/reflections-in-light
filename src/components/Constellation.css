@@ -1,0 +1,68 @@
+/* Constellation wrapper behind the whole calendar */
+.constellation-wrapper {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 1;
+  height: 100%;
+  width: 100%;
+  /*background: rgba(255, 0, 0, 0.2); /* TEMP TEST */
+}
+
+/* Evening veil overlay */
+.constellation-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(3px);
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  z-index: 1;
+}
+
+.constellation-wrapper.active .constellation-overlay {
+  opacity: 1;
+}
+
+/* Interactivity */
+.constellation-wrapper.interactive {
+  pointer-events: auto;
+}
+
+.constellation-wrapper:not(.interactive) {
+  pointer-events: none;
+}
+
+/* DOM star container */
+.constellation-container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+
+.star {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: white;
+  box-shadow:
+    0 0 6px rgba(255, 255, 255, 0.9),
+    0 0 14px rgba(255, 210, 255, 0.8),
+    0 0 26px rgba(180, 140, 255, 0.7);
+  opacity: 0.9;
+  animation: twinkle 4s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.3); }
+  100% { opacity: 0.6; transform: scale(1); }
+}
+
+
+

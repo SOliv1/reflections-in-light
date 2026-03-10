@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Constellation from "./components/Constellation";
 import Calendar from "./components/Calendar";
 import "./App.css";
 import logo from './assets/logo.png';
@@ -11,6 +12,13 @@ function App() {
 
   return (
     <div className={`App mode-${mode}`}>
+
+      <div class="constellation-wrapper interactive active">
+        <div class="constellation-overlay"></div>
+        <Constellation />
+      </div>
+
+
       <img src={logo} alt="My Reflections Glow logo" className="App-logo" />
       <h1 className="calendar-title">A Month of Light</h1>
       <div style={{ marginBottom: "20px" }}>
@@ -29,9 +37,6 @@ function App() {
         else setMode("architectural");
       }}
      ></div>
-
-
-
 
 
     </div>
