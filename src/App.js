@@ -37,6 +37,8 @@ function App() {
     <div className={`App mode-${mode}`}>
 
       <div class="constellation-wrapper interactive active">
+        <div class="moon"></div>
+
         <div class="constellation-overlay"></div>
         <Constellation />
       </div>
