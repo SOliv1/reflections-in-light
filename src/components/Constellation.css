@@ -42,8 +42,6 @@ body {
   }
 }
 
-
-
 /* Mobile Overlay */
 @media (max-width: 600px) {
   .constellation-overlay {
@@ -51,7 +49,6 @@ body {
     backdrop-filter: blur(2px) brightness(0.88) contrast(1.12);
   }
 }
-
 
 /* Interactivity */
 .constellation-wrapper.interactive {
@@ -61,7 +58,6 @@ body {
 .constellation-wrapper:not(.interactive) {
   pointer-events: none;
 }
-
 
 /* DOM star container */
 .constellation-container {
@@ -140,7 +136,6 @@ body {
   }
 }
 
-
 /* Parallax does not cause jank  */
 
 @media (max-width: 600px) {
@@ -149,7 +144,106 @@ body {
   }
 }
 
+    /* MOON */
 
+    /* Cinematic glow */
+.moon {
+  position: absolute;
+  top: 12%;
+  right: 8%;
+  width: 240px;          /* bigger, more celestial */
+  height: 240px;
+  border-radius: 50%;
+
+  /* Mystical watercolor glow */
+  background: radial-gradient(circle at 30% 30%,
+    #ffffff 0%,
+    #f3eaff 35%,
+    #d7c2ff 55%,
+    #a37be8 80%,
+    #6a3fa8 100%
+  );
+
+  /* Deep, magical glow */
+  box-shadow:
+    0 0 60px rgba(230, 200, 255, 0.8),
+    0 0 120px rgba(190, 150, 255, 0.55),
+    0 0 200px rgba(150, 100, 220, 0.35),
+    0 0 260px rgba(120, 70, 200, 0.25);
+
+  opacity: 0.95;
+  z-index: 3;
+
+  /* Smooth, dreamy transitions */
+  transition:
+    clip-path 3s ease-in-out,
+    opacity 2.4s ease,
+    filter 2.4s ease;
+
+  /* Subtle mystical shimmer */
+  animation: moonMysticPulse 18s ease-in-out infinite alternate;
+}
+
+.moon::after {
+  content: "";
+  position: absolute;
+  inset: -70px; /* larger aura */
+  border-radius: 50%;
+  z-index: -1;
+
+  background: radial-gradient(circle,
+    rgba(220, 190, 255, 0.45) 0%,
+    rgba(180, 140, 240, 0.22) 40%,
+    rgba(120, 80, 200, 0.12) 70%,
+    transparent 100%
+  );
+
+  filter: blur(35px); /* soft, mystical diffusion */
+}
+
+/* Mystical Pulse */
+
+@keyframes moonMysticPulse {
+  0% {
+    filter: brightness(0.92) saturate(1.05) blur(0px);
+  }
+  50% {
+    filter: brightness(1.08) saturate(1.2) blur(1px);
+  }
+  100% {
+    filter: brightness(1.02) saturate(1.1) blur(0.5px);
+  }
+}
+
+
+/* MOON Seasonal phases */
+
+/* Animate Waxing & Waning Transitions */
+
+.moon.full {
+  clip-path: circle(50% at 50% 50%);
+}
+
+.moon.crescent {
+  clip-path: ellipse(28% 50% at 62% 50%);
+}
+
+.moon.waning {
+  clip-path: ellipse(32% 50% at 38% 50%);
+}
+
+.moon.new {
+  clip-path: circle(14% at 50% 50%);
+  opacity: 0.35; /* still visible, like a ghost moon */
+}
+
+/* Smooth transitions */
+.moon {
+  transition:
+    clip-path 2.4s ease-in-out,
+    opacity 2s ease,
+    filter 2s ease;
+}
 
 
 
