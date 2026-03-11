@@ -16,7 +16,7 @@ body {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  z-index: 1;
+  z-index: 0;
 }
 
 /* Evening veil overlay */
@@ -24,15 +24,44 @@ body {
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.22);
-  backdrop-filter: blur(3px);
   opacity: 0;
   transition: opacity 0.6s ease;
-  z-index: 1;
+  z-index: 2;
+  pointer-events: none; /* ← THIS FIXES EVERYTHING */
 }
 
-.constellation-wrapper.active .constellation-overlay {
+.constellation-overlay.active {
   opacity: 1;
 }
+
+/* Moon-phase intensity variants */
+.constellation-overlay.full {
+  background: rgba(0, 0, 0, 0.32);
+}
+
+.constellation-overlay.crescent {
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.constellation-overlay.new {
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.constellation-overlay.waning {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+/* Optional dusk fade-in keyframe */
+@keyframes duskFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.constellation-overlay.dusk-fade {
+  animation: duskFade 2.5s ease forwards;
+}
+
+
 
 /* Desktop Overlay */
 @media (min-width: 601px) {
@@ -49,6 +78,9 @@ body {
     backdrop-filter: blur(2px) brightness(0.88) contrast(1.12);
   }
 }
+
+
+
 
 /* Interactivity */
 .constellation-wrapper.interactive {
@@ -85,6 +117,7 @@ body {
     0 0 26px rgba(180, 140, 255, 0.7);
   opacity: 0.9;
   animation: twinkle 4s ease-in-out infinite;
+  z-index: 1;
 }
 
 @keyframes twinkle {
@@ -109,6 +142,7 @@ body {
   /* ⭐ gentle upward tilt */
   animation: shoot 4s ease-in-out infinite;
   animation-delay: 4s;
+  z-index: 1;
 }
 
 @keyframes shoot {

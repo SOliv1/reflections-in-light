@@ -6,6 +6,8 @@ import logo from "./assets/logo.png";
 
 function App() {
   const [mode, setMode] = useState("architectural");
+  const [veilOn, setVeilOn] = useState(true);   // ✔ inside App()
+
 
   useEffect(() => {
     let ticking = false;
@@ -32,7 +34,8 @@ function App() {
 
   return (
     <>
-      <Constellation />
+      {/* Constellation now receives veilOn */}
+      <Constellation veilOn={veilOn} />
 
       <div className={`App mode-${mode}`}>
         <img src={logo} alt="My Reflections Glow logo" className="App-logo" />
@@ -54,6 +57,19 @@ function App() {
             else setMode("architectural");
           }}
         ></div>
+
+        {/* Toggle button — now works */}
+        <button
+          onClick={() => setVeilOn(v => !v)}
+          style={{
+            position: "fixed",
+            top: "20px",
+            right: "20px",
+            zIndex: 9999,
+          }}
+        >
+          Toggle Veil
+        </button>
       </div>
     </>
   );

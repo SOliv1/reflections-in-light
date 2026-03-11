@@ -1,7 +1,11 @@
 import React from "react";
 import "./Constellation.css";
 
-// Seasonal helper
+const isEvening = () => {
+  const hour = new Date().getHours();
+  return hour >= 18 || hour < 5;
+};
+
 function getSeason() {
   const month = new Date().getMonth();
   if (month === 11 || month === 0 || month === 1) return "winter";
@@ -10,7 +14,7 @@ function getSeason() {
   if (month >= 8 && month <= 10) return "autumn";
 }
 
-export default function Constellation() {
+export default function Constellation({ veilOn }) {
   const season = getSeason();
 
   const moonPhase = {
@@ -23,10 +27,11 @@ export default function Constellation() {
   return (
     <div className="constellation-wrapper interactive active">
       <div className={`moon ${moonPhase}`}></div>
-      <div className="constellation-overlay"></div>
+
+      {/* Veil now controlled ONLY by App.js */}
+      <div className={`constellation-overlay ${veilOn ? "active" : ""}`}></div>
 
       <div className="constellation-container">
-        {/* Stars */}
         <div className="star" style={{ top: "4%", left: "12%" }}></div>
         <div className="star" style={{ top: "6%", left: "28%" }}></div>
         <div className="star" style={{ top: "5%", left: "45%" }}></div>
@@ -35,10 +40,8 @@ export default function Constellation() {
         <div className="star" style={{ top: "12%", left: "35%" }}></div>
         <div className="star" style={{ top: "14%", left: "70%" }}></div>
 
-        {/* Shooting star */}
         <div className="shooting-star"></div>
       </div>
     </div>
   );
 }
-
