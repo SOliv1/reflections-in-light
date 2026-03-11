@@ -1,4 +1,5 @@
 # Getting Started with Create React App
+[![Jekyll site CI](https://github.com/SOliv1/reflections-in-light/actions/workflows/jekyll-docker.yml/badge.svg)](https://github.com/SOliv1/reflections-in-light/actions/workflows/jekyll-docker.yml)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
