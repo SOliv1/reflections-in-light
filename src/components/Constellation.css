@@ -61,6 +61,120 @@ body {
   animation: duskFade 2.5s ease forwards;
 }
 
+/* Button for Overlay - Lift the Veil */
+
+/* Base styling */
+.veil-toggle {
+  font-family: inherit;
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.85);
+
+  background: rgba(40, 20, 70, 0.35);
+  padding: 8px 18px;
+  border-radius: 12px;
+
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(4px) brightness(1.1);
+
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: visible;
+}
+
+/* Hover shimmer */
+.veil-toggle:hover {
+  background: rgba(70, 40, 110, 0.45);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Tiny star-twinkle animation — more visible */
+/* Ensure the button can host sparkles */
+.veil-toggle {
+  position: relative;
+  overflow: visible;
+}
+
+/* ✨ Sparkle #1 — bright twinkle (already added, now drifting slightly) */
+.veil-toggle::after {
+  content: "";
+  position: absolute;
+  top: 35%;
+  right: 18%;
+  width: 10px;
+  height: 10px;
+
+  background: radial-gradient(circle,
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(255, 255, 255, 0.5) 40%,
+    rgba(255, 255, 255, 0) 70%
+  );
+
+  border-radius: 50%;
+  opacity: 0;
+
+  animation:
+    twinkle 1.8s infinite ease-in-out,
+    drift 4.5s infinite ease-in-out;
+
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* ✨ Sparkle #2 — smaller, softer, offset for depth */
+.veil-toggle::before {
+  content: "";
+  position: absolute;
+  top: 55%;
+  left: 25%;
+  width: 6px;
+  height: 6px;
+
+  background: radial-gradient(circle,
+    rgba(255, 255, 255, 0.75) 0%,
+    rgba(255, 255, 255, 0.35) 40%,
+    rgba(255, 255, 255, 0) 70%
+  );
+
+  border-radius: 50%;
+  opacity: 0;
+
+  animation:
+    twinkle2 2.6s infinite ease-in-out,
+    drift2 6s infinite ease-in-out;
+
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* ⭐ Twinkle animations */
+@keyframes twinkle {
+  0%   { opacity: 0;   transform: scale(0.4); }
+  40%  { opacity: 1;   transform: scale(1); }
+  60%  { opacity: 0.8; transform: scale(0.8); }
+  100% { opacity: 0;   transform: scale(0.4); }
+}
+
+@keyframes twinkle2 {
+  0%   { opacity: 0;   transform: scale(0.3); }
+  50%  { opacity: 0.9; transform: scale(0.9); }
+  80%  { opacity: 0.6; transform: scale(0.7); }
+  100% { opacity: 0;   transform: scale(0.3); }
+}
+
+/* 🌠 Drift animations — tiny shooting-star glide */
+@keyframes drift {
+  0%   { transform: translate(0, 0); }
+  50%  { transform: translate(3px, -2px); }
+  100% { transform: translate(0, 0); }
+}
+
+@keyframes drift2 {
+  0%   { transform: translate(0, 0); }
+  50%  { transform: translate(-3px, 2px); }
+  100% { transform: translate(0, 0); }
+}
 
 
 /* Desktop Overlay */
@@ -78,8 +192,6 @@ body {
     backdrop-filter: blur(2px) brightness(0.88) contrast(1.12);
   }
 }
-
-
 
 
 /* Interactivity */

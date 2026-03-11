@@ -58,18 +58,21 @@ function App() {
           }}
         ></div>
 
-        {/* Toggle button — now works */}
-        <button
-          onClick={() => setVeilOn(v => !v)}
-          style={{
-            position: "fixed",
-            top: "20px",
-            right: "20px",
-            zIndex: 9999,
-          }}
-        >
-          Toggle Veil
-        </button>
+              {/* Toggle button — now works */}
+          <button
+              className={`veil-toggle ${veilOn ? "glow" : ""}`}
+              onClick={() => setVeilOn(v => !v)}
+              style={{
+                position: "fixed",
+                top: "20px",
+                right: "20px",
+                zIndex: 9999,
+              }}
+            >
+            {veilOn ? "Lower the Veil" : "Lift the Veil"}
+          </button>
+
+
       </div>
     </>
   );
