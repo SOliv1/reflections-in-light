@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import PhotoGallery from "../components/PhotoGallery";
 import PhotoTile from "../components/PhotoTile";
 import { Link } from "react-router-dom";
+import { Portal } from "../components/Portal/Portal";
 
 
 const Day04 = () => {

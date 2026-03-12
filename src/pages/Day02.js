@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import PhotoGallery from "../components/PhotoGallery";
 import { Link } from "react-router-dom";
+import { Portal } from "../components/Portal/Portal";
 
 const Day02 = () => {
   const [favourites, setFavourites] = useState({});
