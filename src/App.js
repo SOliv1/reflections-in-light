@@ -4,6 +4,14 @@ import Calendar from "./components/Calendar";
 import "./App.css";
 import logo from "./assets/logo.png";
 
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+import Day01 from "./pages/Day01";
+import Day02 from "./pages/Day02";
+import Day03 from "./pages/Day03";
+import Day04 from "./pages/Day04";
+import Day05 from "./pages/Day05";
+
 function App() {
   const [mode, setMode] = useState("architectural");
   const [veilOn, setVeilOn] = useState(true);   // ✔ inside App()
@@ -33,6 +41,7 @@ function App() {
   }, []);
 
   return (
+    <Router >
     <>
       {/* Constellation now receives veilOn */}
       <Constellation veilOn={veilOn} />
@@ -47,7 +56,20 @@ function App() {
           <button onClick={() => setMode("macro")}>Macro</button>
         </div>
 
-        <Calendar />
+
+          <Routes>
+                {/* Home route — your calendar */}
+            <Route path="/" element={<Calendar />} />
+
+              {/* Day pages */}
+            <Route path="/day01" element={<Day01 />} />
+            <Route path="/day02" element={<Day02 />} />
+              {/* Add more here */}
+          </Routes>
+
+
+
+
 
         <div
           className="mood-orb"
@@ -75,6 +97,7 @@ function App() {
 
       </div>
     </>
+    </Router>
   );
 }
 

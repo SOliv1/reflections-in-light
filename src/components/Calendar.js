@@ -1,5 +1,7 @@
 import React from "react";
 import "../styles/calendar.css";
+import { Link } from "react-router-dom";
+
 
 const Calendar =() => {
     const year = 2026;
@@ -20,7 +22,12 @@ const Calendar =() => {
       tiles.push(
         <div key={day} className="calendar-tile">
             <span className="day-number">DAY {day}</span>
+            <Link to="/day01" className="calendar-day">1</Link>
+            <Link to="/day02" className="calendar-day">2</Link>
+            <Link to="/day03" className="calendar-day">3</Link>
+
         </div>
+
         );
     }
 
