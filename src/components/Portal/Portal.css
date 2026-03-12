@@ -127,3 +127,26 @@
 .portal:hover .portal__cue {
   opacity: 0.8;
 }
+
+/* Day base colours */
+.portal--day-1  { background-color: var(--day-1-cold-open); }
+.portal--day-2  { background-color: var(--day-2-frostlight); }
+.portal--day-3  { background-color: var(--day-3-tungsten-ember); }
+.portal--day-4  { background-color: var(--day-4-smoke-silver); }
+.portal--day-5  { background-color: var(--day-5-deep-fjord); }
+.portal--day-6  { background-color: var(--day-6-dusk-violet); }
+.portal--day-7  { background-color: var(--day-7-final-glow); }
+
+/* Mood overrides (spotlight) */
+.portal--mood-calm        { background-color: var(--mood-calm-stillwater); }
+.portal--mood-warm        { background-color: var(--mood-warm-hearthlight); }
+.portal--mood-bright      { background-color: var(--mood-bright-stage-gold); }
+.portal--mood-reflective  { background-color: var(--mood-reflective-mirror-silver); }
+.portal--mood-playful     { background-color: var(--mood-playful-neon-rose); }
+
+/* Optional: seasonal filters as subtle tints */
+.portal--season-winter { filter: hue-rotate(0deg) saturate(1.02) brightness(0.96); }
+.portal--season-spring { filter: hue-rotate(-10deg) saturate(1.05) brightness(1.02); }
+.portal--season-summer { filter: hue-rotate(5deg) saturate(1.08) brightness(1.05); }
+.portal--season-autumn { filter: hue-rotate(15deg) saturate(1.04) brightness(0.98); }
+
