@@ -3,7 +3,7 @@ import PhotoGallery from "../components/PhotoGallery";
 import PhotoTile from "../components/PhotoTile";
 import { Link } from "react-router-dom";
 
-const Day05 = () => {
+const Day06 = () => {
   const [favourites, setFavourites] = useState({});
 
   const images = [
@@ -22,7 +22,7 @@ const Day05 = () => {
     <div className="day-page">
       <Link to="/" className="crescent-portal"></Link>
 
-      <h2>Day 5 Reflection</h2>
+      <h2>Day 6 Reflection</h2>
       <p>Your reflection text for this day…</p>
 
       <PhotoGallery
@@ -35,4 +35,4 @@ const Day05 = () => {
 };
 
 
-export default Day05;
+export default Day06;

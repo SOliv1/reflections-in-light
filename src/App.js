@@ -64,6 +64,10 @@ function App() {
               {/* Day pages */}
             <Route path="/day01" element={<Day01 />} />
             <Route path="/day02" element={<Day02 />} />
+            <Route path="/day03" element={<Day03 />} />
+            <Route path="/day03" element={<Day04 />} />
+            <Route path="/day03" element={<Day05 />} />
+
               {/* Add more here */}
           </Routes>
 
