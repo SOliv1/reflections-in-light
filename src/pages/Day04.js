@@ -3,12 +3,15 @@ import PhotoGallery from "../components/PhotoGallery";
 import PhotoTile from "../components/PhotoTile";
 import { Link } from "react-router-dom";
 
+
 const Day04 = () => {
   const [favourites, setFavourites] = useState({});
 
-  const images = [
-    { id: "dXX-img1", src: "/images/dayXX-1.jpg", alt: "..." },
-    { id: "dXX-img2", src: "/images/dayXX-2.jpg", alt: "..." },
+const images = [
+    { id: "test4", src: "https://picsum.photos/300", alt: "Test image" },
+    { id: "d1-img1", src: "/images/day01-1.jpg", alt: "Morning light" },
+    { id: "d1-img2", src: "/images/day01-2.jpg", alt: "Soft reflections" },
+    { id: "d1-img3", src: "/images/day01-3.jpg", alt: "Warm glow" },
   ];
 
   const toggleFavourite = (id) => {

@@ -7,8 +7,10 @@ const Day07 = () => {
   const [favourites, setFavourites] = useState({});
 
   const images = [
-    { id: "dXX-img1", src: "/images/dayXX-1.jpg", alt: "..." },
-    { id: "dXX-img2", src: "/images/dayXX-2.jpg", alt: "..." },
+    { id: "test7", src: "https://picsum.photos/300", alt: "Test image" },
+    { id: "d1-img1", src: "/images/day01-1.jpg", alt: "Morning light" },
+    { id: "d1-img2", src: "/images/day01-2.jpg", alt: "Soft reflections" },
+    { id: "d1-img3", src: "/images/day01-3.jpg", alt: "Warm glow" },
   ];
 
   const toggleFavourite = (id) => {

@@ -1,0 +1,129 @@
+:root {
+  /* Day colours */
+  --day-1-cold-open: #2A3F73;      /* Cold Open / Paramount Blue */
+  --day-2-frostlight: #A7C7E7;     /* Frostlight / Fox Glacier */
+  --day-3-tungsten-ember: #E6A756; /* Tungsten Ember / MGM Gold */
+  --day-4-smoke-silver: #6E6E72;   /* Smoke & Silver / Gainsborough Pearl */
+  --day-5-deep-fjord: #2E6F78;     /* Deep Fjord / VistaVision Teal */
+  --day-6-dusk-violet: #6A4C8C;    /* Dusk Violet / Technicolor Orchid */
+  --day-7-final-glow: #F2E6C9;     /* Final Glow / Cinemascope Dawn */
+
+  /* Seasonal tints */
+  --season-winter-icefall: #C9D6E4;
+  --season-spring-green-bloom: #B7D8B2;
+  --season-summer-solstice-gold: #F5D38A;
+  --season-autumn-amber-drift: #D9A066;
+
+  /* Mood overrides */
+  --mood-calm-stillwater: #4A6FA5;
+  --mood-warm-hearthlight: #E8B39A;
+  --mood-bright-stage-gold: #FFD76B;
+  --mood-reflective-mirror-silver: #D0D0D5;
+  --mood-playful-neon-rose: #FF5FA2;
+}
+
+
+/* Portal base + animation hooks */
+.portal {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  /* base colour will be set via class or inline style */
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.35), transparent 60%);
+  box-shadow: 0 0 24px rgba(0, 0, 0, 0.45);
+  overflow: visible;
+  cursor: pointer;
+  transition:
+    background-color 1.4s ease,
+    box-shadow 1.4s ease,
+    transform 0.6s ease,
+    filter 1.4s ease;
+}
+
+/* inner crescent */
+.portal__core {
+  position: absolute;
+  inset: 12%;
+  border-radius: 50%;
+  background-color: inherit;
+  box-shadow: 0 0 32px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+}
+
+/* crescent mask */
+.portal__crescent {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.5), transparent 60%);
+  transform: translateX(18%);
+}
+
+/* glow (outer aura) */
+.portal--glow {
+  box-shadow:
+    0 0 32px rgba(0, 0, 0, 0.6),
+    0 0 48px rgba(255, 255, 255, 0.18);
+}
+
+/* pulse (breath) */
+@keyframes portal-pulse {
+  0%   { transform: scale(1);   opacity: 1; }
+  50%  { transform: scale(1.05); opacity: 0.92; }
+  100% { transform: scale(1);   opacity: 1; }
+}
+
+.portal--pulse-slow {
+  animation: portal-pulse 5s ease-in-out infinite;
+}
+
+.portal--pulse-medium {
+  animation: portal-pulse 4s ease-in-out infinite;
+}
+
+.portal--pulse-fast {
+  animation: portal-pulse 3s ease-in-out infinite;
+}
+
+/* shimmer (highlight sweep) */
+.portal__shimmer {
+  position: absolute;
+  top: -10%;
+  bottom: -10%;
+  width: 30%;
+  left: -30%;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(255,255,255,0.35),
+    transparent
+  );
+  mix-blend-mode: screen;
+  pointer-events: none;
+  animation: portal-shimmer 10s linear infinite;
+}
+
+@keyframes portal-shimmer {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(260%); }
+}
+
+/* hover cue */
+.portal__cue {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%, 12px);
+  color: var(--mood-reflective-mirror-silver);
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  white-space: nowrap;
+}
+
+.portal:hover .portal__cue {
+  opacity: 0.8;
+}
