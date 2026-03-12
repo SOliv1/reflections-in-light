@@ -1,0 +1,45 @@
+.photo-tile {
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.18);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.photo-tile:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.22);
+}
+
+.photo-tile-image {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+/* Heart button */
+.photo-tile-heart {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    border: none;
+    background: rgba(0, 0, 0, 0.35);
+    color: rgba(255, 255, 255, 0.8);
+    border-radius: 999px;
+    padding: 4px 8px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease, color 0.2s ease;
+}
+
+.photo-tile-heart:hover {
+    background: rgba(0, 0, 0, 0.55);
+    transform: scale(1.05);
+}
+
+.photo-tile-heart.favourite {
+    background: rgba(255, 215, 0, 0.9);
+    color: #3b2a10;
+}
