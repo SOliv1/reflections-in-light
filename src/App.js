@@ -67,10 +67,6 @@ function App() {
               {/* Add more here */}
           </Routes>
 
-
-
-
-
         <div
           className="mood-orb"
           onClick={() => {

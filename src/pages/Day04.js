@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import PhotoGallery from "../components/PhotoGallery";
+import PhotoTile from "../components/PhotoTile";
+import { Link } from "react-router-dom";
 
 const Day04 = () => {
   const [favourites, setFavourites] = useState({});
@@ -18,6 +20,7 @@ const Day04 = () => {
 
   return (
     <div className="day-page">
+      <Link to="/" className="crescent-portal"></Link>
       <h2>Day 4 Reflection</h2>
       <p>Your reflection text for this day…</p>
 
