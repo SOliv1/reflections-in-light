@@ -1,0 +1,248 @@
+:root {
+  /* Day colours */
+  --day-1-cold-open: #2A3F73;
+  --day-2-frostlight: #A7C7E7;
+  --day-3-tungsten-ember: #E6A756;
+  --day-4-smoke-silver: #6E6E72;
+  --day-5-deep-fjord: #2E6F78;
+  --day-6-dusk-violet: #6A4C8C;
+  --day-7-final-glow: #F2E6C9;
+
+  /* Seasonal tint RGB (for soft fill) */
+  --season-winter-rgb: 201, 214, 228;
+  --season-spring-rgb: 183, 216, 178;
+  --season-summer-rgb: 245, 211, 138;
+  --season-autumn-rgb: 217, 160, 102;
+
+  /* Seasonal tint glow */
+  --season-winter-icefall: #C9D6E4;
+  --season-spring-green-bloom: #B7D8B2;
+  --season-summer-solstice-gold: #F5D38A;
+  --season-autumn-amber-drift: #D9A066;
+
+  /* Mood overrides */
+  --mood-calm-stillwater: #4A6FA5;
+  --mood-warm-hearthlight: #E8B39A;
+  --mood-bright-stage-gold: #FFD76B;
+  --mood-reflective-mirror-silver: #D0D0D5;
+  --mood-playful-neon-rose: #FF5FA2;
+}
+
+/* ------------------------------------------------------ */
+/* BASE PORTAL (Mood Portal uses this)                    */
+/* ------------------------------------------------------ */
+
+.portal {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.35), transparent 60%);
+  box-shadow: 0 0 24px rgba(0, 0, 0, 0.45);
+  overflow: visible;
+  cursor: pointer;
+  transition:
+    background-color 1.4s ease,
+    box-shadow 1.4s ease,
+    transform 0.6s ease,
+    filter 1.4s ease;
+}
+
+/* Mood Portal inner structure */
+.portal__core {
+  position: absolute;
+  inset: 12%;
+  border-radius: 50%;
+  background-color: inherit;
+  box-shadow: 0 0 32px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+}
+
+.portal__crescent {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.5), transparent 60%);
+  transform: translateX(18%);
+}
+
+.portal__shimmer {
+  position: absolute;
+  top: -10%;
+  bottom: -10%;
+  width: 30%;
+  left: -30%;
+  background: linear-gradient(to right, transparent, rgba(255,255,255,0.35), transparent);
+  mix-blend-mode: screen;
+  pointer-events: none;
+  animation: portal-shimmer 10s linear infinite;
+}
+
+@keyframes portal-shimmer {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(260%); }
+}
+
+/* Glow for Mood Portal only */
+.portal--glow {
+  box-shadow:
+    0 0 32px rgba(0, 0, 0, 0.6),
+    0 0 48px rgba(255, 255, 255, 0.18);
+}
+
+/* Pulse for Mood Portal */
+@keyframes portal-pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.92; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.portal--pulse-slow { animation: portal-pulse 5s ease-in-out infinite; }
+.portal--pulse-medium { animation: portal-pulse 4s ease-in-out infinite; }
+.portal--pulse-fast { animation: portal-pulse 3s ease-in-out infinite; }
+
+/* Hover cue */
+.portal__cue {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%, 12px);
+  color: var(--mood-reflective-mirror-silver);
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  white-space: nowrap;
+}
+
+.portal:hover .portal__cue {
+  opacity: 1.8;
+}
+
+/* Day colours */
+.portal--day-1 { background-color: var(--day-1-cold-open); }
+.portal--day-2 { background-color: var(--day-2-frostlight); }
+.portal--day-3 { background-color: var(--day-3-tungsten-ember); }
+.portal--day-4 { background-color: var(--day-4-smoke-silver); }
+.portal--day-5 { background-color: var(--day-5-deep-fjord); }
+.portal--day-6 { background-color: var(--day-6-dusk-violet); }
+.portal--day-7 { background-color: var(--day-7-final-glow); }
+
+/* Mood overrides */
+.portal--mood-calm { background-color: var(--mood-calm-stillwater); }
+.portal--mood-warm { background-color: var(--mood-warm-hearthlight); }
+.portal--mood-bright { background-color: var(--mood-bright-stage-gold); }
+.portal--mood-reflective { background-color: var(--mood-reflective-mirror-silver); }
+.portal--mood-playful { background-color: var(--mood-playful-neon-rose); }
+
+/* ------------------------------------------------------ */
+/* CRESCENT PORTAL (Day → Home navigation)                */
+/* ------------------------------------------------------ */
+
+.crescent-portal {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width: 28px;
+  height: 48px;
+  background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.95), rgba(255,255,255,0.2) 60%);
+  border-radius: 50%;
+  clip-path: ellipse(60% 50% at 40% 50%);
+  box-shadow:
+    0 0 18px rgba(255,255,255,0.9),
+    0 0 32px rgba(255,255,255,0.7),
+    inset 0 0 12px rgba(255,255,255,0.8);
+  cursor: pointer;
+  transition: transform .4s ease, box-shadow .4s ease;
+  z-index: 20000;
+  animation: portal-pulse 3.6s ease-in-out infinite;
+}
+
+.crescent-portal:hover {
+  transform: scale(1.15);
+  box-shadow:
+    0 0 24px rgba(255,255,255,1),
+    0 0 40px rgba(255,255,255,0.9),
+    inset 0 0 16px rgba(255,255,255,1);
+}
+
+.crescent-portal::after {
+  content: "return to the light";
+  position: absolute;
+  left: 36px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
+  color: rgba(255,255,255,0.7);
+  opacity: 0;
+  transition: opacity .4s ease;
+  white-space: nowrap;
+}
+
+.crescent-portal:hover::after {
+  opacity: 1;
+}
+
+/* ------------------------------------------------------ */
+/* SEASONAL PORTAL (Day Pages) — Atmospheric Option A     */
+/* ------------------------------------------------------ */
+
+/* Seasonal tint mapping */
+.portal--season-winter { --season-rgb: var(--season-winter-rgb); --season-tint: rgba(120,180,255,0.15); }
+.portal--season-spring { --season-rgb: var(--season-spring-rgb); --season-tint: rgba(180,255,200,0.15); }
+.portal--season-summer { --season-rgb: var(--season-summer-rgb); --season-tint: rgba(255,220,140,0.15); }
+.portal--season-autumn { --season-rgb: var(--season-autumn-rgb); --season-tint: rgba(255,180,120,0.15); }
+
+/* Seasonal Portal — atmospheric, subtle, visible */
+.portal--seasonal {
+  width: 72px !important;
+  height: 108px !important;
+  border-radius: 60px 60px 0 0;
+
+  /* Atmospheric soft seasonal fill */
+  background: rgba(var(--season-rgb), 0.22) !important;
+
+  /* Outline */
+  border: 2px solid rgba(255,255,255,0.75);
+
+  /* Soft glow */
+  box-shadow:
+    0 0 8px rgba(255,255,255,0.28),
+    0 0 16px var(--season-tint) !important;
+
+  filter: none !important;
+  animation: none !important;
+  cursor: pointer;
+}
+
+/* Remove Mood Portal internals */
+.portal--seasonal .portal__core,
+.portal--seasonal .portal__crescent,
+.portal--seasonal .portal__shimmer {
+  display: none !important;
+}
+
+/* Hover */
+.portal--seasonal:hover {
+  transform: scale(1.03);
+  box-shadow:
+    0 0 10px rgba(255,255,255,0.38),
+    0 0 22px var(--season-tint) !important;
+}
+
+/* Veil OFF (bright background) */
+.veil-off .portal--seasonal {
+  border-color: rgba(0,0,0,0.55) !important;
+  background: rgba(var(--season-rgb), 0.26) !important;
+  box-shadow:
+    0 0 8px rgba(0,0,0,0.22),
+    0 0 16px var(--season-tint) !important;
+}
+
+.veil-off .portal--seasonal:hover {
+  box-shadow:
+    0 0 12px rgba(0,0,0,0.32),
+    0 0 26px var(--season-tint) !important;
+}

@@ -13,6 +13,8 @@ import Day02 from "./pages/Day02";
 import Day03 from "./pages/Day03";
 import Day04 from "./pages/Day04";
 import Day05 from "./pages/Day05";
+import Day06 from "./pages/Day06";
+import Day07 from "./pages/Day07";
 
 function App() {
   const [mode, setMode] = useState("architectural");
@@ -48,19 +50,21 @@ function App() {
       {/* Constellation now receives veilOn */}
       <Constellation veilOn={veilOn} />
 
-      <div className={`App mode-${mode}`}>
-        <img src={logo} alt="My Reflections Glow logo" className="App-logo" />
-        
+      <div className={`App mode-${mode} ${veilOn ? "veil-on" : "veil-off"}`}>
 
+        <img src={logo} alt="My Reflections Glow logo" className="App-logo" />
 
         <h1 className="calendar-title">A Month of Light</h1>
         <div className="home-portal-wrapper">
+
           <Portal
+            type="mood"
             dayIndex={1}
             season="winter"
             mood={null}
             cueText="Begin"
           />
+
         </div>
 
         <div style={{ marginBottom: "20px" }}>
@@ -69,17 +73,17 @@ function App() {
           <button onClick={() => setMode("macro")}>Macro</button>
         </div>
 
-
           <Routes>
                 {/* Home route — your calendar */}
             <Route path="/" element={<Calendar />} />
-
-              {/* Day pages */}
+            {/* Day pages */}
             <Route path="/day01" element={<Day01 />} />
             <Route path="/day02" element={<Day02 />} />
             <Route path="/day03" element={<Day03 />} />
-            <Route path="/day03" element={<Day04 />} />
-            <Route path="/day03" element={<Day05 />} />
+            <Route path="/day04" element={<Day04 />} />
+            <Route path="/day05" element={<Day05 />} />
+            <Route path="/day06" element={<Day06 />} />
+            <Route path="/day07" element={<Day07 />} />
 
               {/* Add more here */}
           </Routes>

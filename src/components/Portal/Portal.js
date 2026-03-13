@@ -1,22 +1,16 @@
 import "./Portal.css";
 
-export function Portal({ dayIndex, season, mood, cueText }) {
+export function Portal({ dayIndex, season, mood, cueText, type }) {
   // 1. Build the base day class (1–7)
-  const dayClass = dayIndex
-    ? `portal--day-${dayIndex}`
-    : "";
+  const dayClass = dayIndex ? `portal--day-${dayIndex}` : "";
 
   // 2. Build the seasonal tint class
-  const seasonClass = season
-    ? `portal--season-${season}`
-    : "";
+  const seasonClass = season ? `portal--season-${season}` : "";
 
   // 3. Build the mood override class
-  const moodClass = mood
-    ? `portal--mood-${mood}`
-    : "";
+  const moodClass = mood ? `portal--mood-${mood}` : "";
 
-  // 4. Pulse speed logic (optional, cinematic)
+  // 4. Pulse speed logic
   const pulseClass =
     mood === "calm"
       ? "portal--pulse-slow"
@@ -24,14 +18,21 @@ export function Portal({ dayIndex, season, mood, cueText }) {
       ? "portal--pulse-medium"
       : "portal--pulse-fast";
 
+  // 4b. Portal type (mood or seasonal)
+  const typeClass = type ? `portal--${type}` : "";
+
+  // 4c. Glow only for mood portal
+  const glowClass = type === "mood" ? "portal--glow" : "";
+
   // 5. Combine all classes
   const classes = [
     "portal",
+    typeClass,
     dayClass,
     seasonClass,
     moodClass,
     pulseClass,
-    "portal--glow"
+    glowClass
   ]
     .filter(Boolean)
     .join(" ");
@@ -42,8 +43,6 @@ export function Portal({ dayIndex, season, mood, cueText }) {
         <div className="portal__crescent"></div>
         <div className="portal__shimmer"></div>
       </div>
-
-
 
       {cueText && (
         <div className="portal__cue">

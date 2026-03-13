@@ -1,19 +1,22 @@
+/* ------------------------------------------------------ */
+/* ROOT VARIABLES                                          */
+/* ------------------------------------------------------ */
 
 :root {
   /* Day colours */
-  --day-1-cold-open: #2A3F73;      /* Cold Open / Paramount Blue */
-  --day-2-frostlight: #A7C7E7;     /* Frostlight / Fox Glacier */
-  --day-3-tungsten-ember: #E6A756; /* Tungsten Ember / MGM Gold */
-  --day-4-smoke-silver: #6E6E72;   /* Smoke & Silver / Gainsborough Pearl */
-  --day-5-deep-fjord: #2E6F78;     /* Deep Fjord / VistaVision Teal */
-  --day-6-dusk-violet: #6A4C8C;    /* Dusk Violet / Technicolor Orchid */
-  --day-7-final-glow: #F2E6C9;     /* Final Glow / Cinemascope Dawn */
+  --day-1-cold-open: #2A3F73;
+  --day-2-frostlight: #A7C7E7;
+  --day-3-tungsten-ember: #E6A756;
+  --day-4-smoke-silver: #6E6E72;
+  --day-5-deep-fjord: #2E6F78;
+  --day-6-dusk-violet: #6A4C8C;
+  --day-7-final-glow: #F2E6C9;
 
-  /* Seasonal tints */
-  --season-winter-icefall: #C9D6E4;
-  --season-spring-green-bloom: #B7D8B2;
-  --season-summer-solstice-gold: #F5D38A;
-  --season-autumn-amber-drift: #D9A066;
+  /* Cinematic seasonal RGB */
+  --season-winter-rgb: 150, 185, 220;
+  --season-spring-rgb: 140, 190, 150;
+  --season-summer-rgb: 240, 185, 90;
+  --season-autumn-rgb: 205, 135, 75;
 
   /* Mood overrides */
   --mood-calm-stillwater: #4A6FA5;
@@ -23,15 +26,16 @@
   --mood-playful-neon-rose: #FF5FA2;
 }
 
+/* ------------------------------------------------------ */
+/* PORTAL BASE                                             */
+/* ------------------------------------------------------ */
 
-/* Portal base + animation hooks */
 .portal {
   position: relative;
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  /* base colour will be set via class or inline style */
-  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.35), transparent 60%);
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.35), transparent 60%);
   box-shadow: 0 0 24px rgba(0, 0, 0, 0.45);
   overflow: visible;
   cursor: pointer;
@@ -42,7 +46,7 @@
     filter 1.4s ease;
 }
 
-/* inner crescent */
+/* Inner core */
 .portal__core {
   position: absolute;
   inset: 12%;
@@ -52,28 +56,117 @@
   overflow: hidden;
 }
 
-/* crescent mask */
+.portal--seasonal .portal__core {
+  opacity: 0.72;
+  box-shadow:
+    0 0 32px var(--season-glow-outer),
+    0 0 48px var(--season-glow-inner),
+    inset 0 0 22px var(--season-glow-inner);
+}
+
+
+/* Crescent highlight */
 .portal__crescent {
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.5), transparent 60%);
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.5), transparent 60%);
   transform: translateX(18%);
 }
 
-/* glow (outer aura) */
-.portal--glow {
-  box-shadow:
-    0 0 32px rgba(0, 0, 0, 0.6),
-    0 0 48px rgba(255, 255, 255, 0.18);
+/* Shimmer sweep */
+.portal__shimmer {
+  position: absolute;
+  top: -10%;
+  bottom: -10%;
+  width: 30%;
+  left: -30%;
+  background: linear-gradient(to right,
+      transparent,
+      rgba(255, 255, 255, 0.35),
+      transparent);
+  mix-blend-mode: screen;
+  pointer-events: none;
+  animation: portal-shimmer 10s linear infinite;
 }
 
-/* pulse (breath) */
-@keyframes portal-pulse {
-  0%   { transform: scale(1);   opacity: 1; }
-  50%  { transform: scale(1.05); opacity: 0.92; }
-  100% { transform: scale(1);   opacity: 1; }
+@keyframes portal-shimmer {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(260%);
+  }
 }
+
+/* Pulse */
+@keyframes portal-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.05);
+    opacity: 0.92;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+
+/* Parallax shimmer — slow, faint, drifting */
+.portal--seasonal::before {
+  content: "";
+  position: absolute;
+  top: -30%;
+  bottom: -30%;
+  left: -20%;
+  width: 25%;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(255,255,255,0.18),
+    transparent
+  );
+  mix-blend-mode: screen;
+  opacity: 0.18;
+  animation: seasonal-parallax 22s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes seasonal-parallax {
+  0%   { transform: translateX(0) translateY(0); }
+  50%  { transform: translateX(140%) translateY(6%); }
+  100% { transform: translateX(0) translateY(0); }
+}
+
+/* Interior breathing ember */
+.portal--seasonal .portal__core::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(var(--season-rgb), 0.35),
+    transparent 70%
+  );
+  opacity: 0.35;
+  animation: seasonal-ember 6.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes seasonal-ember {
+  0%   { opacity: 0.28; transform: scale(1); }
+  50%  { opacity: 0.48; transform: scale(1.06); }
+  100% { opacity: 0.28; transform: scale(1); }
+}
+
 
 .portal--pulse-slow {
   animation: portal-pulse 5s ease-in-out infinite;
@@ -87,30 +180,8 @@
   animation: portal-pulse 3s ease-in-out infinite;
 }
 
-/* shimmer (highlight sweep) */
-.portal__shimmer {
-  position: absolute;
-  top: -10%;
-  bottom: -10%;
-  width: 30%;
-  left: -30%;
-  background: linear-gradient(
-    to right,
-    transparent,
-    rgba(255,255,255,0.35),
-    transparent
-  );
-  mix-blend-mode: screen;
-  pointer-events: none;
-  animation: portal-shimmer 10s linear infinite;
-}
 
-@keyframes portal-shimmer {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(260%); }
-}
-
-/* hover cue */
+/* Hover cue */
 .portal__cue {
   position: absolute;
   top: 100%;
@@ -129,30 +200,57 @@
   opacity: 1.8;
 }
 
-/* Day base colours */
-.portal--day-1  { background-color: var(--day-1-cold-open); }
-.portal--day-2  { background-color: var(--day-2-frostlight); }
-.portal--day-3  { background-color: var(--day-3-tungsten-ember); }
-.portal--day-4  { background-color: var(--day-4-smoke-silver); }
-.portal--day-5  { background-color: var(--day-5-deep-fjord); }
-.portal--day-6  { background-color: var(--day-6-dusk-violet); }
-.portal--day-7  { background-color: var(--day-7-final-glow); }
+/* Day colours */
+.portal--day-1 {
+  background-color: var(--day-1-cold-open);
+}
 
-/* Mood overrides (spotlight) */
-.portal--mood-calm        { background-color: var(--mood-calm-stillwater); }
-.portal--mood-warm        { background-color: var(--mood-warm-hearthlight); }
-.portal--mood-bright      { background-color: var(--mood-bright-stage-gold); }
-.portal--mood-reflective  { background-color: var(--mood-reflective-mirror-silver); }
-.portal--mood-playful     { background-color: var(--mood-playful-neon-rose); }
+.portal--day-2 {
+  background-color: var(--day-2-frostlight);
+}
 
-/* Optional: seasonal filters as subtle tints */
-.portal--season-winter { filter: hue-rotate(0deg) saturate(1.02) brightness(0.96); }
-.portal--season-spring { filter: hue-rotate(-10deg) saturate(1.05) brightness(1.02); }
-.portal--season-summer { filter: hue-rotate(5deg) saturate(1.08) brightness(1.05); }
-.portal--season-autumn { filter: hue-rotate(15deg) saturate(1.04) brightness(0.98); }
+.portal--day-3 {
+  background-color: var(--day-3-tungsten-ember);
+}
 
+.portal--day-4 {
+  background-color: var(--day-4-smoke-silver);
+}
 
-/* Mood Portal Sizes */
+.portal--day-5 {
+  background-color: var(--day-5-deep-fjord);
+}
+
+.portal--day-6 {
+  background-color: var(--day-6-dusk-violet);
+}
+
+.portal--day-7 {
+  background-color: var(--day-7-final-glow);
+}
+
+/* Mood overrides */
+.portal--mood-calm {
+  background-color: var(--mood-calm-stillwater);
+}
+
+.portal--mood-warm {
+  background-color: var(--mood-warm-hearthlight);
+}
+
+.portal--mood-bright {
+  background-color: var(--mood-bright-stage-gold);
+}
+
+.portal--mood-reflective {
+  background-color: var(--mood-reflective-mirror-silver);
+}
+
+.portal--mood-playful {
+  background-color: var(--mood-playful-neon-rose);
+}
+
+/* Mood portal sizes */
 .portal {
   width: 60px;
   height: 60px;
@@ -163,3 +261,225 @@
   height: 80px;
 }
 
+/* ------------------------------------------------------ */
+/* CRESCENT PORTAL                                         */
+/* ------------------------------------------------------ */
+
+.crescent-portal {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width: 28px;
+  height: 48px;
+  background: radial-gradient(circle at 30% 50%, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.2) 60%);
+  border-radius: 50%;
+  clip-path: ellipse(60% 50% at 40% 50%);
+  box-shadow:
+    0 0 18px rgba(255, 255, 255, 0.9),
+    0 0 32px rgba(255, 255, 255, 0.7),
+    inset 0 0 12px rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  transition: transform .4s ease, box-shadow .4s ease;
+  z-index: 20000;
+  animation: portal-pulse 3.6s ease-in-out infinite;
+}
+
+.crescent-portal:hover {
+  transform: scale(1.15);
+  box-shadow:
+    0 0 24px rgba(255, 255, 255, 1),
+    0 0 40px rgba(255, 255, 255, 0.9),
+    inset 0 0 16px rgba(255, 255, 255, 1);
+}
+
+.crescent-portal::after {
+  content: "return to the light";
+  position: absolute;
+  left: 36px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
+  color: rgba(255, 255, 255, 0.7);
+  opacity: 0;
+  transition: opacity .4s ease;
+  white-space: nowrap;
+}
+
+.crescent-portal:hover::after {
+  opacity: 1;
+}
+
+/* ------------------------------------------------------ */
+/* SEASONAL PORTAL — CINEMATIC, BOLD, BELOW MOOD           */
+/* ------------------------------------------------------ */
+
+/* Seasonal RGB mapping */
+.portal--season-winter {
+  --season-rgb: var(--season-winter-rgb);
+}
+
+.portal--season-spring {
+  --season-rgb: var(--season-spring-rgb);
+}
+
+.portal--season-summer {
+  --season-rgb: var(--season-summer-rgb);
+}
+
+.portal--season-autumn {
+  --season-rgb: var(--season-autumn-rgb);
+}
+
+/* Season-specific glow tuning */
+.portal--season-winter {
+  --season-glow-outer: rgba(150,185,220,0.45);
+  --season-glow-inner: rgba(150,185,220,0.28);
+}
+
+.portal--season-spring {
+  --season-glow-outer: rgba(140,190,150,0.45);
+  --season-glow-inner: rgba(140,190,150,0.28);
+}
+
+.portal--season-summer {
+  --season-glow-outer: rgba(240,185,90,0.45);
+  --season-glow-inner: rgba(240,185,90,0.28);
+}
+
+.portal--season-autumn {
+  --season-glow-outer: rgba(205,135,75,0.45);
+  --season-glow-inner: rgba(205,135,75,0.28);
+}
+
+
+.portal--seasonal {
+  width: 72px !important;
+  height: 108px !important;
+  border-radius: 60px 60px 0 0;
+  position: relative;
+  overflow: hidden;
+
+  background: radial-gradient(circle at 50% 35%,
+      rgba(var(--season-rgb), 0.42),
+      rgba(var(--season-rgb), 0.22) 55%,
+      transparent 85%) !important;
+
+  border: 2px solid rgba(255, 255, 255, 0.78);
+
+  box-shadow:
+    0 0 14px rgba(255, 255, 255, 0.28),
+    0 0 22px var(--season-tint) !important;
+
+  animation: seasonal-pulse 7s ease-in-out infinite;
+  cursor: pointer;
+}
+
+/* Pulse */
+@keyframes seasonal-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.94;
+  }
+
+  50% {
+    transform: scale(1.035);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 0.94;
+  }
+}
+
+/* Shimmer */
+.portal--seasonal::after {
+  content: "";
+  position: absolute;
+  top: -20%;
+  bottom: -20%;
+  left: -40%;
+  width: 40%;
+  background: linear-gradient(to right,
+      transparent,
+      rgba(255, 255, 255, 0.38),
+      transparent);
+  mix-blend-mode: screen;
+  animation: seasonal-shimmer 12s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes seasonal-shimmer {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(260%);
+  }
+}
+
+/* Internals */
+.portal--seasonal .portal__core {
+  opacity: 0.55;
+  box-shadow: 0 0 22px rgba(255, 255, 255, 0.32);
+}
+
+.portal--seasonal .portal__crescent {
+  opacity: 0.32;
+  transform: translateX(14%);
+}
+
+.portal--seasonal .portal__shimmer {
+  opacity: 0.22;
+  animation-duration: 14s;
+}
+
+/* Heightened interior enclave — richer glow, deeper presence */
+.portal--seasonal .portal__core {
+  opacity: 0.72; /* was 0.55 */
+  box-shadow:
+    0 0 32px rgba(var(--season-rgb), 0.45),
+    0 0 48px rgba(var(--season-rgb), 0.28),
+    inset 0 0 22px rgba(var(--season-rgb), 0.35);
+}
+
+.portal--seasonal .portal__crescent {
+  opacity: 0.42; /* was 0.32 */
+  transform: translateX(12%); /* slightly more centered */
+}
+
+.portal--seasonal .portal__shimmer {
+  opacity: 0.32; /* was 0.22 */
+  animation-duration: 11s; /* slightly faster shimmer */
+}
+
+
+/* Hover */
+.portal--seasonal:hover {
+  transform: scale(1.05);
+  box-shadow:
+    0 0 18px rgba(255, 255, 255, 0.38),
+    0 0 28px var(--season-tint) !important;
+}
+
+/* Veil OFF */
+.veil-off .portal--seasonal {
+  border-color: rgba(0, 0, 0, 0.65) !important;
+
+  background: radial-gradient(circle at 50% 35%,
+      rgba(var(--season-rgb), 0.55),
+      rgba(var(--season-rgb), 0.32) 55%,
+      transparent 85%) !important;
+
+  box-shadow:
+    0 0 18px rgba(0, 0, 0, 0.28),
+    0 0 32px var(--season-tint) !important;
+}
+
+.veil-off .portal--seasonal:hover {
+  box-shadow:
+    0 0 22px rgba(0, 0, 0, 0.35),
+    0 0 38px var(--season-tint) !important;
+}
