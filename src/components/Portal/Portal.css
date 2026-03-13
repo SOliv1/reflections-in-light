@@ -1,3 +1,4 @@
+
 :root {
   /* Day colours */
   --day-1-cold-open: #2A3F73;      /* Cold Open / Paramount Blue */
@@ -149,4 +150,16 @@
 .portal--season-spring { filter: hue-rotate(-10deg) saturate(1.05) brightness(1.02); }
 .portal--season-summer { filter: hue-rotate(5deg) saturate(1.08) brightness(1.05); }
 .portal--season-autumn { filter: hue-rotate(15deg) saturate(1.04) brightness(0.98); }
+
+
+/* Mood Portal Sizes */
+.portal {
+  width: 60px;
+  height: 60px;
+}
+
+.portal--small {
+  width: 80px;
+  height: 80px;
+}
 

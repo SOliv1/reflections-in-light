@@ -43,6 +43,8 @@ export function Portal({ dayIndex, season, mood, cueText }) {
         <div className="portal__shimmer"></div>
       </div>
 
+
+
       {cueText && (
         <div className="portal__cue">
           {cueText}

@@ -28,15 +28,6 @@ const Day01 = () => {
   return (
     <div className="day-page">
       <Link to="/" className="crescent-portal"></Link>
-      <Portal
-        dayIndex={3}
-        season="spring"
-        mood="calm"
-        cueText="Enter"
-      />
-
-      {/*<Portal dayIndex={1} season="winter" /> */}
-
 
       <h2>Day 1 Reflection</h2>
       <p>Soft morning light on the water…</p>
@@ -48,6 +39,13 @@ const Day01 = () => {
           <div className="veil-portal-line veil-portal-line-secondary">The Doorway Opens</div>
           <div className="veil-portal-line veil-portal-line-subtle">The Light Awaits</div>
         </div>
+
+        <Portal
+          dayIndex={1}
+          season="winter"
+          mood={mood}
+          cueText="Enter"
+        />
 
         <div className="mood-picker">
         <button onClick={() => setMood("calm")}>Calm</button>

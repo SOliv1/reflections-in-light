@@ -14,8 +14,29 @@
   box-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
 }
 
+.App-logo {
+  transition: filter 0.4s ease, transform 0.4s ease;
+}
+
+.App-logo:hover {
+  filter: brightness(1.2) saturate(1.15) hue-rotate(5deg);
+}
+
+
+
+
+.crescent-portal {
+  transition: filter 0.4s ease, transform 0.4s ease;
+}
+
+.crescent-portal:hover {
+  filter: brightness(1.25) saturate(1.1);
+  transform: scale(1.05);
+}
+
+
 .calendar-container {
-  background: url('./assets/marble-grey-white.png');
+  /*background: url('./assets/marble-grey-white.png');*/
   background-size: cover;
   background-position: center;
   min-height: 100vh;
@@ -175,8 +196,6 @@ button:hover {
   transform: scale(0.94);
 }
 
-
-
 /* A Crescent Portal for link from Days back to Main Page */
 
 .crescent-portal {
@@ -233,3 +252,10 @@ button:hover {
 }
 
 
+/* The Mood Portal */
+
+.home-portal-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
