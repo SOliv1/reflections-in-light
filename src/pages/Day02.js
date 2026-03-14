@@ -34,15 +34,23 @@ const Day02 = () => {
         <div className="seasonal-portal-heading">
           <div className="seasonal-portal-line">The Light Awaits</div>
         </div>
-
-        <Portal
-          dayIndex={2}
-          type="seasonal"
-          season="winter"
-          mood={mood}
-          cueText="Enter"
-        />
       </div>
+
+      <Portal
+        type="seasonal"
+        dayIndex={2}
+        season="winter"
+        mood={mood}
+        cueText="Enter"
+      />
+
+      <PhotoGallery
+        images={images}
+        favourites={favourites}
+        toggleFavourite={toggleFavourite}
+        season="winter"
+      />
+
 
       {/* Mood picker stays — this is fine */}
       <div className="mood-picker">
@@ -55,11 +63,6 @@ const Day02 = () => {
 
       {mood && <p className="mood-label">Mood: {mood}</p>}
 
-      <PhotoGallery
-        images={images}
-        favourites={favourites}
-        onToggleFavourite={toggleFavourite}
-      />
     </div>
   );
 };

@@ -8,7 +8,7 @@ const Day04 = () => {
   const [favourites, setFavourites] = useState({});
   const [mood, setMood] = useState(null);
 
-  // ✔ Test images reinstated
+ // ✔ Test images reinstated
   const images = [
     { id: "test1", src: "https://picsum.photos/300?random=1", alt: "Test image 1" },
     { id: "test2", src: "https://picsum.photos/300?random=2", alt: "Test image 2" },
@@ -34,15 +34,23 @@ const Day04 = () => {
         <div className="seasonal-portal-heading">
           <div className="seasonal-portal-line">The Light Awaits</div>
         </div>
-
-        <Portal
-          type="seasonal"
-          dayIndex={4}
-          season="winter"
-          mood={mood}
-          cueText="Enter"
-        />
       </div>
+
+      <Portal
+        type="seasonal"
+        dayIndex={4}
+        season="winter"
+        mood={mood}
+        cueText="Enter"
+      />
+
+      <PhotoGallery
+        images={images}
+        favourites={favourites}
+        toggleFavourite={toggleFavourite}
+        season="winter"
+      />
+
 
       {/* Mood picker stays — this is fine */}
       <div className="mood-picker">
@@ -55,11 +63,6 @@ const Day04 = () => {
 
       {mood && <p className="mood-label">Mood: {mood}</p>}
 
-      <PhotoGallery
-        images={images}
-        favourites={favourites}
-        onToggleFavourite={toggleFavourite}
-      />
     </div>
   );
 };
