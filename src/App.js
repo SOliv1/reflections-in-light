@@ -19,6 +19,18 @@ import ShortReflectionsDrawer from "./components/ShortReflectionsDrawer";
 import Drawer from "./components/Drawer";
 import QuoteDrawer from "./components/QuoteDrawer";
 import LightNotesDrawer from "./components/LightNotesDrawer";
+import { getActiveLogo } from "./logoSeasonal";
+import reflectionsMarkLogo from "./assets/reflectionsMarkLogo.png";
+
+import springSeasonal from "./assets/springSeasonal.png";
+//import reflectionsMark from "./assets/reflections-mark.png";
+import { activeTint } from "./logoSeasonal";
+
+
+const winterSeasonal = springSeasonal;
+const summerSeasonal = springSeasonal;
+const autumnSeasonal = springSeasonal;
+
 
 
 function normalizeWeatherClass(condition = "unknown") {
@@ -99,7 +111,7 @@ function AppShell() {
   const veilOn = () => setVeilMode("on");
   const liftVeil = () => setVeilMode("lift");
   const veilOff = () => setVeilMode("off");
-  
+
 
   const cycleMode = () => {
     const currentIndex = modes.indexOf(mode);
@@ -292,6 +304,14 @@ function AppShell() {
     if (mode === 'macro') setOrbColor('#d88cff');
   }, [mode]);
 
+ // When MoodLogo changes:
+
+  const activeLogo = getActiveLogo({
+  useSeasonal: true,
+  fallbackLogo: reflectionsMarkLogo,
+});
+
+
 
   return (
   <>
@@ -309,7 +329,10 @@ function AppShell() {
 
     <div className={`App mode-${mode} time-${timeOfDay}`}>
       <Link to="/" className="app-home-logo" aria-label="Return home">
-        <img src={logo} className="App-logo" alt="My Reflections Glow logo" />
+        <div className="orb-base">
+          <img src={activeTint} className="orb-tint" alt="" />
+          <img src={reflectionsMarkLogo} className="orb-mark" alt="Reflections logo" />
+        </div>
       </Link>
 
       {!isHomePage ? (
@@ -320,17 +343,19 @@ function AppShell() {
         />
       ) : null}
 
-      {isHomePage ? (
-        <BackgroundCarousel
-          photos={photos}
-          veilMode={veilMode}
-          weatherImage={backgroundImage}
-          weatherMood={weatherMood}
-          season={season}
-        />
-      ) : null}
+
+        {isHomePage ? (
+          <BackgroundCarousel
+            photos={photos}
+            veilMode={veilMode}
+            weatherImage={backgroundImage}
+            weatherMood={weatherMood}
+            season={season}
+          />
+        ) : null}
 
       <div className="veil-controls-wrapper">
+
         <div className="veil-controls">
           <button onClick={veilOn}>Veil On</button>
           <button onClick={liftVeil}>Lift Veil</button>

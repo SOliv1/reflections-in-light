@@ -38,14 +38,63 @@ body {
   z-index: 1;
 }
 
-.App-logo {
-  position: relative;
-  height: 48px;
-  width: 48px;
-  object-fit: cover;
+.app-home-logo {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 20002;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 50%;
-  box-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
+  overflow: hidden;
+  backdrop-filter: blur(10px);
 }
+
+/* Inner orb container */
+.app-home-logo .orb-base {
+  position: relative;
+  z-index: 1; /* base layer */
+}
+
+.orb-base {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  overflow: hidden; /* this is fine as long as the mark fits */
+}
+
+
+.orb-tint {
+  position: absolute;
+  z-index: 2; /* seasonal tint behind the mark */
+  opacity: 0.9;
+  filter: blur(2px);
+}
+
+.orb-mark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 60%;          /* ensures it fits inside the orb */
+  height: 60%;
+  transform: translate(-50%, -50%);
+  object-fit: contain;
+  z-index: 3;
+  pointer-events: none;
+}
+
+
+.orb-veil {
+  position: absolute;
+  z-index: 4; /* soft veil above everything */
+  backdrop-filter: blur(4px);
+  opacity: 0.4;
+}
+
 
 .App-logo {
   transition: filter 0.4s ease, transform 0.4s ease;
@@ -83,6 +132,16 @@ body {
 #root {
   position: relative;
 }
+
+.app-logo {
+  position: relative;
+  height: 48px;
+  width: 48px;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+
 
 .sky-wrapper {
   position: relative;
