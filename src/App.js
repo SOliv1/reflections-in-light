@@ -20,11 +20,18 @@ import Drawer from "./components/Drawer";
 import QuoteDrawer from "./components/QuoteDrawer";
 import LightNotesDrawer from "./components/LightNotesDrawer";
 import { getActiveLogo } from "./logoSeasonal";
-import reflectionsMarkLogo from "./assets/reflectionsMarkLogo.png";
-
-import springSeasonal from "./assets/springSeasonal.png";
-//import reflectionsMark from "./assets/reflections-mark.png";
+import springSeasonal from "./assets/logos/springSeasonal.png";
 import { activeTint } from "./logoSeasonal";
+import reflectionsMarkLogo from './assets/logos/reflectionsMarkLogo.png';
+import moodLogo from './assets/logos/moodHomeLogo.png';
+
+const activeLogo = 'reflectionsMarkLogo'; // change manually for testing
+
+const logoMap = {
+  reflections: reflectionsMarkLogo,
+  spring: springSeasonal,
+  moodHome: moodLogo,
+};
 
 
 const winterSeasonal = springSeasonal;
@@ -328,6 +335,7 @@ function AppShell() {
     </div>
 
     <div className={`App mode-${mode} time-${timeOfDay}`}>
+      <img src={logoMap[activeLogo]} alt="App logo" className="app-home-logo" />;
       <Link to="/" className="app-home-logo" aria-label="Return home">
         <div className="orb-base">
           <img src={activeTint} className="orb-tint" alt="" />
