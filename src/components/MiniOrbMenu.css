@@ -447,6 +447,77 @@
   animation-duration: 6.2s;
   transform: translate(-50%, -50%) translateX(14px);
 }
+/* ----------------------------------------------------------
+   SEASONAL MOON trail Refinements
+---------------------------------------------------------- */
+/* SPRING — soft pink trail */
+.mini-orb-moon[data-season="spring"]::after {
+  background: rgba(255, 180, 220, 0.45);
+  width: 16px;
+  opacity: 0.35;
+}
+
+/* SUMMER — bright airy blue trail */
+.mini-orb-moon[data-season="summer"]::after {
+  background: rgba(140, 200, 255, 0.55);
+  width: 20px;
+  opacity: 0.45;
+}
+
+/* AUTUMN — warm amber trail */
+.mini-orb-moon[data-season="autumn"]::after {
+  background: rgba(255, 180, 120, 0.55);
+  width: 18px;
+  opacity: 0.4;
+}
+
+/* WINTER — icy crystalline trail */
+.mini-orb-moon[data-season="winter"]::after {
+  background: rgba(200, 220, 255, 0.65);
+  width: 14px;
+  opacity: 0.5;
+  filter: blur(2px);
+}
+
+/* SPRING — petals */
+.mini-orb-weather[data-season="spring"]::before {
+  background: rgba(255, 180, 220, 0.8);
+  border-radius: 40% 60% 60% 40%;
+}
+
+/* SUMMER — dust motes */
+.mini-orb-weather[data-season="summer"]::before {
+  background: rgba(255, 255, 200, 0.9);
+  width: 4px;
+  height: 4px;
+}
+
+/* AUTUMN — tiny drifting leaves */
+.mini-orb-weather[data-season="autumn"]::before {
+  background: rgba(255, 150, 80, 0.9);
+  border-radius: 20% 80% 50% 50%;
+}
+
+/* WINTER — snow specks */
+.mini-orb-weather[data-season="winter"]::before {
+  background: rgba(255, 255, 255, 0.95);
+  width: 5px;
+  height: 5px;
+  filter: blur(1px);
+}
+
+@keyframes dawnWake {
+  0%   { filter: brightness(1) blur(0px); }
+  40%  { filter: brightness(1.4) blur(1px); }
+  100% { filter: brightness(1) blur(0px); }
+}
+
+.mini-orb.dawn-wake {
+  animation: dawnWake 1.2s ease-out;
+}
+
+
+
 
 
 

@@ -96,10 +96,17 @@ export default function MiniOrbMenu({
 
   // Cycle season
   const cycleSeason = () => {
-    const order = ["spring", "summer", "autumn", "winter"];
-    const next = order[(order.indexOf(testSeason) + 1) % order.length];
-    setTestSeason(next);
-  };
+  const order = ["spring", "summer", "autumn", "winter"];
+  const next = order[(order.indexOf(testSeason) + 1) % order.length];
+  setTestSeason(next);
+
+  const orb = document.querySelector(".mini-orb");
+  if (orb) {
+    orb.classList.add("dawn-wake");
+    setTimeout(() => orb.classList.remove("dawn-wake"), 1200);
+  }
+};
+
 
   return (
     <div
