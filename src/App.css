@@ -38,27 +38,7 @@ body {
 }
 
 /* Orb container */
-.app-home-logo {
-  position: fixed;
-  top: 16px;
-  left: 16px;
-  z-index: 20002;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  overflow: hidden;
-  background:
-    radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.98),
-    rgba(226, 232, 255, 0.78) 45%, rgba(112, 144, 212, 0.36) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.72);
-  box-shadow:
-    0 0 18px rgba(255, 255, 255, 0.36),
-    0 0 42px rgba(146, 176, 255, 0.28);
-  backdrop-filter: blur(10px);
-}
+
 
 .app-home-logo:hover {
   transform: scale(1.04);
@@ -83,7 +63,7 @@ body {
   object-fit: cover;
   z-index: 2;
   opacity: 0.9;
-  filter: blur(2px);
+  filter: none;
 }
 
 /* Reflections mark */
@@ -112,7 +92,7 @@ body {
 .orb-veil {
   position: absolute;
   z-index: 4; /* soft veil above everything */
-  backdrop-filter: blur(4px);
+  backdrop-filter: none;
   opacity: 0.4;
 }
 
@@ -125,7 +105,7 @@ body {
 }
 
 .app-home-logo {
-  position: fixed;
+  position: absolute;
   top: 16px;
   left: 16px;
   z-index: 20002;

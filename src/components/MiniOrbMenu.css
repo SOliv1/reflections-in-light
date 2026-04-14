@@ -1,0 +1,452 @@
+/* ----------------------------------------------------------
+   MINI ORB — WRAPPER
+---------------------------------------------------------- */
+.mini-orb-wrapper {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 999999;
+  pointer-events: auto;
+}
+
+/* ----------------------------------------------------------
+   MINI ORB — BASE
+---------------------------------------------------------- */
+.mini-orb {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%,
+    rgba(255,255,255,0.95),
+    rgba(255,255,255,0.55),
+    var(--orb-tint)
+  );
+  backdrop-filter: blur(6px);
+  box-shadow:
+    0 0 12px var(--orb-tint),
+    0 0 22px rgba(255,255,255,0.4);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    filter 0.25s ease,
+    opacity 0.4s ease;
+  animation: shimmer 6s ease-in-out infinite;
+  animation-delay: 1.5s;
+  position: relative;
+  z-index: 10;
+}
+
+/* ----------------------------------------------------------
+   MINI ORB — WAKE SHIMMER
+---------------------------------------------------------- */
+.mini-orb:hover {
+  transform: scale(1.12);
+  filter: brightness(1.2);
+  box-shadow:
+    0 0 18px var(--orb-tint),
+    0 0 32px rgba(255,255,255,0.6);
+}
+
+/* ----------------------------------------------------------
+   MINI ORB — SLEEP MODE (dims after 8s idle)
+---------------------------------------------------------- */
+.mini-orb.sleep {
+  opacity: 0.55;
+  filter: brightness(0.8);
+  box-shadow:
+    0 0 6px var(--orb-tint),
+    0 0 12px rgba(255,255,255,0.25);
+}
+
+/* ----------------------------------------------------------
+   MINI ORB — PULSE WHEN OPEN
+---------------------------------------------------------- */
+@keyframes orbPulse {
+  0%   { transform: scale(1);     box-shadow: 0 0 12px var(--orb-tint); }
+  50%  { transform: scale(1.06);  box-shadow: 0 0 20px var(--orb-tint); }
+  100% { transform: scale(1);     box-shadow: 0 0 12px var(--orb-tint); }
+}
+
+.mini-orb.open {
+  animation: orbPulse 2.4s ease-in-out infinite;
+}
+
+/* ----------------------------------------------------------
+   MINI ORB — SEASONAL GLOW RING
+---------------------------------------------------------- */
+.mini-orb::before {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid var(--orb-tint);
+  opacity: 0.35;
+  animation: glowRing 3.6s ease-in-out infinite;
+}
+
+@keyframes glowRing {
+  0%   { transform: scale(1); opacity: 0.25; }
+  50%  { transform: scale(1.25); opacity: 0.45; }
+  100% { transform: scale(1); opacity: 0.25; }
+}
+
+/* ----------------------------------------------------------
+   MINI ORB — SHIMMER
+---------------------------------------------------------- */
+@keyframes shimmer {
+  0%   { filter: brightness(1) blur(0px); }
+  50%  { filter: brightness(1.25) blur(1px); }
+  100% { filter: brightness(1) blur(0px); }
+}
+
+/* ----------------------------------------------------------
+   PARTICLE DRIFT
+---------------------------------------------------------- */
+.mini-orb-particles {
+  position: absolute;
+  top: -12px;
+  left: -12px;
+  width: 56px;
+  height: 56px;
+  pointer-events: none;
+  overflow: visible;
+  z-index: 2;
+}
+
+.mini-orb-particles::before,
+.mini-orb-particles::after {
+  content: "";
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: var(--orb-tint);
+  border-radius: 50%;
+  opacity: 0.7;
+  animation: drift 4s ease-in-out infinite;
+}
+
+.mini-orb-particles::after {
+  width: 4px;
+  height: 4px;
+  animation-duration: 6s;
+  animation-delay: 1s;
+}
+
+@keyframes drift {
+  0%   { transform: translate(0, 0) scale(1); opacity: 0.8; }
+  50%  { transform: translate(10px, -14px) scale(1.3); opacity: 0.4; }
+  100% { transform: translate(0, 0) scale(1); opacity: 0.8; }
+}
+
+/* ----------------------------------------------------------
+   ORBITING MOON + TRAIL
+---------------------------------------------------------- */
+.mini-orb-moon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  background: var(--orb-tint);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) translateX(18px);
+  animation: orbit 4.5s linear infinite;
+  box-shadow: 0 0 6px var(--orb-tint);
+  z-index: 3;
+}
+
+.mini-orb-moon::after {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 2px;
+  background: var(--orb-tint);
+  opacity: 0.25;
+  border-radius: 2px;
+  transform: translateX(-10px);
+  filter: blur(2px);
+}
+
+@keyframes orbit {
+  from { transform: rotate(0deg) translateX(18px) rotate(0deg); }
+  to   { transform: rotate(360deg) translateX(18px) rotate(-360deg); }
+}
+
+/* ----------------------------------------------------------
+   MICRO WEATHER
+---------------------------------------------------------- */
+.mini-orb-weather {
+  position: absolute;
+  top: -20px;
+  left: -20px;
+  width: 72px;
+  height: 72px;
+  pointer-events: none;
+  overflow: visible;
+  z-index: 1;
+}
+
+.mini-orb-weather::before {
+  content: "";
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  opacity: 0.7;
+  animation: weatherDrift 5s linear infinite;
+}
+
+.mini-orb-weather[data-season="spring"]::before { background: pink; }
+.mini-orb-weather[data-season="summer"]::before { background: gold; }
+.mini-orb-weather[data-season="autumn"]::before { background: orange; }
+.mini-orb-weather[data-season="winter"]::before { background: white; }
+
+@keyframes weatherDrift {
+  0%   { transform: translate(0,0) scale(1); opacity: 0.8; }
+  50%  { transform: translate(12px, -18px) scale(1.2); opacity: 0.4; }
+  100% { transform: translate(0,0) scale(1); opacity: 0.8; }
+}
+
+/* ----------------------------------------------------------
+   CONSTELLATION STARS
+---------------------------------------------------------- */
+.mini-orb-wrapper::after {
+  content: "";
+  position: absolute;
+  top: -40px;
+  left: -40px;
+  width: 120px;
+  height: 120px;
+  background-image:
+    radial-gradient(circle, rgba(255,255,255,0.8) 0px, transparent 2px),
+    radial-gradient(circle, rgba(255,255,255,0.6) 0px, transparent 2px),
+    radial-gradient(circle, rgba(255,255,255,0.4) 0px, transparent 2px);
+  background-size: 4px 4px, 3px 3px, 2px 2px;
+  background-position:
+    10px 20px,
+    40px 60px,
+    80px 30px;
+  opacity: 0.35;
+  animation: starFloat 12s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes starFloat {
+  0%   { transform: translate(0,0); }
+  50%  { transform: translate(4px, -6px); }
+  100% { transform: translate(0,0); }
+}
+
+/* ----------------------------------------------------------
+   RADIAL MENU
+---------------------------------------------------------- */
+.radial-menu {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 120px;
+  height: 120px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 20;
+}
+
+.radial-menu button {
+  position: absolute;
+  pointer-events: auto;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.25);
+  border: 1px solid rgba(255,255,255,0.35);
+  backdrop-filter: blur(10px);
+  color: #333;
+  font-size: 12px;
+  animation: radialPop 0.35s ease forwards;
+}
+
+.radial-menu button:nth-child(1) { top: 0; left: 50%; transform: translate(-50%, -50%); }
+.radial-menu button:nth-child(2) { top: 50%; left: 100%; transform: translate(-50%, -50%); }
+.radial-menu button:nth-child(3) { top: 100%; left: 50%; transform: translate(-50%, -50%); }
+
+@keyframes radialPop {
+  from { opacity: 0; transform: scale(0.6); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* ----------------------------------------------------------
+   DROP‑DOWN MENU
+---------------------------------------------------------- */
+.mini-orb-menu {
+  margin-top: 10px;
+  padding: 12px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(14px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  animation: menuBloom 0.35s ease forwards;
+  z-index: 30;
+}
+
+@keyframes menuBloom {
+  from { opacity: 0; transform: translateY(-6px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.mini-orb-menu button {
+  background: rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #333;
+  font-size: 14px;
+  transition: background 0.2s ease;
+}
+
+.mini-orb-menu button:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+/* ----------------------------------------------------------
+   ORB‑TO‑ORB COMMUNICATION PING
+---------------------------------------------------------- */
+@keyframes orbPing {
+  0%   { box-shadow: 0 0 0 0 var(--orb-tint); }
+  70%  { box-shadow: 0 0 12px 14px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+
+.mini-orb.ping {
+  animation: orbPing 2.8s ease-out;
+}
+
+.mini-orb.sleep {
+  opacity: 0.55;
+  filter: brightness(0.8);
+  box-shadow:
+    0 0 6px var(--orb-tint),
+    0 0 12px rgba(255,255,255,0.25);
+  animation-play-state: paused;
+}
+/* ----------------------------------------------------------
+   ORB‑TO‑ORB SLEEP / BREATHING / HEARTBEAT MODES
+---------------------------------------------------------- */
+.mini-orb.sleep {
+  opacity: 0.55;
+  filter: brightness(0.8);
+  box-shadow:
+    0 0 6px var(--orb-tint),
+    0 0 12px rgba(255,255,255,0.25);
+  animation-play-state: paused;
+}
+@keyframes orbBreathing {
+  0%   { transform: scale(1);     filter: brightness(1); }
+  50%  { transform: scale(1.04);  filter: brightness(1.12); }
+  100% { transform: scale(1);     filter: brightness(1); }
+}
+
+.mini-orb.breathing {
+  animation: orbBreathing 5.5s ease-in-out infinite;
+}
+@keyframes orbHeartbeat {
+  0%   { transform: scale(1);     box-shadow: 0 0 12px var(--orb-tint); }
+  40%  { transform: scale(1.12);  box-shadow: 0 0 22px var(--orb-tint); }
+  100% { transform: scale(1);     box-shadow: 0 0 12px var(--orb-tint); }
+}
+
+.mini-orb.heartbeat {
+  animation: orbHeartbeat 0.5s ease-out;
+}
+/* LOW density — faint, sparse */
+.mini-orb-wrapper[data-star-density="low"]::after {
+  opacity: 0.18;
+  background-size: 3px 3px, 2px 2px, 2px 2px;
+}
+
+/* NORMAL density — your current default */
+.mini-orb-wrapper[data-star-density="normal"]::after {
+  opacity: 0.35;
+  background-size: 4px 4px, 3px 3px, 2px 2px;
+}
+
+/* ----------------------------------------------------------
+   ORB‑TO‑ORB Constellation - LOW & HIGH DENSITY STARS
+---------------------------------------------------------- */
+/* LOW density — faint, sparse */
+.mini-orb-wrapper[data-star-density="low"]::after {
+  opacity: 0.18;
+  background-size: 3px 3px, 2px 2px, 2px 2px;
+}
+
+/* NORMAL density — your current default */
+.mini-orb-wrapper[data-star-density="normal"]::after {
+  opacity: 0.35;
+  background-size: 4px 4px, 3px 3px, 2px 2px;
+}
+
+/* HIGH density — more stars, brighter */
+.mini-orb-wrapper[data-star-density="high"]::after {
+  opacity: 0.55;
+  background-size: 5px 5px, 4px 4px, 3px 3px;
+  filter: brightness(1.2);
+}
+/* ----------------------------------------------------------
+   SEASONAL MOON PATHS
+---------------------------------------------------------- */
+
+/* SPRING — gentle, circular, close orbit */
+.mini-orb-moon[data-season="spring"] {
+    animation-duration: 4.5s;
+    transform: translate(-50%, -50%) translateX(18px);
+}
+
+/* SUMMER — wider, faster orbit */
+.mini-orb-moon[data-season="summer"] {
+    animation-duration: 3.8s;
+    transform: translate(-50%, -50%) translateX(22px);
+}
+
+/* AUTUMN — slightly tilted, drifting orbit */
+.mini-orb-moon[data-season="autumn"] {
+    animation-duration: 5.2s;
+    transform: translate(-50%, -50%) translateX(18px) rotate(8deg);
+}
+
+/* WINTER — tight, slow, crystalline orbit */
+.mini-orb-moon[data-season="winter"] {
+    animation-duration: 6.2s;
+    transform: translate(-50%, -50%) translateX(14px);
+}
+
+/* SPRING — gentle, circular, close orbit */
+.mini-orb-moon[data-season="spring"] {
+  animation-duration: 4.5s;
+  transform: translate(-50%, -50%) translateX(18px);
+}
+
+/* SUMMER — wider, faster orbit */
+.mini-orb-moon[data-season="summer"] {
+  animation-duration: 3.8s;
+  transform: translate(-50%, -50%) translateX(22px);
+}
+
+/* AUTUMN — slightly tilted, drifting orbit */
+.mini-orb-moon[data-season="autumn"] {
+  animation-duration: 5.2s;
+  transform: translate(-50%, -50%) translateX(18px) rotate(8deg);
+}
+
+/* WINTER — tight, slow, crystalline orbit */
+.mini-orb-moon[data-season="winter"] {
+  animation-duration: 6.2s;
+  transform: translate(-50%, -50%) translateX(14px);
+}
+
+
+

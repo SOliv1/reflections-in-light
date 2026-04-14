@@ -32,7 +32,8 @@ import {
   formatLocationLabel
 } from "../utils/weatherHelpers";
 
-export default function AppShell() {
+export default function AppShell({ testSeason, showTestLogo, showR }) {
+
   /* ---------------- MODE + UI STATE ---------------- */
   const modes = ["architectural", "water", "macro"];
   const [mode, setMode] = useState("architectural");
@@ -44,9 +45,6 @@ export default function AppShell() {
   const liftVeil = () => setVeilMode("lift");
   const veilOff = () => setVeilMode("off");
 
-  /* ---------------- SEASONAL TEST LOGO ---------------- */
-  const [showTestLogo, setShowTestLogo] = useState(false);
-  const [testSeason, setTestSeason] = useState(null);
 
   const seasonalLogos = {
   spring: moodOrbPink,
@@ -181,44 +179,29 @@ export default function AppShell() {
     if (mode === "macro") setOrbColor("#d88cff");
   }, [mode]);
 
+  /*---------------- ORB AUDIO ---------------- */
+
+  useEffect(() => {
+  const event = new CustomEvent("orb-ping");
+  window.dispatchEvent(event);
+  }, [testSeason]);
+
+
+
+
   /* ---------------- RENDER ---------------- */
   return (
     <>
-      {/* Floating Developer Test Panel */}
-      <div
-        style={{
-          position: "fixed",
-          top: "12px",
-          right: "12px",
-          zIndex: 99999,
-          background: "rgba(255,255,255,0.85)",
-          padding: "12px",
-          borderRadius: "12px",
-          boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
-          backdropFilter: "blur(8px)"
-        }}
-      >
-        <button
-          onClick={() => {
-            const order = ["spring", "summer", "autumn", "winter"];
-            const next = order[(order.indexOf(testSeason) + 1) % order.length];
-            setTestSeason(next);
-          }}
-        >
-          Season: {testSeason || "auto"}
-        </button>
 
-        <button onClick={() => setShowTestLogo(!showTestLogo)}>
-          {showTestLogo ? "Hide Logo" : "Show Logo"}
-        </button>
-      </div>
 
       <div className="orb-base">
+            {showR && (
         <img
-            src={reflectionsMarkLogo}
-            className="orb-mark behind"
-            alt="Reflections logo"
-        />
+          src={reflectionsMarkLogo}
+          className="orb-mark behind"
+          alt="Reflections logo"
+          />
+        )}
 
         <img
           src={showTestLogo ? activeLogo : activeTintOverride}
@@ -243,18 +226,38 @@ export default function AppShell() {
         {/* Orb Logo */}
         <Link to="/" className="app-home-logo" aria-label="Return home">
           <div className="orb-base">
+              <img
+                src={showTestLogo ? activeLogo : activeTintOverride}
+                className="orb-tint" alt="Orb Tint"
+              />
+                {showR && (
+              <img
+                src={reflectionsMarkLogo}
+                className="orb-mark"
+                alt="Reflections logo"
+              />
+            )}
+          </div>
+        </Link>
+
+        <Link to="/" className="app-home-logo">
+          <div className="orb-base">
             <img
               src={showTestLogo ? activeLogo : activeTintOverride}
               className="orb-tint"
               alt=""
             />
-            <img
-              src={reflectionsMarkLogo}
-              className="orb-mark"
-              alt="Reflections logo"
-            />
+
+            {showR && (
+              <img
+                src={reflectionsMarkLogo}
+                className="orb-mark"
+                alt="Reflections logo"
+              />
+            )}
           </div>
         </Link>
+
 
         {/* Background */}
         {isHomePage && (
@@ -322,3 +325,4 @@ export default function AppShell() {
     </>
   );
 }
+
