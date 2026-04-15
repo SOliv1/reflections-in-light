@@ -1,6 +1,7 @@
 # My Reflections App (React)
 [![Jekyll site CI](https://github.com/SOliv1/reflections-in-light/actions/workflows/jekyll-docker.yml/badge.svg)](https://github.com/SOliv1/reflections-in-light/actions/workflows/jekyll-docker.yml)[![CodeQL](https://github.com/SOliv1/reflections-in-light/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/SOliv1/reflections-in-light/actions/workflows/github-code-scanning/codeql)
 [![wakatime](https://wakatime.com/badge/user/b1df3236-cf2d-4081-bd32-1df83d414551/project/1d636ebe-86fc-48f7-9cd8-2caf078a419b.svg)](https://wakatime.com/badge/user/b1df3236-cf2d-4081-bd32-1df83d414551/project/1d636ebe-86fc-48f7-9cd8-2caf078a419b)
+<a href="https://wakatime.com/badge/user/b1df3236-cf2d-4081-bd32-1df83d414551/project/1d636ebe-86fc-48f7-9cd8-2caf078a419b"><img src="https://wakatime.com/badge/user/b1df3236-cf2d-4081-bd32-1df83d414551/project/1d636ebe-86fc-48f7-9cd8-2caf078a419b.svg" alt="wakatime"></a>
 
 ## View the Reflections Project [Here](https://reflections-in-light.onrender.com/)
 
