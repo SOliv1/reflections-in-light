@@ -26,6 +26,5 @@ export default function DrawerUnified({ isOpen, onClose, season, mood }) {
         </div>
       </div>
     </div>
-    
   );
 }
