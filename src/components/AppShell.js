@@ -7,11 +7,7 @@ import Constellation from "../components/Constellation";
 import Portal from "../components/portal/Portal";
 import WeatherGlyph from "../components/WeatherGlyphPanel";
 import DailyQuote from "../components/DailyQuote";
-import QuietActionsDrawer from "../components/QuietActionsDrawer";
-import ShortReflectionsDrawer from "../components/ShortReflectionsDrawer";
-import Drawer from "../components/Drawer";
-import QuoteDrawer from "../components/QuoteDrawer";
-import LightNotesDrawer from "../components/LightNotesDrawer";
+import DrawerUnified from "./DrawerUnified/DrawerUnified";
 
 import { fetchFromApi } from "../api";
 import { BIRTHDAY_DAY, BIRTHDAY_MONTH } from "../data/birthdayExperience";
@@ -153,31 +149,7 @@ export default function AppShell({ testSeason, showTestLogo, showR }) {
   const weatherMood = weatherCondition || "neutral";
 
   /* ---------------- DRAWERS ---------------- */
-  const [orbColor, setOrbColor] = useState("#8ab4f8");
-
-  const [isReflectionsOpen, setReflectionsOpen] = useState(false);
-  const [isQuoteOpen, setQuoteOpen] = useState(false);
-  const [currentQuote, setCurrentQuote] = useState(null);
-  const [isActionsOpen, setActionsOpen] = useState(false);
-  const [isNotesOpen, setNotesOpen] = useState(false);
-
-  const openReflections = () => setReflectionsOpen(true);
-  const closeReflections = () => setReflectionsOpen(false);
-
-  const openQuoteDrawer = () => setQuoteOpen(true);
-  const closeQuoteDrawer = () => setQuoteOpen(false);
-
-  const openActionsDrawer = () => setActionsOpen(true);
-  const closeActionsDrawer = () => setActionsOpen(false);
-
-  const openNotesDrawer = () => setNotesOpen(true);
-  const closeNotesDrawer = () => setNotesOpen(false);
-
-  useEffect(() => {
-    if (mode === "architectural") setOrbColor("#e3b57a");
-    if (mode === "water") setOrbColor("#7ac6ff");
-    if (mode === "macro") setOrbColor("#d88cff");
-  }, [mode]);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   /*---------------- ORB AUDIO ---------------- */
 
@@ -270,39 +242,13 @@ export default function AppShell({ testSeason, showTestLogo, showR }) {
           />
         )}
 
-        {/* Drawers */}
-        <Drawer isOpen={isReflectionsOpen} onClose={closeReflections}>
-          <ShortReflectionsDrawer
-            orbColor={orbColor}
-            weatherMood={weatherMood}
-            season={season}
-            onOpenActions={openActionsDrawer}
-            onOpenNotes={openNotesDrawer}
-            onClose={closeReflections}
-          />
-        </Drawer>
-
-        <Drawer isOpen={isQuoteOpen} onClose={closeQuoteDrawer}>
-          <QuoteDrawer
-            quote={currentQuote}
-            orbColor={orbColor}
-            onClose={closeQuoteDrawer}
-          />
-        </Drawer>
-
-        <Drawer isOpen={isActionsOpen} onClose={closeActionsDrawer}>
-          <QuietActionsDrawer
-            orbColor={orbColor}
-            onClose={closeActionsDrawer}
-          />
-        </Drawer>
-
-        <Drawer isOpen={isNotesOpen} onClose={closeNotesDrawer}>
-          <LightNotesDrawer
-            orbColor={orbColor}
-            onClose={closeNotesDrawer}
-          />
-        </Drawer>
+        {/* Unified Drawer */}
+        <DrawerUnified
+          isOpen={drawerOpen}
+          onClose={() => setDrawerOpen(false)}
+          season={season}
+          mood={weatherMood}
+        />
 
         {/* Routes */}
         <Routes>

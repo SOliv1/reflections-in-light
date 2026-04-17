@@ -1,16 +1,20 @@
 {
   "files": {
-    "main.css": "/static/css/main.09e2ac11.css",
-    "main.js": "/static/js/main.d741728d.js",
-    "static/js/453.f8425a83.chunk.js": "/static/js/453.f8425a83.chunk.js",
-    "static/media/logo.png": "/static/media/logo.37bd12d0a6c58a648649.png",
+    "main.css": "/static/css/main.b1ff4d4f.css",
+    "main.js": "/static/js/main.3e46e41c.js",
+    "static/js/453.bc8f4d16.chunk.js": "/static/js/453.bc8f4d16.chunk.js",
+    "static/media/reflectionsMarkLogo.png": "/static/media/reflectionsMarkLogo.4b43f5efafd2ed009707.png",
+    "static/media/moodOrbBlue.png": "/static/media/moodOrbBlue.014d341c0f23546b61ad.png",
+    "static/media/moodLogo.png": "/static/media/moodLogo.37bd12d0a6c58a648649.png",
+    "static/media/moodOrbPink.png": "/static/media/moodOrbPink.37bd12d0a6c58a648649.png",
+    "static/media/springSeasonalLogo.png": "/static/media/springSeasonalLogo.69d169f0a855232a8cac.png",
     "index.html": "/index.html",
-    "main.09e2ac11.css.map": "/static/css/main.09e2ac11.css.map",
-    "main.d741728d.js.map": "/static/js/main.d741728d.js.map",
-    "453.f8425a83.chunk.js.map": "/static/js/453.f8425a83.chunk.js.map"
+    "main.b1ff4d4f.css.map": "/static/css/main.b1ff4d4f.css.map",
+    "main.3e46e41c.js.map": "/static/js/main.3e46e41c.js.map",
+    "453.bc8f4d16.chunk.js.map": "/static/js/453.bc8f4d16.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.09e2ac11.css",
-    "static/js/main.d741728d.js"
+    "static/css/main.b1ff4d4f.css",
+    "static/js/main.3e46e41c.js"
   ]
 }
