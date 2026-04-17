@@ -1,0 +1,91 @@
+.drawer-unified {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2000;
+}
+
+.drawer-unified.open {
+    pointer-events: auto;
+}
+
+.drawer-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(6px);
+    opacity: 1;
+}
+
+.drawer-surface {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    max-height: 70vh;
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(4px);
+    background: rgba(255,255,255,0.08);
+    border-radius: 24px 24px 0 0;
+    padding: 24px;
+    transform: translateY(100%);
+    transition: transform 0.45s ease, opacity 0.45s ease;
+    opacity: 0;
+}
+
+.drawer-unified.open .drawer-surface {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.drawer-unified.open {
+  pointer-events: auto;
+}
+
+
+.drawer-close {
+    background: none;
+    border: none;
+    font-size: 28px;
+    color: var(--orb-text);
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    cursor: pointer;
+}
+
+.drawer-content {
+    margin-top: 20px;
+}
+
+/* Fade-in */
+.fade-in {
+    animation: fadeIn 0.6s ease forwards;
+    opacity: 0;
+}
+
+.fade-in.delay-1 {
+    animation-delay: 0.25s;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+/* Seasonal glow */
+.season-glow-winter {
+    box-shadow: 0 0 20px rgba(180, 220, 255, 0.4);
+}
+
+.season-glow-spring {
+    box-shadow: 0 0 20px rgba(180, 255, 200, 0.4);
+}
+
+.season-glow-summer {
+    box-shadow: 0 0 20px rgba(255, 230, 180, 0.4);
+}
+
+.season-glow-autumn {
+    box-shadow: 0 0 20px rgba(255, 190, 150, 0.4);
+}

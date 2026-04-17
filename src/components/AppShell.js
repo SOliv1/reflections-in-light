@@ -1,17 +1,16 @@
 import { useEffect, useState } from "react";
 import { Link, Route, Routes, useLocation } from "react-router-dom";
 
-import BackgroundCarousel from "../components/BackgroundCarousel";
-import Calendar from "../components/Calendar";
-import Constellation from "../components/Constellation";
-import Portal from "../components/portal/Portal";
-import WeatherGlyph from "../components/WeatherGlyphPanel";
-import DailyQuote from "../components/DailyQuote";
-import QuietActionsDrawer from "../components/QuietActionsDrawer";
-import ShortReflectionsDrawer from "../components/ShortReflectionsDrawer";
-import Drawer from "../components/Drawer";
-import QuoteDrawer from "../components/QuoteDrawer";
-import LightNotesDrawer from "../components/LightNotesDrawer";
+import BackgroundCarousel from "./BackgroundCarousel";
+import Calendar from "./Calendar";
+import Constellation from "./Constellation";
+import Portal from "./portal/Portal";
+import WeatherGlyph from "./WeatherGlyphPanel";
+import DailyQuote from "./DailyQuote";
+//import DrawerUnified from "../components/DrawerUnified/DrawerUnified";
+import DrawerUnified from "./DrawerUnified/DrawerUnified";
+
+
 
 import { fetchFromApi } from "../api";
 import { BIRTHDAY_DAY, BIRTHDAY_MONTH } from "../data/birthdayExperience";
@@ -154,24 +153,8 @@ export default function AppShell({ testSeason, showTestLogo, showR }) {
 
   /* ---------------- DRAWERS ---------------- */
   const [orbColor, setOrbColor] = useState("#8ab4f8");
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const [isReflectionsOpen, setReflectionsOpen] = useState(false);
-  const [isQuoteOpen, setQuoteOpen] = useState(false);
-  const [currentQuote, setCurrentQuote] = useState(null);
-  const [isActionsOpen, setActionsOpen] = useState(false);
-  const [isNotesOpen, setNotesOpen] = useState(false);
-
-  const openReflections = () => setReflectionsOpen(true);
-  const closeReflections = () => setReflectionsOpen(false);
-
-  const openQuoteDrawer = () => setQuoteOpen(true);
-  const closeQuoteDrawer = () => setQuoteOpen(false);
-
-  const openActionsDrawer = () => setActionsOpen(true);
-  const closeActionsDrawer = () => setActionsOpen(false);
-
-  const openNotesDrawer = () => setNotesOpen(true);
-  const closeNotesDrawer = () => setNotesOpen(false);
 
   useEffect(() => {
     if (mode === "architectural") setOrbColor("#e3b57a");
@@ -179,150 +162,103 @@ export default function AppShell({ testSeason, showTestLogo, showR }) {
     if (mode === "macro") setOrbColor("#d88cff");
   }, [mode]);
 
-  /*---------------- ORB AUDIO ---------------- */
-
-  useEffect(() => {
-  const event = new CustomEvent("orb-ping");
-  window.dispatchEvent(event);
-  }, [testSeason]);
-
-
-
-
   /* ---------------- RENDER ---------------- */
   return (
-    <>
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <>
+            {/* Global orb + sky */}
+            <div className="orb-base">
+              {showR && (
+                <img
+                  src={reflectionsMarkLogo}
+                  className="orb-mark behind"
+                  alt="Reflections logo"
+                />
+              )}
 
-
-      <div className="orb-base">
-            {showR && (
-        <img
-          src={reflectionsMarkLogo}
-          className="orb-mark behind"
-          alt="Reflections logo"
-          />
-        )}
-
-        <img
-          src={showTestLogo ? activeLogo : activeTintOverride}
-          className="orb-tint"
-          alt=""
-        />
-      </div>
-
-      <div className="sky-wrapper">
-        <Constellation veilMode={veilMode} birthdayMode={isBirthdayScene} />
-        <Portal
-          type="mood"
-          dayIndex={1}
-          season={season}
-          mood={weatherMood}
-          cueText=""
-          weatherMood={weatherMood}
-        />
-      </div>
-
-      <div className={`App mode-${mode} time-${timeOfDay}`}>
-        {/* Orb Logo */}
-        <Link to="/" className="app-home-logo" aria-label="Return home">
-          <div className="orb-base">
               <img
                 src={showTestLogo ? activeLogo : activeTintOverride}
-                className="orb-tint" alt="Orb Tint"
+                className="orb-tint"
+                alt=""
               />
-                {showR && (
-              <img
-                src={reflectionsMarkLogo}
-                className="orb-mark"
-                alt="Reflections logo"
+            </div>
+
+            <div className="sky-wrapper">
+              <Constellation veilMode={veilMode} birthdayMode={isBirthdayScene} />
+              <Portal
+                type="mood"
+                dayIndex={1}
+                season={season}
+                mood={weatherMood}
+                cueText=""
+                weatherMood={weatherMood}
               />
-            )}
-          </div>
-        </Link>
+            </div>
 
-        <Link to="/" className="app-home-logo">
-          <div className="orb-base">
-            <img
-              src={showTestLogo ? activeLogo : activeTintOverride}
-              className="orb-tint"
-              alt=""
-            />
+            {/* Main app shell */}
+            <div className={`App mode-${mode} time-${timeOfDay}`}>
+              {/* Orb Logo (home link) */}
+              <Link to="/" className="app-home-logo" aria-label="Return home">
+                <div className="orb-base">
+                  <img
+                    src={showTestLogo ? activeLogo : activeTintOverride}
+                    className="orb-tint"
+                    alt="Orb Tint"
+                  />
+                  {showR && (
+                    <img
+                      src={reflectionsMarkLogo}
+                      className="orb-mark"
+                      alt="Reflections logo"
+                    />
+                  )}
+                </div>
+              </Link>
 
-            {showR && (
-              <img
-                src={reflectionsMarkLogo}
-                className="orb-mark"
-                alt="Reflections logo"
+              {/* Background */}
+              <BackgroundCarousel
+                photos={photos}
+                veilMode={veilMode}
+                weatherImage={backgroundImage}
+                weatherMood={weatherMood}
+                season={season}
               />
-            )}
-          </div>
-        </Link>
 
+              {/* Constellation layer for home */}
+              <Constellation
+                season={season}
+                timeOfDay={timeOfDay}
+                mode={mode}
+              />
 
-        {/* Background */}
-        {isHomePage && (
-          <BackgroundCarousel
-            photos={photos}
-            veilMode={veilMode}
-            weatherImage={backgroundImage}
-            weatherMood={weatherMood}
-            season={season}
-          />
-        )}
-
-        {/* Drawers */}
-        <Drawer isOpen={isReflectionsOpen} onClose={closeReflections}>
-          <ShortReflectionsDrawer
-            orbColor={orbColor}
-            weatherMood={weatherMood}
-            season={season}
-            onOpenActions={openActionsDrawer}
-            onOpenNotes={openNotesDrawer}
-            onClose={closeReflections}
-          />
-        </Drawer>
-
-        <Drawer isOpen={isQuoteOpen} onClose={closeQuoteDrawer}>
-          <QuoteDrawer
-            quote={currentQuote}
-            orbColor={orbColor}
-            onClose={closeQuoteDrawer}
-          />
-        </Drawer>
-
-        <Drawer isOpen={isActionsOpen} onClose={closeActionsDrawer}>
-          <QuietActionsDrawer
-            orbColor={orbColor}
-            onClose={closeActionsDrawer}
-          />
-        </Drawer>
-
-        <Drawer isOpen={isNotesOpen} onClose={closeNotesDrawer}>
-          <LightNotesDrawer
-            orbColor={orbColor}
-            onClose={closeNotesDrawer}
-          />
-        </Drawer>
-
-        {/* Routes */}
-        <Routes>
-          <Route
-            path="/"
-            element={
+              {/* Calendar – this is where you open the unified drawer */}
               <Calendar
                 season={season}
                 isNight={isNight}
                 weatherCondition={weatherCondition}
                 weatherMood={weatherMood}
-                isHomePage={isHomePage}
+                isHomePage={true}
+                onDaySelect={() => setDrawerOpen(true)}
               />
-            }
-          />
-          <Route path="/dev/weather-glyph" element={<MockWeatherGlyph />} />
-          <Route path="/day/:date" element={<DayPage />} />
-        </Routes>
-      </div>
-    </>
+
+              {/* Unified Drawer – single source of truth */}
+              <DrawerUnified
+                isOpen={drawerOpen}
+                onClose={() => setDrawerOpen(false)}
+                season={season}
+                mood={weatherMood}
+              />
+
+              {/* You can re‑add veil buttons / mode buttons here if they were below */}
+            </div>
+          </>
+        }
+      />
+
+      <Route path="/day/:date" element={<DayPage />} />
+    </Routes>
   );
 }
-

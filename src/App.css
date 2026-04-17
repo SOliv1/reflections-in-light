@@ -147,8 +147,8 @@ body {
   position: relative;
   min-height: clamp(180px, 28vh, 320px);
   overflow: hidden;
-  z-index: 6;
-  pointer-events: none;
+  z-index: 3000;
+  pointer-events: auto;
 }
 
 .crescent-portal {
@@ -526,8 +526,6 @@ body {
 .accent-line {
   border-color: var(--mode-accent);
 }
-
-
 
 button {
   padding: 10px 18px;
