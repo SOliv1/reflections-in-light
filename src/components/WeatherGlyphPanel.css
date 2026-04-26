@@ -1,0 +1,159 @@
+.weather-glyph-panel {
+  --ambient-tint: rgba(255, 240, 200, 0.25);
+  --panel-glass: rgba(255, 255, 255, 0.06);
+  --panel-stroke: rgba(255, 255, 255, 0.18);
+  --panel-shadow: rgba(11, 18, 38, 0.14);
+  --panel-text-surface: rgba(9, 14, 30, 0.34);
+  width: min(100%, 22rem);
+  margin: 0 auto 2rem;
+  padding: 1rem 1rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+  background: color-mix(in srgb, var(--ambient-tint) 78%, var(--panel-glass));
+  border: 1px solid var(--panel-stroke);
+  border-radius: 28px;
+  box-shadow:
+    0 16px 40px var(--panel-shadow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(14px);
+}
+
+.weather-glyph-panel--sunny {
+  --ambient-tint: rgba(255, 224, 165, 0.42);
+  --panel-glass: rgba(255, 244, 220, 0.16);
+  --panel-stroke: rgba(255, 223, 165, 0.34);
+  --panel-shadow: rgba(128, 77, 20, 0.18);
+  --panel-text-surface: rgba(86, 49, 20, 0.18);
+}
+
+.weather-glyph-panel--cloudy {
+  --ambient-tint: rgba(214, 223, 238, 0.32);
+  --panel-glass: rgba(236, 242, 252, 0.12);
+  --panel-stroke: rgba(210, 220, 238, 0.24);
+  --panel-shadow: rgba(34, 43, 67, 0.18);
+  --panel-text-surface: rgba(31, 38, 56, 0.28);
+}
+
+.weather-glyph-panel--rain,
+.weather-glyph-panel--storm {
+  --ambient-tint: rgba(158, 193, 255, 0.28);
+  --panel-glass: rgba(217, 232, 255, 0.11);
+  --panel-stroke: rgba(170, 201, 255, 0.22);
+  --panel-shadow: rgba(16, 29, 59, 0.22);
+  --panel-text-surface: rgba(16, 25, 51, 0.32);
+}
+
+.weather-glyph-panel--mist,
+.weather-glyph-panel--snow {
+  --ambient-tint: rgba(228, 236, 245, 0.34);
+  --panel-glass: rgba(245, 249, 255, 0.13);
+  --panel-stroke: rgba(225, 234, 247, 0.22);
+  --panel-shadow: rgba(39, 55, 79, 0.16);
+  --panel-text-surface: rgba(35, 46, 70, 0.26);
+}
+
+.weather-glyph-panel .weather-glyph {
+  box-shadow:
+    0 0 0 1px var(--glyph-mood-ring, rgba(255, 255, 255, 0.16)),
+    0 0 28px var(--glyph-mood-glow, rgba(255, 255, 255, 0.22));
+}
+
+.weather-reading {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.05rem;
+  text-align: center;
+  pointer-events: none;
+}
+
+.weather-reading-value {
+  font-size: 1.65rem;
+  font-weight: 700;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow:
+    0 2px 12px rgba(8, 10, 22, 0.4),
+    0 0 18px rgba(255, 255, 255, 0.16);
+}
+
+.weather-reading-unit {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.weather-panel-text {
+  width: 100%;
+  max-width: 18rem;
+  margin: 0 auto;
+  padding: 0.85rem 1rem;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 0.2rem;
+  border-radius: 18px;
+  background: var(--panel-text-surface);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(248, 250, 255, 0.92);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.28);
+  text-align: center;
+}
+
+.weather-panel-text .condition {
+  width: 100%;
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.weather-panel-text .temperature {
+  width: 100%;
+  margin-top: 0.35rem;
+  font-size: 0.84rem;
+  color: rgba(234, 240, 255, 0.86);
+  line-height: 1.45;
+}
+
+.weather-panel-text .location {
+  width: 100%;
+  font-size: 0.76rem;
+  line-height: 1.35;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(234, 240, 255, 0.72);
+}
+
+.weather-glyph-panel--sunny .weather-panel-text {
+  color: rgba(255, 250, 242, 0.96);
+}
+
+.weather-glyph-panel--sunny .weather-panel-text .temperature,
+.weather-glyph-panel--sunny .weather-panel-text .location {
+  color: rgba(255, 239, 214, 0.9);
+}
+
+@media (max-width: 600px) {
+  .weather-glyph-panel {
+    width: min(100%, 18rem);
+    padding: 0.85rem;
+    margin-bottom: 1.4rem;
+  }
+
+  .weather-reading-value {
+    font-size: 1.45rem;
+  }
+
+  .weather-panel-text {
+    width: min(100%, 16.5rem);
+    padding: 0.75rem 0.85rem;
+  }
+}

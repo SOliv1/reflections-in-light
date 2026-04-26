@@ -1,0 +1,315 @@
+/* -----------------------------------------------------------
+   ROOT DRAWER CONTAINER
+----------------------------------------------------------- */
+.short-reflections-drawer {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 40;
+
+    width: 90%;
+    max-width: 480px;
+
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(18px);
+    border-radius: 28px;
+    padding: 24px;
+
+    /* Smooth atmospheric transitions */
+    transition:
+        background-color 600ms ease,
+        border-color 600ms ease,
+        box-shadow 600ms ease;
+}
+
+/* -----------------------------------------------------------
+   ORB‑TINTED TITLE WITH GRADIENT + SHIMMER
+----------------------------------------------------------- */
+.short-reflections-drawer .panel-title {
+    font-size: 1.35rem;
+    font-weight: 500;
+    margin: 0 0 18px 0;
+
+    /* Orb tint */
+    color: rgba(var(--orbColorRGB), 0.95);
+
+    /* Orb glow */
+    text-shadow: 0 0 14px rgba(var(--orbColorRGB), 0.45);
+
+    /* Orb gradient behind title */
+    background: linear-gradient(90deg,
+            rgba(var(--orbColorRGB), 0.25),
+            rgba(var(--orbColorRGB), 0.05));
+    padding: 10px 16px;
+    border-radius: 18px;
+
+    /* Soft shimmer animation */
+    position: relative;
+    overflow: hidden;
+}
+
+.short-reflections-drawer .panel-title::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -120%;
+    width: 80%;
+    height: 100%;
+    background: linear-gradient(120deg,
+            transparent,
+            rgba(var(--orbColorRGB), 0.35),
+            transparent);
+    animation: shimmer 3.5s infinite ease-in-out;
+}
+
+@keyframes shimmer {
+    0% {
+        left: -120%;
+    }
+
+    60% {
+        left: 140%;
+    }
+
+    100% {
+        left: 140%;
+    }
+}
+
+/* -----------------------------------------------------------
+   CLOSE BUTTONS (orb‑tinted override)
+----------------------------------------------------------- */
+.short-reflections-drawer button.drawer-close-text,
+.short-reflections-drawer button.drawer-close-btn {
+    background: rgba(var(--orbColorRGB), 0.15) !important;
+    color: rgba(var(--orbColorRGB), 0.95) !important;
+    border: 1px solid rgba(var(--orbColorRGB), 0.25);
+    border-radius: 14px;
+    padding: 8px 14px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.short-reflections-drawer button.drawer-close-text:hover,
+.short-reflections-drawer button.drawer-close-btn:hover {
+    background: rgba(var(--orbColorRGB), 0.25) !important;
+    box-shadow: 0 0 12px rgba(var(--orbColorRGB), 0.45);
+}
+
+/* -----------------------------------------------------------
+   INPUTS + TEXTAREA (orb‑tinted)
+----------------------------------------------------------- */
+.short-reflections-drawer .todo-input-row input,
+.short-reflections-drawer .journal-area {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 16px;
+
+    background: rgba(var(--orbColorRGB), 0.12);
+    border: 1px solid rgba(var(--orbColorRGB), 0.25);
+    color: rgba(var(--orbColorRGB), 0.9);
+
+    font-size: 1rem;
+    resize: none;
+    transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+.short-reflections-drawer .todo-input-row input:focus,
+.short-reflections-drawer .journal-area:focus {
+    outline: none;
+    border-color: rgba(var(--orbColorRGB), 0.45);
+    background: rgba(var(--orbColorRGB), 0.18);
+}
+
+/* -----------------------------------------------------------
+   ADD BUTTON (orb‑tinted)
+----------------------------------------------------------- */
+.short-reflections-drawer .drawer-btn {
+    background: rgba(var(--orbColorRGB), 0.22);
+    border: 1px solid rgba(var(--orbColorRGB), 0.35);
+    color: rgba(var(--orbColorRGB), 0.95);
+    padding: 10px 18px;
+    border-radius: 18px;
+    backdrop-filter: blur(10px);
+    transition: all 0.35s ease;
+}
+
+.short-reflections-drawer .drawer-btn:hover {
+    background: rgba(var(--orbColorRGB), 0.32);
+    box-shadow: 0 0 14px rgba(var(--orbColorRGB), 0.45);
+}
+
+/* -----------------------------------------------------------
+   NOTES + TODOS (orb‑tinted)
+----------------------------------------------------------- */
+.short-reflections-drawer .note-item,
+.short-reflections-drawer .todo-list li {
+    background: rgba(var(--orbColorRGB), 0.12);
+    border: 1px solid rgba(var(--orbColorRGB), 0.25);
+    color: rgba(var(--orbColorRGB), 0.9);
+    border-radius: 14px;
+    padding: 12px 16px;
+    margin-bottom: 10px;
+    position: relative;
+    transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.short-reflections-drawer .note-item:hover,
+.short-reflections-drawer .todo-list li:hover {
+    background: rgba(var(--orbColorRGB), 0.18);
+    border-color: rgba(var(--orbColorRGB), 0.35);
+}
+
+/* Text inside notes/todos */
+.short-reflections-drawer .note-item p,
+.short-reflections-drawer .todo-list li span {
+    color: rgba(var(--orbColorRGB), 0.9);
+    margin: 0;
+    white-space: pre-wrap;
+}
+
+/* -----------------------------------------------------------
+   DELETE BUTTON (orb‑tinted)
+----------------------------------------------------------- */
+.short-reflections-drawer .remove-btn {
+    position: absolute;
+    right: 10px;
+    top: 8px;
+    background: transparent !important;
+    border: none;
+    color: rgba(var(--orbColorRGB), 0.8) !important;
+    font-size: 18px;
+    cursor: pointer;
+    transition: color 0.25s ease;
+}
+
+.short-reflections-drawer .remove-btn:hover {
+    color: rgba(var(--orbColorRGB), 1) !important;
+}
+
+.unified-drawer-overlay {
+    z-index: 3000;
+}
+
+.unified-drawer-panel {
+    width: min(100%, 34rem);
+    margin: 0 auto;
+    padding: 0.8rem 1.05rem 0.85rem;
+    background: rgba(12, 18, 34, 0.28);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 1.4rem 1.4rem 0 0;
+    box-shadow: 0 -18px 50px rgba(4, 10, 24, 0.24);
+    max-height: min(92vh, 52rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+.unified-drawer-close {
+    z-index: 2;
+    color: rgba(245, 248, 255, 0.92);
+}
+
+.unified-drawer-panel .short-reflections-drawer {
+    position: static;
+    left: auto;
+    bottom: auto;
+    transform: none;
+    z-index: auto;
+    width: 100%;
+    max-width: none;
+    padding: 0.05rem 0.1rem 0.1rem;
+    background: transparent;
+    border-radius: 0;
+    backdrop-filter: none;
+    box-shadow: none;
+}
+
+.unified-drawer-panel .panel-title {
+    margin-bottom: 0.8rem;
+    font-size: 1.22rem;
+}
+
+.unified-drawer-panel .drawer-inner-buttons,
+.unified-drawer-panel .todo-input-row {
+    margin-top: 0.8rem;
+}
+
+.unified-drawer-panel .notes-list,
+.unified-drawer-panel .todo-list {
+    margin-bottom: 0;
+    padding-bottom: 0.25rem;
+}
+
+.push-reminder-panel {
+    margin-top: 0.9rem;
+    padding: 0.8rem 0.9rem;
+    border-radius: 18px;
+    background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.08),
+        rgba(255, 255, 255, 0.03)
+    );
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.push-reminder-label {
+    margin: 0;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.72;
+}
+
+.push-reminder-status {
+    margin: 0.35rem 0 0;
+    line-height: 1.38;
+    color: rgba(245, 248, 255, 0.92);
+    font-size: 0.92rem;
+}
+
+.push-reminder-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    margin-top: 0.75rem;
+}
+
+.push-reminder-actions .drawer-btn:disabled {
+    opacity: 0.65;
+    cursor: progress;
+}
+
+.push-reminder-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+    gap: 0.65rem;
+    margin-top: 0.75rem;
+}
+
+.push-reminder-field {
+    display: grid;
+    gap: 0.28rem;
+    font-size: 0.82rem;
+}
+
+.push-reminder-field span {
+    opacity: 0.82;
+}
+
+.push-reminder-field input {
+    width: 100%;
+    padding: 0.7rem 0.85rem;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: rgba(255, 255, 255, 0.06);
+    color: rgba(245, 248, 255, 0.94);
+}
+
+.push-reminder-preview {
+    margin: 0.75rem 0 0;
+    font-size: 0.86rem;
+    line-height: 1.4;
+    color: rgba(245, 248, 255, 0.88);
+}

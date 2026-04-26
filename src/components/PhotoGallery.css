@@ -1,0 +1,222 @@
+/* ——— Gallery Layout ——— */
+
+.photo-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+}
+
+.photo-gallery img:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.18);
+}
+
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 16px;
+  margin-top: 24px;
+  align-items: start;
+}
+
+/* ——— Tiles (Gallery-level hover only) ——— */
+
+.photo-tile {
+  cursor: zoom-in;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.25s ease, box-shadow 0.35s ease;
+}
+
+.photo-tile:hover {
+  transform: scale(1.03);
+  box-shadow:
+    0 4px 12px rgba(0,0,0,0.25),
+    0 0 12px rgba(255,255,255,0.18);
+}
+
+/* ——— Favourite Button (Gallery version) ——— */
+
+.fav-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: transparent;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: gold;
+  text-shadow: 0 0 6px rgba(0,0,0,0.4);
+}
+
+/* ——— Modal Animations ——— */
+
+@keyframes modalFadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ——— Modal Container ——— */
+
+.photo-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: zoom-out;
+  z-index: 999;
+}
+
+.photo-modal-controls {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(94vw, 1100px);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  z-index: 1001;
+}
+
+.photo-modal-light {
+  margin-right: 0;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: rgba(14, 18, 35, 0.62);
+  color: #fff8ef;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(10px);
+}
+
+.photo-modal-light.active {
+  background: rgba(255, 240, 214, 0.22);
+  border-color: rgba(255, 223, 173, 0.38);
+  box-shadow: 0 0 18px rgba(255, 221, 179, 0.18);
+}
+
+/* ——— Modal Image ——— */
+
+.photo-modal-frame {
+  position: relative;
+  width: min(100vw, 1800px);
+  max-width: 100vw;
+  max-height: 100vh;
+  overflow: hidden;
+  box-shadow: 0 20px 64px rgba(0, 0, 0, 0.4);
+}
+
+.photo-modal-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--mood-overlay, transparent);
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+  transition: background 0.3s ease;
+}
+
+.photo-modal img {
+  animation: modalFadeIn 220ms ease-out;
+  width: 100%;
+  max-width: 100%;
+  max-height: 100vh;
+  border-radius: 0;
+  object-fit: contain;
+  transition: filter 0.3s ease, box-shadow 0.3s ease;
+  display: block;
+}
+
+/* ——— Modal Fade-Out ——— */
+
+.photo-modal.fade-out {
+  opacity: 0;
+  transition: opacity 180ms ease-out;
+}
+
+/* ——— Seasonal Border Glow ——— */
+
+.photo-modal img.seasonal-border {
+  box-shadow:
+    0 0 18px var(--season-glow),
+    0 12px 38px rgba(0, 0, 0, 0.28);
+  transition: box-shadow 0.3s ease;
+}
+
+.photo-modal.calm,
+.photo-modal.dress-rehearsal {
+  background: rgba(16, 24, 38, 0.58);
+}
+
+.photo-modal.joyful,
+.photo-modal.warm-spotlight {
+  background: rgba(56, 30, 18, 0.52);
+}
+
+.photo-modal.stormy,
+.photo-modal.velvet-midnight {
+  background: rgba(8, 12, 24, 0.68);
+}
+
+.photo-modal.reflective,
+.photo-modal.blue-hour {
+  background: rgba(20, 18, 34, 0.6);
+}
+
+.photo-modal.natural,
+.photo-modal.golden-encore {
+  background: rgba(14, 20, 16, 0.5);
+}
+
+.photo-modal {
+  isolation: isolate;
+}
+
+.photo-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  isolation: isolate;
+  backdrop-filter: blur(6px);
+}
+
+@media (max-width: 600px) {
+  .photo-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .photo-modal-controls {
+    top: 14px;
+    width: calc(100vw - 20px);
+    gap: 8px;
+  }
+
+  .photo-modal-light {
+    padding: 9px 12px;
+    font-size: 0.8rem;
+  }
+
+  .photo-modal img {
+    max-height: calc(100vh - 84px);
+  }
+
+  .photo-modal-frame {
+    max-height: calc(100vh - 84px);
+  }
+}
+
+

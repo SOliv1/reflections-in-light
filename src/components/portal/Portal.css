@@ -1,0 +1,1162 @@
+/* ------------------------------------------------------ */
+/* ROOT VARIABLES                                          */
+/* ------------------------------------------------------ */
+
+:root {
+  /* Day colours */
+  --day-1-cold-open: #2A3F73;
+  --day-2-frostlight: #A7C7E7;
+  --day-3-tungsten-ember: #E6A756;
+  --day-4-smoke-silver: #6E6E72;
+  --day-5-deep-fjord: #2E6F78;
+  --day-6-dusk-violet: #6A4C8C;
+  --day-7-final-glow: #F2E6C9;
+
+  /* Cinematic seasonal RGB */
+  --season-winter-rgb: 150, 185, 220;
+  --season-spring-rgb: 140, 190, 150;
+  --season-summer-rgb: 240, 185, 90;
+  --season-autumn-rgb: 205, 135, 75;
+
+  /* Mood overrides */
+  --mood-calm-stillwater: #4A6FA5;
+  --mood-warm-hearthlight: #E8B39A;
+  --mood-bright-stage-gold: #FFD76B;
+  --mood-reflective-mirror-silver: #D0D0D5;
+  --mood-playful-neon-rose: #FF5FA2;
+}
+
+.portal.mode-water {
+  box-shadow:
+    0 0 24px var(--mode-shadow),
+    0 0 32px var(--mode-accent),
+    0 0 48px var(--season-glow-inner);
+}
+
+
+/* ------------------------------------------------------ */
+/* PORTAL BASE                                             */
+/* ------------------------------------------------------ */
+
+.portal {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  transform: scale(1);
+  transition: transform 0.6s ease, box-shadow 0.8s ease;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.35), transparent 60%);
+  box-shadow: 0 0 24px rgba(0, 0, 0, 0.45);
+  overflow: visible;
+  cursor: pointer;
+  transition:
+    background-color 1.4s ease,
+    box-shadow 1.4s ease,
+    transform 0.6s ease,
+    filter 1.4s ease;
+}
+
+.portal--mood {
+  width: 96px;
+  height: 96px;
+  background:
+    radial-gradient(circle at 36% 32%, rgba(255, 255, 255, 0.34), rgba(226, 233, 255, 0.16) 42%, rgba(154, 173, 238, 0.08) 68%, transparent 100%);
+  box-shadow:
+    0 0 18px rgba(255, 255, 255, 0.18),
+    0 0 38px rgba(170, 188, 255, 0.16);
+  backdrop-filter: blur(6px) saturate(1.02);
+}
+
+.portal--mood .portal__core {
+  background:
+    radial-gradient(circle at 36% 30%, rgba(255, 255, 255, 0.52), rgba(213, 224, 255, 0.24) 42%, rgba(140, 160, 224, 0.14) 68%, rgba(124, 138, 210, 0.06) 100%);
+  box-shadow:
+    0 0 22px rgba(206, 219, 255, 0.2),
+    inset 0 0 24px rgba(255, 255, 255, 0.12);
+}
+
+.portal--mood .portal__crescent {
+  opacity: 0.24;
+  filter: saturate(0.92) brightness(1.04);
+}
+
+.portal--mood .portal__shimmer {
+  opacity: 0.18;
+}
+
+/* Inner core */
+.portal__core {
+  position: absolute;
+  inset: 12%;
+  border-radius: 50%;
+  background-color: inherit;
+  box-shadow: 0 0 32px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+}
+
+.portal--seasonal .portal__core {
+  opacity: 0.72;
+  box-shadow:
+    0 0 32px var(--season-glow-outer),
+    0 0 48px var(--season-glow-inner),
+    inset 0 0 22px var(--season-glow-inner);
+}
+
+
+/* Crescent highlight */
+.portal__crescent {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.5), transparent 60%);
+  transform: translateX(18%);
+}
+
+/* Shimmer sweep */
+.portal__shimmer {
+  position: absolute;
+  top: -10%;
+  bottom: -10%;
+  width: 30%;
+  left: -30%;
+  background: linear-gradient(to right,
+      transparent,
+      rgba(255, 255, 255, 0.35),
+      transparent);
+  mix-blend-mode: screen;
+  pointer-events: none;
+  animation: portal-shimmer 10s linear infinite;
+}
+
+@keyframes portal-shimmer {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(260%);
+  }
+}
+
+/* Pulse */
+@keyframes portal-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.05);
+    opacity: 0.92;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+
+.portal--seasonal {
+  width: 72px !important;
+  height: 108px !important;
+  border-radius: 60px 60px 0 0;
+}
+
+
+/* Parallax shimmer — slow, faint, drifting */
+.portal--seasonal::before {
+  content: "";
+  position: absolute;
+  top: -30%;
+  bottom: -30%;
+  left: -20%;
+  width: 25%;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(255,255,255,0.18),
+    transparent
+  );
+  mix-blend-mode: screen;
+  opacity: 0.18;
+  animation: seasonal-parallax 22s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes seasonal-parallax {
+  0%   { transform: translateX(0) translateY(0); }
+  50%  { transform: translateX(140%) translateY(6%); }
+  100% { transform: translateX(0) translateY(0); }
+}
+
+/* Interior breathing ember */
+.portal--seasonal .portal__core::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(var(--season-rgb), 0.35),
+    transparent 70%
+  );
+  opacity: 0.35;
+  animation: seasonal-ember 6.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes seasonal-ember {
+  0%   { opacity: 0.28; transform: scale(1); }
+  50%  { opacity: 0.48; transform: scale(1.06); }
+  100% { opacity: 0.28; transform: scale(1); }
+}
+
+
+.portal--pulse-slow {
+  animation: portal-pulse 5s ease-in-out infinite;
+}
+
+.portal--pulse-medium {
+  animation: portal-pulse 4s ease-in-out infinite;
+}
+
+.portal--pulse-fast {
+  animation: portal-pulse 3s ease-in-out infinite;
+}
+
+/* When the Door senses a photo approaching — dramatic cinematic glow */
+
+/* A slow, magical breathing pulse */
+@keyframes portal-aware-pulse {
+  0% {
+    transform: scale(1.16) translateY(-4px);
+    filter:
+      drop-shadow(0 0 18px var(--season-glow-inner))
+      drop-shadow(0 0 32px var(--season-glow-outer))
+      brightness(1.2);
+  }
+  50% {
+    transform: scale(1.22) translateY(-6px);
+    filter:
+      drop-shadow(0 0 28px var(--season-glow-inner))
+      drop-shadow(0 0 52px var(--season-glow-outer))
+      brightness(1.35);
+  }
+  100% {
+    transform: scale(1.16) translateY(-4px);
+    filter:
+      drop-shadow(0 0 18px var(--season-glow-inner))
+      drop-shadow(0 0 32px var(--season-glow-outer))
+      brightness(1.2);
+  }
+}
+
+/* Hover cue */
+.portal__cue {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%, 12px);
+  color: #27219e;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  opacity: 1;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  white-space: nowrap;
+}
+
+.portal:hover .portal__cue {
+  opacity: 1.8;
+}
+
+/* Day colours */
+.portal--day-1 {
+  background-color: var(--day-1-cold-open);
+}
+
+.portal--day-2 {
+  background-color: var(--day-2-frostlight);
+}
+
+.portal--day-3 {
+  background-color: var(--day-3-tungsten-ember);
+}
+
+.portal--day-4 {
+  background-color: var(--day-4-smoke-silver);
+}
+
+.portal--day-5 {
+  background-color: var(--day-5-deep-fjord);
+}
+
+.portal--day-6 {
+  background-color: var(--day-6-dusk-violet);
+}
+
+.portal--day-7 {
+  background-color: var(--day-7-final-glow);
+}
+
+/* Mood overrides */
+.portal--mood-calm {
+  background-color: var(--mood-calm-stillwater);
+}
+
+.portal--mood-warm {
+  background-color: var(--mood-warm-hearthlight);
+}
+
+.portal--mood-bright {
+  background-color: var(--mood-bright-stage-gold);
+}
+
+.portal--mood-reflective {
+  background-color: var(--mood-reflective-mirror-silver);
+}
+
+.portal--mood-playful {
+  background-color: var(--mood-playful-neon-rose);
+}
+
+/* Mood portal sizes */
+
+.portal--small {
+  width: 80px;
+  height: 80px;
+}
+
+/* ------------------------------------------------------ */
+/* CRESCENT PORTAL                                         */
+/* ------------------------------------------------------ */
+
+.crescent-portal {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width: 28px;
+  height: 48px;
+  background: radial-gradient(circle at 30% 50%, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.2) 60%);
+  border-radius: 50%;
+  clip-path: ellipse(60% 50% at 40% 50%);
+  box-shadow:
+    0 0 18px rgba(255, 255, 255, 0.9),
+    0 0 32px rgba(255, 255, 255, 0.7),
+    inset 0 0 12px rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  transition: transform .4s ease, box-shadow .4s ease;
+  z-index: 20000;
+  animation: portal-pulse 3.6s ease-in-out infinite;
+}
+
+.crescent-portal:hover {
+  transform: scale(1.15);
+  box-shadow:
+    0 0 24px rgba(255, 255, 255, 1),
+    0 0 40px rgba(255, 255, 255, 0.9),
+    inset 0 0 16px rgba(255, 255, 255, 1);
+}
+
+.crescent-portal::after {
+  content: "return to the light";
+  position: absolute;
+  left: 36px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
+  color: rgba(255, 255, 255, 0.7);
+  opacity: 0;
+  transition: opacity .4s ease;
+  white-space: nowrap;
+}
+
+.crescent-portal:hover::after {
+  opacity: 1;
+}
+
+/* ------------------------------------------------------ */
+/* SEASONAL PORTAL — CINEMATIC, BOLD, BELOW MOOD           */
+/* ------------------------------------------------------ */
+
+/* Seasonal RGB mapping */
+.portal--season-winter {
+  --season-rgb: var(--season-winter-rgb);
+}
+
+.portal--season-spring {
+  --season-rgb: var(--season-spring-rgb);
+}
+
+.portal--season-summer {
+  --season-rgb: var(--season-summer-rgb);
+}
+
+.portal--season-autumn {
+  --season-rgb: var(--season-autumn-rgb);
+}
+
+/* Season-specific glow tuning */
+.portal--season-winter {
+  --season-glow-outer: rgba(150,185,220,0.45);
+  --season-glow-inner: rgba(150,185,220,0.28);
+}
+
+.portal--season-spring {
+  --season-glow-outer: rgba(140,190,150,0.45);
+  --season-glow-inner: rgba(140,190,150,0.28);
+}
+
+.portal--season-summer {
+  --season-glow-outer: rgba(240,185,90,0.45);
+  --season-glow-inner: rgba(240,185,90,0.28);
+}
+
+.portal--season-autumn {
+  --season-glow-outer: rgba(205,135,75,0.45);
+  --season-glow-inner: rgba(205,135,75,0.28);
+}
+
+
+.portal--seasonal {
+  width: 72px !important;
+  height: 108px !important;
+  border-radius: 60px 60px 0 0;
+  position: relative;
+  overflow: hidden;
+
+  background: radial-gradient(circle at 50% 35%,
+      rgba(var(--season-rgb), 0.42),
+      rgba(var(--season-rgb), 0.22) 55%,
+      transparent 85%);
+
+  border: 2px solid rgba(255, 255, 255, 0.78);
+
+  box-shadow:
+    0 0 14px rgba(255, 255, 255, 0.28),
+    0 0 22px var(--season-tint) !important;
+
+  animation: seasonal-pulse 7s ease-in-out infinite;
+  cursor: pointer;
+}
+
+.portal--seasonal.portal--mood-warm-spotlight {
+  background: radial-gradient(circle at 50% 35%,
+      rgba(255, 220, 173, 0.62),
+      rgba(183, 105, 54, 0.34) 56%,
+      transparent 84%);
+  border-color: rgba(255, 235, 205, 0.88);
+  box-shadow:
+    0 0 18px rgba(255, 227, 185, 0.34),
+    0 0 32px rgba(191, 115, 58, 0.22) !important;
+}
+
+.portal--seasonal.portal--mood-blue-hour {
+  background: radial-gradient(circle at 50% 35%,
+      rgba(179, 200, 255, 0.5),
+      rgba(66, 84, 164, 0.3) 56%,
+      transparent 84%);
+  border-color: rgba(220, 229, 255, 0.84);
+  box-shadow:
+    0 0 18px rgba(192, 210, 255, 0.28),
+    0 0 30px rgba(80, 100, 180, 0.2) !important;
+}
+
+.portal--seasonal.portal--mood-dress-rehearsal {
+  background: radial-gradient(circle at 50% 35%,
+      rgba(224, 205, 255, 0.48),
+      rgba(121, 88, 152, 0.28) 56%,
+      transparent 84%);
+  border-color: rgba(241, 231, 255, 0.84);
+  box-shadow:
+    0 0 18px rgba(225, 204, 255, 0.28),
+    0 0 30px rgba(120, 88, 152, 0.2) !important;
+}
+
+.portal--seasonal.portal--mood-golden-encore {
+  background: radial-gradient(circle at 50% 35%,
+      rgba(255, 232, 177, 0.56),
+      rgba(149, 114, 48, 0.28) 56%,
+      transparent 84%);
+  border-color: rgba(255, 241, 216, 0.86);
+  box-shadow:
+    0 0 18px rgba(255, 230, 176, 0.3),
+    0 0 30px rgba(158, 124, 54, 0.18) !important;
+}
+
+.portal--seasonal.portal--mood-velvet-midnight {
+  background: radial-gradient(circle at 50% 35%,
+      rgba(156, 167, 231, 0.46),
+      rgba(50, 58, 122, 0.3) 56%,
+      transparent 84%);
+  border-color: rgba(219, 223, 255, 0.82);
+  box-shadow:
+    0 0 18px rgba(174, 182, 245, 0.26),
+    0 0 30px rgba(59, 70, 146, 0.22) !important;
+}
+
+/* Pulse */
+@keyframes seasonal-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.94;
+  }
+
+  50% {
+    transform: scale(1.035);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 0.94;
+  }
+}
+
+/* Shimmer */
+.portal--seasonal::after {
+  content: "";
+  position: absolute;
+  top: -20%;
+  bottom: -20%;
+  left: -40%;
+  width: 40%;
+  background: linear-gradient(to right,
+      transparent,
+      rgba(255, 255, 255, 0.38),
+      transparent);
+  mix-blend-mode: screen;
+  animation: seasonal-shimmer 12s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes seasonal-shimmer {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(260%);
+  }
+}
+
+/* Internals */
+
+.portal--seasonal .portal__crescent {
+  opacity: 0.32;
+  transform: translateX(14%);
+}
+
+.portal--seasonal .portal__shimmer {
+  opacity: 0.22;
+  animation-duration: 14s;
+}
+
+/* Heightened interior enclave — richer glow, deeper presence */
+.portal--seasonal .portal__core {
+  opacity: 0.72; /* was 0.55 */
+  box-shadow:
+    0 0 32px rgba(var(--season-rgb), 0.45),
+    0 0 48px rgba(var(--season-rgb), 0.28),
+    inset 0 0 22px rgba(var(--season-rgb), 0.35);
+}
+
+.portal--seasonal .portal__crescent {
+  opacity: 0.42; /* was 0.32 */
+  transform: translateX(12%); /* slightly more centered */
+}
+
+.portal--seasonal .portal__shimmer {
+  opacity: 0.32; /* was 0.22 */
+  animation-duration: 11s; /* slightly faster shimmer */
+}
+
+.portal--seasonal.portal--mood-warm-spotlight .portal__core {
+  box-shadow:
+    0 0 32px rgba(255, 218, 162, 0.42),
+    0 0 50px rgba(170, 102, 49, 0.28),
+    inset 0 0 24px rgba(255, 233, 194, 0.26);
+}
+
+.portal--seasonal.portal--mood-blue-hour .portal__core {
+  box-shadow:
+    0 0 30px rgba(182, 201, 255, 0.34),
+    0 0 46px rgba(78, 97, 179, 0.26),
+    inset 0 0 24px rgba(214, 225, 255, 0.18);
+}
+
+.portal--seasonal.portal--mood-dress-rehearsal .portal__core {
+  box-shadow:
+    0 0 30px rgba(223, 203, 255, 0.34),
+    0 0 46px rgba(111, 82, 140, 0.24),
+    inset 0 0 24px rgba(239, 229, 255, 0.18);
+}
+
+.portal--seasonal.portal--mood-golden-encore .portal__core {
+  box-shadow:
+    0 0 30px rgba(255, 228, 168, 0.36),
+    0 0 46px rgba(153, 121, 52, 0.22),
+    inset 0 0 24px rgba(255, 241, 212, 0.2);
+}
+
+.portal--seasonal.portal--mood-velvet-midnight .portal__core {
+  box-shadow:
+    0 0 30px rgba(168, 178, 239, 0.32),
+    0 0 46px rgba(54, 63, 132, 0.28),
+    inset 0 0 24px rgba(214, 219, 255, 0.16);
+}
+
+.portal--seasonal.portal--mood-warm-spotlight .portal__crescent,
+.portal--seasonal.portal--mood-golden-encore .portal__crescent {
+  opacity: 0.52;
+  filter: saturate(1.08) brightness(1.12);
+}
+
+.portal--seasonal.portal--mood-blue-hour .portal__crescent,
+.portal--seasonal.portal--mood-dress-rehearsal .portal__crescent,
+.portal--seasonal.portal--mood-velvet-midnight .portal__crescent {
+  opacity: 0.48;
+  filter: hue-rotate(-10deg) saturate(1.05) brightness(1.08);
+}
+
+
+/* Hover */
+.portal--seasonal:hover {
+  transform: scale(1.05);
+  box-shadow:
+    0 0 18px rgba(255, 255, 255, 0.38),
+    0 0 28px var(--season-tint) !important;
+}
+
+/* Veil OFF */
+.veil-off .portal--seasonal {
+  border-color: rgba(0, 0, 0, 0.65) !important;
+
+  background: radial-gradient(circle at 50% 35%,
+      rgba(var(--season-rgb), 0.55),
+      rgba(var(--season-rgb), 0.32) 55%,
+      transparent 85%) !important;
+
+  box-shadow:
+    0 0 18px rgba(0, 0, 0, 0.28),
+    0 0 32px var(--season-tint) !important;
+}
+
+.veil-off .portal--seasonal:hover {
+  box-shadow:
+    0 0 22px rgba(0, 0, 0, 0.35),
+    0 0 38px var(--season-tint) !important;
+}
+
+.portal {
+  box-shadow: 0 0 24px var(--mode-shadow, rgba(0,0,0,0.45));
+  background: radial-gradient(circle at 30% 30%,
+      var(--mode-glow, rgba(255,255,255,0.35)),
+      transparent 60%);
+}
+
+/* Force the Door to visually awaken */
+.portal--aware {
+  transform: scale(1.18) translateY(-4px) !important;
+  filter:
+    drop-shadow(0 0 22px var(--season-glow-inner))
+    drop-shadow(0 0 42px var(--season-glow-outer))
+    brightness(1.25) !important;
+  animation: portal-aware-pulse 1.6s ease-in-out infinite !important;
+}
+
+/* ⭐ SUPER DRAMATIC HOVER FLASH */
+.portal--aware.portal--hover {
+  transform: scale(1.32) translateY(-10px);
+  filter:
+    drop-shadow(0 0 48px var(--season-glow-inner))
+    drop-shadow(0 0 96px var(--season-glow-outer))
+    saturate(2.8)
+    brightness(1.65)
+    contrast(1.3);
+  transition:
+    transform 0.35s ease,
+    filter 0.35s ease;
+}
+
+.portal__cue,
+.portal-subtitle {
+  text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+}
+
+.portal-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 24px;
+  margin-bottom: 12px;
+}
+
+.portal-subtitle {
+  top: calc(100% + 20px);
+  margin-top: 12px;
+  text-align: center;
+  color: #27219e;
+  font-size: 0.95rem;
+  opacity: 1;
+  letter-spacing: 0.4px;
+  font-style: italic;
+  transition: opacity 0.4s ease;
+}
+
+
+/* -------------------------------------------------- */
+/* 1. PORTAL WRAPPER + CUE + SUBTITLE (STRUCTURE)     */
+/* -------------------------------------------------- */
+
+.portal-container {
+  position: relative;
+  padding-top: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 10;
+  min-height: 150px;
+}
+
+.portal__cue {
+  position: absolute;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%, 4px);
+}
+
+.portal-wrapper.aware .portal__cue {
+  opacity: 1;
+  transform: translate(-50%, 16px);
+}
+
+.portal-mood-tag {
+  margin-top: 6px;
+  font-size: 0.7rem;
+  opacity: 0.85;
+  color: #e6e6eb;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+}
+
+/* Subtitle fade */
+.portal-wrapper.aware + .portal-subtitle {
+  opacity: 1;
+}
+
+
+
+/* -------------------------------------------------- */
+/* 2. PORTAL GLOW STATES (AWARE + MOOD)               */
+/* -------------------------------------------------- */
+
+.portal--aware.portal--mood-calm {
+  box-shadow: 0 0 28px rgba(120, 180, 255, 0.7);
+}
+
+.portal--aware.portal--mood-joyful {
+  box-shadow: 0 0 32px rgba(255, 200, 80, 0.8);
+}
+
+.portal--aware.portal--mood-stormy {
+  box-shadow: 0 0 34px rgba(80, 80, 120, 0.8);
+}
+
+.portal--aware.portal--mood-reflective {
+  box-shadow: 0 0 28px rgba(200, 200, 255, 0.7);
+}
+
+.portal--aware.portal--mood-natural {
+  box-shadow: 0 0 28px rgba(120, 200, 120, 0.7);
+}
+
+
+
+/* -------------------------------------------------- */
+/* 3. MOOD ORB (BASE STYLES)                          */
+/* -------------------------------------------------- */
+
+.mood-orb {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffffffaa, #ffffff33);
+  box-shadow: 0 0 12px #ffffff88, 0 0 24px #ffffff55;
+  cursor: pointer;
+  transition: transform 0.4s ease;
+  z-index: 20;
+  animation: orbPulse 4s ease-in-out infinite;
+}
+
+.mood-orb.open {
+  transform: scale(1.2);
+  animation: none;
+}
+
+.mood-orb:hover {
+  box-shadow: 0 0 16px #ffffffaa, 0 0 32px #ffffff88;
+  transform: scale(1.1);
+}
+
+
+
+/* -------------------------------------------------- */
+/* 4. MOOD-BASED COLOUR SHIFTS                        */
+/* -------------------------------------------------- */
+
+.portal-container.portal--mood-calm .mood-orb {
+  background: radial-gradient(circle, #aeeaffaa, #aeeaff33);
+  box-shadow: 0 0 12px #aeeaff88, 0 0 24px #aeeaff55;
+}
+
+.portal-container.portal--mood-joyful .mood-orb {
+  background: radial-gradient(circle, #ffe8aaff, #ffe8aa33);
+  box-shadow: 0 0 12px #ffe8aa88, 0 0 24px #ffe8aa55;
+}
+
+.portal-container.portal--mood-stormy .mood-orb {
+  background: radial-gradient(circle, #8899ffaa, #8899ff33);
+  box-shadow: 0 0 12px #8899ff88, 0 0 24px #8899ff55;
+}
+
+.portal-container.portal--mood-reflective .mood-orb {
+  background: radial-gradient(circle, #d0d0d5aa, #d0d0d533);
+  box-shadow: 0 0 12px #d0d0d588, 0 0 24px #d0d0d555;
+}
+
+.portal-container.portal--mood-natural .mood-orb {
+  background: radial-gradient(circle, #b8e6b8aa, #b8e6b833);
+  box-shadow: 0 0 12px #b8e6b888, 0 0 24px #b8e6b855;
+}
+
+/* -------------------------------------------------- */
+/* 5. ORB PULSE ANIMATION                             */
+/* -------------------------------------------------- */
+
+@keyframes orbPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+
+
+/* -------------------------------------------------- */
+/* 6. RADIAL MENU CONTAINER                           */
+/* -------------------------------------------------- */
+
+.mood-radial-menu {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 160px;
+  height: 160px;
+  pointer-events: auto;
+  z-index: 30;
+  animation: radialBloom 0.35s ease-out forwards;
+  opacity: 0;
+}
+
+
+
+/* -------------------------------------------------- */
+/* 7. RADIAL BLOOM ANIMATION                          */
+/* -------------------------------------------------- */
+
+@keyframes radialBloom {
+  from {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+
+
+/* -------------------------------------------------- */
+/* 8. MOOD OPTION BUTTONS                             */
+/* -------------------------------------------------- */
+
+.mood-option {
+  position: absolute;
+  width: 60px;
+  height: 24px;
+  border-radius: 12px;
+  background: #ffffff22;
+  color: #e6e6eb;
+  border: 1px solid #ffffff55;
+  font-size: 0.7rem;
+  backdrop-filter: blur(4px);
+  cursor: pointer;
+  opacity: 0;
+  transform: scale(0.8);
+  animation: moodDrift 0.4s ease forwards;
+}
+
+/* Radial positions */
+.mood-option:nth-child(1) { top: 10px; left: 50%; transform: translateX(-50%); }
+.mood-option:nth-child(2) { top: 40px; right: 10px; }
+.mood-option:nth-child(3) { top: 90px; right: 0; }
+.mood-option:nth-child(4) { top: 120px; left: 50%; transform: translateX(-50%); }
+.mood-option:nth-child(5) { top: 90px; left: 0; }
+
+/* Staggered delays */
+.mood-option:nth-child(1) { animation-delay: 0.05s; }
+.mood-option:nth-child(2) { animation-delay: 0.1s; }
+.mood-option:nth-child(3) { animation-delay: 0.15s; }
+.mood-option:nth-child(4) { animation-delay: 0.2s; }
+.mood-option:nth-child(5) { animation-delay: 0.25s; }
+
+
+
+/* -------------------------------------------------- */
+/* 9. MOOD DRIFT ANIMATION                            */
+/* -------------------------------------------------- */
+
+@keyframes moodDrift {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* -------------------------------------------------- */
+/* 10. RESET BUTTON                                   */
+/* -------------------------------------------------- */
+
+.mood-reset {
+  position: absolute;
+  top: 65px;
+  left: 65px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #ffffff33;
+  border: 1px solid #ffffff55;
+  color: #e6e6eb;
+  font-size: 0.6rem;
+  cursor: pointer;
+  opacity: 0;
+  transform: scale(0.6);
+  animation: resetPop 0.4s ease forwards 0.3s;
+}
+
+
+
+/* -------------------------------------------------- */
+/* 11. RESET POP ANIMATION                            */
+/* -------------------------------------------------- */
+
+@keyframes resetPop {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Portal orb stained-glass shimmer (subtle echo of the jewel orb) */
+.mood-orb {
+  background:
+    linear-gradient(25deg,
+      rgba(70, 180, 255, 0.55) 20%,
+      rgba(70, 180, 255, 0.25) 40%,
+      transparent 60%
+    ),
+    linear-gradient(150deg,
+      rgba(255, 120, 180, 0.45) 20%,
+      rgba(255, 120, 180, 0.15) 40%,
+      transparent 60%
+    ),
+    linear-gradient(75deg,
+      rgba(255, 220, 140, 0.45) 15%,
+      rgba(255, 220, 140, 0.12) 35%,
+      transparent 55%
+    ),
+    radial-gradient(circle at 32% 28%,
+      rgba(255, 255, 255, 0.85),
+      rgba(200, 200, 200, 0.15)
+    );
+  background-size: 200% 200%;
+  animation: portal-orb-drift 14s ease-in-out infinite;
+}
+
+@keyframes portal-orb-drift {
+  0% { background-position: 0% 0%; }
+  50% { background-position: 100% 100%; }
+  100% { background-position: 0% 0%; }
+}
+
+/* Portal orb season echo */
+.season-winter .mood-orb {
+  filter: hue-rotate(-20deg) saturate(1.2) brightness(1.1);
+}
+
+.season-spring .mood-orb {
+  filter: hue-rotate(40deg) saturate(1.25) brightness(1.1);
+}
+
+.season-summer .mood-orb {
+  filter: hue-rotate(80deg) saturate(1.3) brightness(1.15);
+}
+
+.season-autumn .mood-orb {
+  filter: hue-rotate(-60deg) saturate(1.2) brightness(1.05);
+}
+
+/* Season-tinted portal glow when aware */
+.season-winter .portal--aware {
+  box-shadow: 0 0 40px rgba(120, 180, 255, 0.55),
+              0 0 80px rgba(120, 180, 255, 0.35);
+}
+
+.season-spring .portal--aware {
+  box-shadow: 0 0 40px rgba(160, 240, 160, 0.55),
+              0 0 80px rgba(160, 240, 160, 0.35);
+}
+
+.season-summer .portal--aware {
+  box-shadow: 0 0 40px rgba(255, 200, 120, 0.55),
+              0 0 80px rgba(255, 200, 120, 0.35);
+}
+
+.season-autumn .portal--aware {
+  box-shadow: 0 0 40px rgba(255, 150, 120, 0.55),
+              0 0 80px rgba(255, 150, 120, 0.35);
+}
+
+/* Portal orb season tint */
+.season-winter .mood-orb {
+  filter: hue-rotate(-20deg) saturate(1.15) brightness(1.1);
+}
+
+.season-spring .mood-orb {
+  filter: hue-rotate(40deg) saturate(1.2) brightness(1.1);
+}
+
+.season-summer .mood-orb {
+  filter: hue-rotate(80deg) saturate(1.25) brightness(1.15);
+}
+
+.season-autumn .mood-orb {
+  filter: hue-rotate(-60deg) saturate(1.15) brightness(1.05);
+}
+
+/* Crescent season tint */
+.season-winter .portal__crescent {
+  filter: hue-rotate(-20deg) saturate(1.2) brightness(1.1);
+}
+
+.season-spring .portal__crescent {
+  filter: hue-rotate(40deg) saturate(1.25) brightness(1.1);
+}
+
+.season-summer .portal__crescent {
+  filter: hue-rotate(80deg) saturate(1.3) brightness(1.15);
+}
+
+.season-autumn .portal__crescent {
+  filter: hue-rotate(-60deg) saturate(1.2) brightness(1.05);
+}
+
+/* Crescent shimmer animation */
+@keyframes crescentShimmer {
+  0% {
+    opacity: 0.85;
+    transform: translateY(0);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translateY(-1px);
+  }
+
+  100% {
+    opacity: 0.85;
+    transform: translateY(0);
+  }
+}
+
+.portal--aware .portal__crescent {
+  animation: crescentShimmer 4s ease-in-out infinite;
+}
+
+/* Constellation sparkle container */
+.portal-container {
+  position: relative;
+}
+
+/* Sparkle element */
+.portal-sparkle {
+  position: absolute;
+  top: -12px;
+  right: 12px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(circle, #fff, rgba(255, 255, 255, 0));
+  z-index: 25;
+}
+
+/* Sparkle animation */
+@keyframes sparkleTwinkle {
+  0% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+
+  40% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  70% {
+    opacity: 0.8;
+    transform: scale(0.7);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+}
+
+/* Trigger sparkle when Door becomes aware */
+.portal--aware .portal-sparkle {
+  animation: sparkleTwinkle 1.8s ease-out;
+}
+
+.mood-option {
+  background: rgba(255, 255, 255, 0.05);   /* brighter, more visible */
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(0, 0, 0, 0.15);   /* subtle dark border */
+  color: rgba(30, 30, 30, 0.9);            /* darker, readable text */
+  padding: 8px 14px;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 600;                        /* clearer text weight */
+  transition: box-shadow 0.4s ease;
+}
+
+.mood-option:hover {
+  box-shadow:
+  0 0 12px rgba(var(--season-light), 0.22),
+  0 0 24px var(--season-mid),
+  0 0 36px var(--season-dark);
+  transform: translateY(-2px);
+}
+
+

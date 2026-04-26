@@ -1,0 +1,861 @@
+html, body {
+  overscroll-behavior:none;
+  height: 100%;
+}
+
+body {
+  /*position: fixed; */
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* Constellation wrapper behind the whole calendar */
+.constellation-wrapper {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 7;
+  pointer-events: none;
+  isolation: isolate;
+}
+
+.constellation-skywash {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(circle at 18% 20%, rgba(150, 178, 255, 0.18), transparent 24%),
+    radial-gradient(circle at 78% 14%, rgba(246, 223, 255, 0.2), transparent 26%),
+    linear-gradient(180deg, rgba(8, 14, 34, 0.72) 0%, rgba(18, 18, 36, 0.3) 62%, transparent 100%);
+  opacity: 0.92;
+}
+
+
+
+
+.constellation-wrapper,
+.constellation-wrapper.interactive,
+.constellation-wrapper.interactive.active {
+  pointer-events: none !important;
+}
+
+.constellation-wrapper .star,
+.constellation-wrapper .shooting-star {
+  pointer-events: auto;
+}
+
+/* Evening veil overlay
+.constellation-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.22);
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  z-index: 0;
+  pointer-events: none; /* ← THIS FIXES EVERYTHING
+} */
+
+.no-veil .constellation-overlay {
+  opacity: 0 !important;
+  background: none !important;
+  backdrop-filter: none !important;
+}
+
+/*.constellation-overlay.active {
+  opacity: 1;
+} */
+
+/* Moon-phase intensity variants */
+.constellation-overlay.full {
+  background: rgba(0, 0, 0, 0.32);
+}
+
+.constellation-overlay.crescent {
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.constellation-overlay.new {
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.constellation-overlay.waning {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+/* Optional dusk fade-in keyframe */
+@keyframes duskFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.constellation-overlay.dusk-fade {
+  animation: duskFade 2.5s ease forwards;
+}
+
+/* Button for Overlay - Lift the Veil */
+
+/* Base styling */
+.veil-toggle {
+  position: relative;
+  overflow: visible;
+  font-family: inherit;
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.78);
+  background: linear-gradient(
+  145deg,
+  rgba(40, 20, 70, 0.42),
+  rgba(25, 12, 50, 0.32),
+  );
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow:
+  0 0 8px rgba(255, 255, 255, 0.18),
+  inset 0 0 6px rgba(255, 255, 255, 0.12);
+
+}
+
+.veil-toggle:hover {
+  background: linear-gradient(
+    145deg,
+    rgba(70, 40, 110, 0.55),
+    rgba(40, 20, 70, 0.45)
+  );
+  border-color: rgba(255, 255, 255, 0.35);
+  transform: translateY(-1px) scale(1.03);
+}
+
+
+
+/* Tiny star-twinkle animation — more visible */
+/* Ensure the button can host sparkles */
+
+/* ✨ Sparkle #1 — bright twinkle (already added, now drifting slightly) */
+.veil-toggle::after {
+  content: "";
+  position: absolute;
+  top: 35%;
+  right: 18%;
+  width: 10px;
+  height: 10px;
+
+  background: radial-gradient(circle,
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(255, 255, 255, 0.5) 40%,
+    rgba(255, 255, 255, 0) 70%
+  );
+
+  border-radius: 50%;
+  opacity: 0;
+
+  animation:
+    twinkle 1.8s infinite ease-in-out,
+    drift 4.5s infinite ease-in-out;
+
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* ✨ Sparkle #2 — smaller, softer, offset for depth */
+.veil-toggle::before {
+  content: "";
+  position: absolute;
+  top: 55%;
+  left: 25%;
+  width: 6px;
+  height: 6px;
+
+  background: radial-gradient(circle,
+    rgba(255, 255, 255, 0.75) 0%,
+    rgba(255, 255, 255, 0.35) 40%,
+    rgba(255, 255, 255, 0) 70%
+  );
+
+  border-radius: 50%;
+  opacity: 0;
+
+  animation:
+    twinkle2 2.6s infinite ease-in-out,
+    drift2 6s infinite ease-in-out;
+
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* ⭐ Twinkle animations */
+@keyframes twinkle {
+  0%   { opacity: 0;   transform: scale(0.4); }
+  40%  { opacity: 1;   transform: scale(1); }
+  60%  { opacity: 0.8; transform: scale(0.8); }
+  100% { opacity: 0;   transform: scale(0.4); }
+}
+
+@keyframes twinkle2 {
+  0%   { opacity: 0;   transform: scale(0.3); }
+  50%  { opacity: 0.9; transform: scale(0.9); }
+  80%  { opacity: 0.6; transform: scale(0.7); }
+  100% { opacity: 0;   transform: scale(0.3); }
+}
+
+/* 🌠 Drift animations — tiny shooting-star glide */
+@keyframes drift {
+  0%   { transform: translate(0, 0); }
+  50%  { transform: translate(3px, -2px); }
+  100% { transform: translate(0, 0); }
+}
+
+@keyframes drift2 {
+  0%   { transform: translate(0, 0); }
+  50%  { transform: translate(-3px, 2px); }
+  100% { transform: translate(0, 0); }
+}
+
+
+/* Desktop Overlay */
+@media (min-width: 601px) {
+  .constellation-overlay {
+    background: rgba(44, 18, 72, 0.28);   /* magical amethyst haze */
+    backdrop-filter: blur(3px) brightness(0.88) contrast(1.22) saturate(1.18);
+  }
+}
+
+/* Mobile Overlay */
+@media (max-width: 600px) {
+  .constellation-overlay {
+    background: rgba(18, 12, 32, 0.18); /* deep indigo‑plum velvet */
+    backdrop-filter: blur(2px) brightness(0.88) contrast(1.12);
+  }
+}
+
+
+/* Interactivity */
+.constellation-wrapper.interactive {
+  pointer-events: auto;
+}
+
+.constellation-wrapper:not(.interactive) {
+  pointer-events: none;
+}
+
+/* DOM star container */
+.constellation-container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 8;
+  gap: 1.2vw;
+  transform:translateZ(0);
+  will-change: transform;
+}
+
+.constellation-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+
+.constellation-container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(255, 255, 255, 0.18) 0 1px, transparent 2px),
+    radial-gradient(circle at 24% 12%, rgba(219, 229, 255, 0.16) 0 1px, transparent 2px),
+    radial-gradient(circle at 36% 20%, rgba(255, 239, 225, 0.14) 0 1px, transparent 2px),
+    radial-gradient(circle at 52% 10%, rgba(255, 255, 255, 0.16) 0 1px, transparent 2px),
+    radial-gradient(circle at 64% 18%, rgba(209, 228, 255, 0.14) 0 1px, transparent 2px),
+    radial-gradient(circle at 81% 14%, rgba(255, 235, 250, 0.16) 0 1px, transparent 2px);
+  opacity: 0.8;
+  filter: blur(0.2px);
+}
+
+.constellation-container::after {
+  content: "";
+  position: absolute;
+  top: 18%;
+  right: 8%;
+  width: 24%;
+  height: 46%;
+  z-index: 1;
+  background:
+    radial-gradient(circle at 52% 20%, rgba(255, 238, 248, 0.31) 0%, rgba(244, 226, 255, 0.18) 24%, transparent 56%),
+    radial-gradient(circle at 44% 44%, rgba(198, 214, 255, 0.22) 0%, rgba(198, 214, 255, 0.13) 20%, transparent 58%),
+    linear-gradient(160deg, rgba(255, 255, 255, 0.11), rgba(228, 214, 255, 0.06) 36%, transparent 72%);
+  filter: blur(22px);
+  opacity: 0.86;
+  transform: rotate(-18deg);
+  pointer-events: none;
+  animation: milkyWayDrift 18s ease-in-out infinite alternate;
+}
+
+.right-constellation {
+  position: absolute;
+  top: 26%;
+  right: 11%;
+  width: 190px;
+  height: 130px;
+  z-index: 2;
+  opacity: 0.54;
+}
+
+.right-constellation-star {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(255, 248, 244, 0.88);
+  box-shadow:
+    0 0 8px rgba(255, 255, 255, 0.68),
+    0 0 16px rgba(208, 218, 255, 0.24);
+}
+
+.right-constellation-star-1 { top: 10%; left: 18%; }
+.right-constellation-star-2 { top: 28%; left: 58%; }
+.right-constellation-star-3 { top: 52%; left: 36%; }
+.right-constellation-star-4 { top: 74%; left: 72%; }
+
+.right-constellation-line {
+  position: absolute;
+  height: 1px;
+  transform-origin: left center;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.24), rgba(187, 205, 255, 0.08));
+}
+
+.right-constellation-line-1 {
+  top: 16%;
+  left: 22%;
+  width: 66px;
+  transform: rotate(16deg);
+}
+
+.right-constellation-line-2 {
+  top: 42%;
+  left: 42%;
+  width: 42px;
+  transform: rotate(126deg);
+}
+
+.right-constellation-line-3 {
+  top: 66%;
+  left: 40%;
+  width: 64px;
+  transform: rotate(22deg);
+}
+
+.left-celestial-accent {
+  position: absolute;
+  top: 24%;
+  left: 9%;
+  width: 140px;
+  height: 96px;
+  z-index: 1;
+  opacity: 0.42;
+}
+
+.left-celestial-accent::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 34% 42%, rgba(198, 218, 255, 0.16), transparent 28%),
+    radial-gradient(circle at 62% 56%, rgba(255, 234, 244, 0.12), transparent 30%);
+  filter: blur(16px);
+}
+
+.left-accent-star {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(255, 250, 246, 0.72);
+  box-shadow:
+    0 0 8px rgba(255, 255, 255, 0.5),
+    0 0 14px rgba(194, 212, 255, 0.18);
+}
+
+.left-accent-star-1 { top: 18%; left: 18%; }
+.left-accent-star-2 { top: 46%; left: 52%; }
+.left-accent-star-3 { top: 70%; left: 30%; }
+
+/* Stars twinkle */
+.star {
+  position: absolute;
+  width: clamp(3px, 0.42vw, 5px);
+  height: clamp(3px, 0.42vw, 5px);
+  border-radius: 50%;
+  background: rgba(255, 251, 245, 0.98);
+  box-shadow:
+    0 0 10px rgba(255, 255, 255, 0.95),
+    0 0 18px rgba(226, 214, 255, 0.75),
+    0 0 36px rgba(173, 201, 255, 0.55);
+  opacity: 0.98;
+  animation: twinkle 3.6s ease-in-out infinite;
+  z-index: 1;
+}
+
+/* Existing */
+.star-1 { top: 20%; left: 18%; }
+.star-2 { top: 36%; left: 40%; }
+.star-3 { top: 62%; left: 70%; }
+
+/* New – layout-only */
+.star-4 { top: 28%; left: 65%; }
+.star-5 { top: 72%; left: 28%; }
+.star-6 { top: 18%; left: 54%; }
+.star-7 { top: 24%; left: 84%; }
+.star-8 { top: 30%; left: 8%; }
+.star-9 { top: 40%; left: 72%; }
+.star-10 { top: 48%; left: 22%; }
+.star-11 { top: 26%; left: 48%; }
+.star-12 { top: 33%; left: 58%; }
+.star-13 { top: 38%; left: 88%; }
+.star-14 { top: 46%; left: 12%; }
+.star-15 { top: 54%; left: 63%; }
+
+
+@keyframes twinkle {
+  0% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.3); }
+  100% { opacity: 0.6; transform: scale(1); }
+}
+
+@keyframes milkyWayDrift {
+  0% {
+    transform: rotate(-18deg) translate3d(0, 0, 0);
+    filter: blur(22px) hue-rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(-15deg) translate3d(-10px, 8px, 0);
+    filter: blur(24px) hue-rotate(12deg);
+  }
+}
+
+/* SHOOTING STAR */
+
+.shooting-star {
+  position: absolute;
+  top: 34%;
+  /* ⭐ start higher in the sky */
+  left: -20%;
+  /* ⭐ start further off-screen */
+  width: 180px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.98), rgba(196, 223, 255, 0.55));
+  opacity: 0.98;
+  box-shadow:
+    0 0 10px rgba(255, 255, 255, 0.88),
+    0 0 18px rgba(173, 209, 255, 0.55);
+  transform: rotate(12deg);
+  /* ⭐ gentle upward tilt */
+  animation: shoot 6.4s ease-in-out infinite;
+  animation-delay: 1.8s;
+  z-index: 2;
+}
+
+@keyframes shoot {
+  0% {
+    transform: translateX(0) translateY(0) rotate(10deg);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  40% {
+    transform: translateX(920px) translateY(34px) rotate(10deg);
+    opacity: 0.9;
+  }
+
+  60% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+.birthday-mode .moon {
+  filter: brightness(1.08) saturate(1.2);
+}
+
+.cancer-constellation {
+  position: absolute;
+  top: 18%;
+  left: 10%;
+  width: 240px;
+  height: 170px;
+  opacity: 0.9;
+}
+
+.cancer-star {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #fff9ef;
+  box-shadow:
+    0 0 12px rgba(255, 252, 242, 0.95),
+    0 0 28px rgba(166, 212, 255, 0.45);
+}
+
+.cancer-star-1 { top: 16%; left: 12%; }
+.cancer-star-2 { top: 7%; left: 38%; }
+.cancer-star-3 { top: 26%; left: 56%; }
+.cancer-star-4 { top: 45%; left: 34%; }
+.cancer-star-5 { top: 63%; left: 64%; }
+.cancer-star-6 { top: 82%; left: 18%; }
+
+.cancer-line {
+  position: absolute;
+  height: 2px;
+  transform-origin: left center;
+  background: linear-gradient(90deg, rgba(255,255,255,0.65), rgba(173, 214, 255, 0.25));
+}
+
+.cancer-line-1 { top: 12%; left: 15%; width: 58px; transform: rotate(-8deg); }
+.cancer-line-2 { top: 16%; left: 41%; width: 45px; transform: rotate(26deg); }
+.cancer-line-3 { top: 35%; left: 42%; width: 42px; transform: rotate(130deg); }
+.cancer-line-4 { top: 52%; left: 38%; width: 46px; transform: rotate(14deg); }
+.cancer-line-5 { top: 71%; left: 22%; width: 62px; transform: rotate(-18deg); }
+
+.planet-saturn,
+.planet-venus,
+.planet-pluto,
+.planet-mars,
+.planet-orbital,
+.tiny-rocket {
+  position: absolute;
+  z-index: 3;
+}
+
+.planet-venus {
+  top: 20%;
+  left: 74%;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 30%, rgba(255, 246, 233, 0.98), rgba(244, 196, 176, 0.86) 52%, rgba(171, 111, 96, 0.62) 100%);
+  box-shadow:
+    0 0 18px rgba(255, 213, 194, 0.34),
+    0 0 40px rgba(242, 168, 144, 0.22);
+  opacity: 0.9;
+  animation: planetFloat 16s ease-in-out infinite;
+}
+
+.planet-venus::before {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 34% 28%, rgba(255, 250, 244, 0.78), transparent 28%),
+    radial-gradient(circle at 62% 64%, rgba(176, 102, 92, 0.18), transparent 32%);
+  opacity: 0.92;
+}
+
+.planet-venus::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 228, 220, 0.28);
+  opacity: 0.8;
+}
+
+.planet-pluto {
+  top: 42%;
+  left: 86%;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 30%, rgba(236, 238, 255, 0.96), rgba(198, 204, 240, 0.8) 58%, rgba(124, 134, 188, 0.52) 100%);
+  box-shadow:
+    0 0 14px rgba(212, 220, 255, 0.28),
+    0 0 28px rgba(187, 194, 255, 0.18);
+  opacity: 0.82;
+  animation: planetFloat 22s ease-in-out infinite;
+}
+
+.planet-mars {
+  top: 58%;
+  right: 7%;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 30%, rgba(255, 220, 206, 0.9), rgba(196, 108, 86, 0.72) 54%, rgba(112, 46, 38, 0.44) 100%);
+  box-shadow:
+    0 0 10px rgba(235, 158, 132, 0.18),
+    0 0 22px rgba(184, 96, 74, 0.12);
+  opacity: 0.68;
+  animation: planetFloat 19s ease-in-out infinite;
+}
+
+.planet-saturn {
+  top: 18%;
+  right: 17%;
+  width: 94px;
+  height: 94px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 25%, #ffe2b0, #ca8a55 62%, #7b4b39 100%);
+  box-shadow: 0 0 38px rgba(255, 201, 140, 0.24);
+  animation: planetFloat 18s ease-in-out infinite;
+}
+
+.planet-ring {
+  position: absolute;
+  inset: 38px -18px;
+  border: 4px solid rgba(255, 223, 188, 0.7);
+  border-radius: 50%;
+  transform: rotate(-18deg);
+}
+
+.planet-orbital {
+  top: 56%;
+  right: 11%;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #d8f0ff, #79b7f2 58%, #345d94 100%);
+  box-shadow:
+    0 0 28px rgba(170, 225, 255, 0.42),
+    0 0 52px rgba(121, 183, 242, 0.18),
+    inset -8px -10px 18px rgba(30, 50, 96, 0.3);
+  animation: planetFloat 13s ease-in-out infinite;
+}
+
+.tiny-rocket {
+  top: 42%;
+  left: 62%;
+  width: 68px;
+  height: 18px;
+  border-radius: 14px 14px 10px 10px;
+  transform: rotate(-26deg);
+  background: linear-gradient(90deg, #fff6ef, #f2b8aa 48%, #a66cc4 100%);
+  box-shadow: 0 0 22px rgba(255, 218, 198, 0.22);
+  animation: rocketFlight 8s ease-in-out infinite;
+}
+
+.tiny-rocket::before {
+  content: "";
+  position: absolute;
+  top: 4px;
+  right: -11px;
+  border-left: 13px solid #ffd5ca;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+}
+
+.rocket-window {
+  position: absolute;
+  top: 5px;
+  left: 18px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: rgba(121, 199, 255, 0.9);
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,0.55);
+}
+
+.rocket-flame {
+  position: absolute;
+  top: 6px;
+  left: -14px;
+  width: 18px;
+  height: 8px;
+  background: linear-gradient(90deg, rgba(255, 242, 171, 0.95), rgba(255, 140, 87, 0.4), transparent);
+  filter: blur(0.5px);
+}
+
+@keyframes planetFloat {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes rocketFlight {
+  0% { transform: translate3d(-12px, 10px, 0) rotate(-26deg); opacity: 0.82; }
+  50% { transform: translate3d(24px, -14px, 0) rotate(-20deg); opacity: 1; }
+  100% { transform: translate3d(-12px, 10px, 0) rotate(-26deg); opacity: 0.82; }
+}
+
+/* Parallax does not cause jank  */
+
+@media (max-width: 600px) {
+  .constellation-container {
+    transform: translateY(calc(var(--scroll, 0) * 0.06px));
+  }
+}
+
+    /* MOON */
+
+    /* Cinematic glow */
+.moon {
+  position: absolute;
+  top: 12%;
+  right: 8%;
+  width: 220px;          /* bigger, more celestial */
+  height: 220px;
+  border-radius: 50%;
+
+  /* Mystical watercolor glow */
+  background: radial-gradient(circle at 30% 30%,
+    #ffffff 0%,
+    #f3eaff 35%,
+    #d7c2ff 55%,
+    #a37be8 80%,
+    #6a3fa8 100%
+  );
+
+  /* Deep, magical glow */
+  box-shadow:
+    0 0 60px rgba(230, 200, 255, 0.8),
+    0 0 120px rgba(190, 150, 255, 0.55),
+    0 0 200px rgba(150, 100, 220, 0.35),
+    0 0 260px rgba(120, 70, 200, 0.25);
+
+  opacity: 0.95;
+  z-index: 3;
+
+  /* Smooth, dreamy transitions */
+  transition:
+    clip-path 3s ease-in-out,
+    opacity 2.4s ease,
+    filter 2.4s ease;
+
+  /* Subtle mystical shimmer */
+  animation: moonMysticPulse 18s ease-in-out infinite alternate;
+}
+
+.moon::after {
+  content: "";
+  position: absolute;
+  inset: -70px; /* larger aura */
+  border-radius: 50%;
+  z-index: -1;
+
+  background: radial-gradient(circle,
+    rgba(220, 190, 255, 0.45) 0%,
+    rgba(180, 140, 240, 0.22) 40%,
+    rgba(120, 80, 200, 0.12) 70%,
+    transparent 100%
+  );
+
+  filter: blur(35px); /* soft, mystical diffusion */
+}
+
+/* Mystical Pulse */
+
+@keyframes moonMysticPulse {
+  0% {
+    filter: brightness(0.92) saturate(1.05) blur(0px);
+  }
+  50% {
+    filter: brightness(1.08) saturate(1.2) blur(1px);
+  }
+  100% {
+    filter: brightness(1.02) saturate(1.1) blur(0.5px);
+  }
+}
+
+
+/* MOON Seasonal phases */
+
+/* Animate Waxing & Waning Transitions */
+
+.moon.full {
+  clip-path: circle(50% at 50% 50%);
+}
+
+.moon.crescent {
+  clip-path: ellipse(28% 50% at 62% 50%);
+}
+
+.moon.waning {
+  clip-path: ellipse(32% 50% at 38% 50%);
+}
+
+.moon.new {
+  clip-path: circle(14% at 50% 50%);
+  opacity: 0.35; /* still visible, like a ghost moon */
+}
+
+@media (max-width: 700px) {
+  .planet-saturn {
+    width: 76px;
+    height: 76px;
+    right: 10%;
+  }
+
+  .planet-venus {
+    left: 66%;
+    top: 18%;
+    width: 24px;
+    height: 24px;
+  }
+
+  .planet-pluto {
+    left: 82%;
+    top: 36%;
+    width: 14px;
+    height: 14px;
+  }
+
+  .planet-mars {
+    right: 6%;
+    top: 62%;
+    width: 16px;
+    height: 16px;
+  }
+
+  .moon {
+    width: 170px;
+    height: 170px;
+    right: -2%;
+  }
+
+  .constellation-container::after {
+    width: 36%;
+    height: 48%;
+    top: 18%;
+    right: -4%;
+    opacity: 0.68;
+  }
+
+  .right-constellation {
+    right: 6%;
+    width: 140px;
+    height: 104px;
+  }
+
+  .left-celestial-accent {
+    left: 4%;
+    width: 108px;
+    height: 82px;
+    opacity: 0.34;
+  }
+}
+
+/* Smooth transitions */
+.moon {
+  transition:
+    clip-path 2.4s ease-in-out,
+    opacity 2s ease,
+    filter 2s ease;
+}
+
+.star-11,
+.star-12,
+.star-13,
+.star-14,
+.star-15 {
+  animation-duration: 4.8s;
+}

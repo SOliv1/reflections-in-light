@@ -1,0 +1,343 @@
+/* ————————————————————————————————
+   CALM CLARITY GRID LAYOUT (DESKTOP)
+——————————————————————————————— */
+
+.calendar-container {
+  width: 90%;
+  margin: 0 auto;
+  padding: 60px 40px;
+}
+
+.calendar-header {
+  padding-left: 6vw;   /* cinematic inset */
+  padding-right: 6vw;  /* optional, keeps symmetry*/
+  width: 90%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+} 
+
+.calendar-header {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.calendar-nav-prev {
+  justify-self: start;
+}
+
+.calendar-nav-next {
+  justify-self: end;
+}
+
+.calendar-title-spacer {
+  width: min(18rem, 100%);
+  min-height: 1px;
+}
+
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 22px;
+}
+
+.calendar-grid > * {
+  min-height: 140px;
+}
+
+/* ————————————————————————————————
+   CALM CLARITY TILE BASE STYLE
+——————————————————————————————— */
+
+.calendar-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  /* remove all blur, borders, glow, backgrounds */
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+
+  padding: 6px 0;
+  margin: 0 auto;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  color: #000;
+
+}
+
+
+.calendar-title::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    circle at 50% 120%,
+    rgba(255, 255, 255, 0.12),
+    rgba(255, 255, 255, 0) 70%
+  );
+  pointer-events: none;
+}
+.calendar-title {
+  box-shadow:
+    0 0 12px rgba(255, 255, 255, 0.12),
+    inset 0 0 8px rgba(255, 255, 255, 0.18);
+}
+
+/* SPRING — soft pastels */
+.spring .calendar-title {
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 0 12px rgba(180, 220, 200, 0.25),
+    inset 0 0 8px rgba(255, 255, 255, 0.18);
+}
+
+/* SUMMER — warm glow */
+.summer .calendar-title {
+  background: rgba(255, 240, 200, 0.08);
+  box-shadow:
+    0 0 12px rgba(255, 200, 120, 0.25),
+    inset 0 0 8px rgba(255, 255, 255, 0.18);
+}
+
+/* AUTUMN — ember tones */
+.autumn .calendar-title {
+  background: rgba(255, 200, 160, 0.08);
+  box-shadow:
+    0 0 12px rgba(255, 150, 80, 0.25),
+    inset 0 0 8px rgba(255, 255, 255, 0.18);
+}
+
+/* WINTER — icy blues */
+.winter .calendar-title {
+  background: rgba(200, 220, 255, 0.08);
+  box-shadow:
+    0 0 12px rgba(160, 200, 255, 0.25),
+    inset 0 0 8px rgba(255, 255, 255, 0.18);
+}
+
+
+/* Hover — gentle, airy lift */
+.calendar-tile:hover {
+  transform: translateY(-3px);
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow:
+    0 6px 14px rgba(0, 0, 0, 0.18),
+    0 0 12px rgba(180, 220, 200, 0.25);
+}
+
+/* Day number — calmer typography */
+.day-number {
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.day-date-label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(26, 26, 26, 0.65);
+}
+
+/* Empty tiles (before day 1) */
+.calendar-tile.empty {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+
+  /* your base day styles here */
+
+/* --- Weather mood tint for TODAY --- */
+.calendar-tile.calendar-day.today.sunny {
+  background: rgba(255, 200, 120, 0.18);
+  border-color: rgba(255, 200, 120, 0.65);
+}
+
+.calendar-tile.calendar-day.today.snow {
+  background: rgba(180, 200, 255, 0.18);
+  border-color: rgba(160, 190, 255, 0.65);
+}
+
+.calendar-tile.calendar-day.today.rain {
+  background: rgba(120, 160, 255, 0.18);
+  border-color: rgba(120, 160, 255, 0.65);
+}
+
+.calendar-tile.calendar-day.today.cloudy {
+  background: rgba(200, 200, 200, 0.18);
+  border-color: rgba(170, 170, 170, 0.65);
+}
+
+.calendar-tile.calendar-day.today.mist {
+  background: rgba(220, 220, 220, 0.14);
+  border-color: rgba(200, 200, 200, 0.55);
+}
+
+.calendar-tile.calendar-day.today.storm {
+  background: rgba(100, 120, 170, 0.20);
+  border-color: rgba(120, 140, 190, 0.75);
+}
+
+.calendar-tile.calendar-day.today.unknown,
+.calendar-tile.calendar-day.today.neutral {
+  background: rgba(140, 160, 190, 0.14);
+  border-color: rgba(140, 160, 190, 0.65);
+}
+
+
+
+
+
+/* ————————————————————————————————
+   TODAY HIGHLIGHT — Calm, Cool, Present
+——————————————————————————————— */
+
+.calendar-tile.today {
+  position: relative;
+  border: 2px solid rgba(120, 170, 255, 0.75);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 0 18px rgba(120, 170, 255, 0.18),
+    inset 0 0 8px rgba(255, 255, 255, 0.12);
+}
+
+.today-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 8px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #1d2b4b;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: 0 0 10px rgba(120, 170, 255, 0.20);
+}
+
+.calendar-tile.birthday {
+  border-color: rgba(255, 210, 125, 0.7);
+  background:
+    radial-gradient(circle at 25% 20%, rgba(255, 247, 214, 0.85), transparent 40%),
+    linear-gradient(145deg, rgba(255, 232, 184, 0.22), rgba(244, 180, 116, 0.18));
+  box-shadow:
+    0 10px 24px rgba(100, 55, 10, 0.15),
+    0 0 18px rgba(255, 215, 150, 0.22);
+}
+
+/* ————————————————————————————————
+   SEASONAL TINTING (Spring)
+——————————————————————————————— */
+
+:root {
+  --tint-spring: rgba(140, 190, 150, 0.10);
+  --tint-spring-border: rgba(140, 190, 150, 0.25);
+}
+
+.calendar-wrapper.season-spring .calendar-tile {
+  background: var(--tint-spring);
+  border-color: var(--tint-spring-border);
+}
+
+/* ————————————————————————————————
+   FADE-IN ARRIVAL (Calm Clarity)
+——————————————————————————————— */
+
+.calendar-grid {
+  margin-left: 4vw;   /* matches header + title inset */
+  margin-right: 4vw;  /* keeps right side balanced */
+  opacity: 0;
+  animation: fadeInCalm 1.4s ease-out forwards;
+}
+
+@keyframes fadeInCalm {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ————————————————————————————————
+   MOBILE: MINI CALENDAR BELOW THE DOOR
+——————————————————————————————— */
+
+@media (max-width: 600px) {
+
+  .calendar-container {
+    margin-top: 36px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,0.12);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .calendar-container::-webkit-scrollbar {
+    display: none;
+  }
+
+  .calendar-grid {
+    display: flex;
+    gap: 12px;
+  }
+
+  .calendar-grid > * {
+    min-height: 52px !important;
+  }
+
+  /* Mini circular tiles */
+.calendar-tile {
+  flex: 0 0 auto !important;
+  width: 52px !important;
+  height: 52px !important;
+  border-radius: 50% !important;
+  font-size: .7rem !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0 !important;
+  background: rgba(255,255,255,0.08) !important;
+  box-shadow: 0 0 6px var(--mode-shadow) !important;
+  text-decoration: none !important;
+  color: inherit !important;
+}
+
+  .day-date-label {
+    display: none !important;
+  }
+
+  .calendar-wrapper.season-spring .calendar-tile {
+    background: var(--tint-spring) !important;
+    border-color: var(--tint-spring-border) !important;
+  }
+
+  .calendar-tile.selected {
+    transform: scale(1.15) !important;
+    background: rgba(255,255,255,0.18) !important;
+    box-shadow: 0 0 12px var(--mode-shadow) !important;
+  }
+
+  .calendar-title {
+    display: none !important;
+  }
+}
+
