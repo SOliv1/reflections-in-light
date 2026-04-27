@@ -118,10 +118,24 @@
     transition: border-color 0.3s ease, background 0.3s ease;
 }
 
+.unified-drawer-panel .short-reflections-drawer .todo-input-row input {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: rgba(248, 250, 255, 0.97) !important;
+    caret-color: rgba(248, 250, 255, 0.97) !important;
+    -webkit-text-fill-color: rgba(248, 250, 255, 0.97) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
 .short-reflections-drawer .todo-input-row input::placeholder,
 .short-reflections-drawer .journal-area::placeholder,
 .push-reminder-field input::placeholder {
     color: rgba(240, 244, 252, 0.68);
+}
+
+.unified-drawer-panel .short-reflections-drawer .todo-input-row input::placeholder {
+    color: rgba(235, 241, 252, 0.72) !important;
+    -webkit-text-fill-color: rgba(235, 241, 252, 0.72);
 }
 
 .short-reflections-drawer .todo-input-row input:focus,
@@ -129,6 +143,14 @@
     outline: none;
     border-color: rgba(var(--orbColorRGB), 0.45);
     background: rgba(var(--orbColorRGB), 0.18);
+}
+
+.unified-drawer-panel .short-reflections-drawer .todo-input-row input:focus {
+    background: rgba(255, 255, 255, 0.14) !important;
+    border-color: rgba(var(--orbColorRGB), 0.4) !important;
+    box-shadow:
+        0 0 0 1px rgba(var(--orbColorRGB), 0.14),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 /* -----------------------------------------------------------
