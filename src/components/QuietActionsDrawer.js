@@ -1,16 +1,20 @@
 import { useEffect, useRef, useState } from "react";
 import {
+  getEmailReminderStatus,
   getVapidPublicKey,
   isPushSupported,
   previewNextPush,
   postPushSubscription,
   postPushUnsubscribe,
+  subscribeEmailReminder,
+  sendEmailReminder,
   sendPushTest,
   urlBase64ToUint8Array,
 } from "../utils/pushNotifications";
 
 const DEFAULT_REMINDER_TIME = "18:00";
 const REMINDER_STORAGE_KEY = "quietActionReminderSettings";
+const EMAIL_STORAGE_KEY = "quietActionEmailSettings";
 
 function getDefaultTimeZone() {
   if (typeof Intl === "undefined") {
@@ -40,11 +44,17 @@ export default function QuietActionsDrawer({ orbColor, onClose }) {
   const [hydrated, setHydrated] = useState(false);
   const [pushSubscription, setPushSubscription] = useState(null);
   const [pushStatus, setPushStatus] = useState("Enable reminders to get a daily nudge.");
+  const [emailAddress, setEmailAddress] = useState("");
+  const [emailStatus, setEmailStatus] = useState(
+    "Email reminders are optional. Add an address to receive a daily note and a test email."
+  );
   const [reminderTime, setReminderTime] = useState(DEFAULT_REMINDER_TIME);
   const [timeZone, setTimeZone] = useState(getDefaultTimeZone);
   const [nextReminderPreview, setNextReminderPreview] = useState(null);
   const [isPreviewLoading, setIsPreviewLoading] = useState(false);
   const [isSavingPush, setIsSavingPush] = useState(false);
+  const [isSendingEmail, setIsSendingEmail] = useState(false);
+  const [isEmailConfigured, setIsEmailConfigured] = useState(true);
   const pushSyncInFlight = useRef(false);
   const serviceWorkerRegistrationRef = useRef(null);
 
@@ -70,6 +80,18 @@ export default function QuietActionsDrawer({ orbColor, onClose }) {
       }
     }
 
+    const savedEmailSettings = localStorage.getItem(EMAIL_STORAGE_KEY);
+    if (savedEmailSettings) {
+      try {
+        const parsed = JSON.parse(savedEmailSettings);
+        if (typeof parsed?.emailAddress === "string" && parsed.emailAddress) {
+          setEmailAddress(parsed.emailAddress);
+        }
+      } catch (error) {
+        console.warn("Failed to parse email settings:", error);
+      }
+    }
+
     setHydrated(true);
   }, []);
 
@@ -88,6 +110,17 @@ export default function QuietActionsDrawer({ orbColor, onClose }) {
       JSON.stringify({ reminderTime, timeZone })
     );
   }, [hydrated, reminderTime, timeZone]);
+
+  useEffect(() => {
+    if (!hydrated) {
+      return;
+    }
+
+    localStorage.setItem(
+      EMAIL_STORAGE_KEY,
+      JSON.stringify({ emailAddress })
+    );
+  }, [hydrated, emailAddress]);
 
   useEffect(() => {
     if (!hydrated) {
@@ -190,6 +223,33 @@ export default function QuietActionsDrawer({ orbColor, onClose }) {
     };
   }, []);
 
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadEmailStatus = async () => {
+      try {
+        const status = await getEmailReminderStatus();
+        if (!cancelled) {
+          setIsEmailConfigured(Boolean(status?.configured));
+
+          if (!status?.configured) {
+            setEmailStatus(
+              "Email reminders are not configured on the server yet."
+            );
+          }
+        }
+      } catch (error) {
+        console.error("Failed to load email reminder status:", error);
+      }
+    };
+
+    void loadEmailStatus();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   const enablePushReminders = async () => {
     if (!isPushSupported()) {
       setPushStatus("This browser does not support push reminders.");
@@ -232,6 +292,60 @@ export default function QuietActionsDrawer({ orbColor, onClose }) {
       setPushStatus("We could not enable reminders just yet.");
     } finally {
       setIsSavingPush(false);
+    }
+  };
+
+  const handleEmailAddressChange = (event) => {
+    setEmailAddress(event.target.value);
+  };
+
+  const handleEmailReminderSubscribe = async () => {
+    if (!emailAddress.trim()) {
+      setEmailStatus("Add an email address first.");
+      return;
+    }
+
+    setIsSendingEmail(true);
+
+    try {
+      await subscribeEmailReminder({
+        toEmail: emailAddress.trim(),
+        actions: items,
+        reminderTime,
+        timeZone,
+      });
+
+      setEmailStatus("Email reminders are now subscribed for this address.");
+    } catch (error) {
+      console.error("Failed to subscribe email reminders:", error);
+      setEmailStatus(error.message || "We could not save the email reminder just yet.");
+    } finally {
+      setIsSendingEmail(false);
+    }
+  };
+
+  const handleSendEmailTest = async () => {
+    if (!emailAddress.trim()) {
+      setEmailStatus("Add an email address first, then we can send a test.");
+      return;
+    }
+
+    setIsSendingEmail(true);
+
+    try {
+      await sendEmailReminder({
+        toEmail: emailAddress.trim(),
+        actions: items,
+        reminderTime,
+        timeZone,
+      });
+
+      setEmailStatus("Test email sent to this address.");
+    } catch (error) {
+      console.error("Failed to send test email:", error);
+      setEmailStatus(error.message || "We could not send a test email right now.");
+    } finally {
+      setIsSendingEmail(false);
     }
   };
 
@@ -385,6 +499,43 @@ export default function QuietActionsDrawer({ orbColor, onClose }) {
             disabled={isSavingPush || !pushSubscription}
           >
             Send test notification
+          </button>
+        </div>
+      </div>
+
+      <div className="push-reminder-panel push-reminder-panel--email">
+        <p className="push-reminder-label">Email subscription</p>
+        <p className="push-reminder-status">{emailStatus}</p>
+
+        <div className="push-reminder-form">
+          <label className="push-reminder-field">
+            <span>Email address</span>
+            <input
+              type="email"
+              value={emailAddress}
+              onChange={handleEmailAddressChange}
+              placeholder="you@example.com"
+              autoComplete="email"
+              inputMode="email"
+            />
+          </label>
+        </div>
+
+        <div className="push-reminder-actions">
+          <button
+            className="drawer-btn"
+            onClick={handleEmailReminderSubscribe}
+            disabled={isSendingEmail || !isEmailConfigured}
+          >
+            Subscribe by email
+          </button>
+
+          <button
+            className="drawer-btn"
+            onClick={handleSendEmailTest}
+            disabled={isSendingEmail || !isEmailConfigured}
+          >
+            Send test email
           </button>
         </div>
       </div>

@@ -124,3 +124,89 @@ export async function previewNextPush(time, timeZone) {
 
   return response.json();
 }
+
+export async function getEmailReminderStatus() {
+  const response = await fetchFromApi("/api/email/status");
+
+  if (!response.ok) {
+    throw new Error(`Failed to load email reminder status (${response.status})`);
+  }
+
+  return response.json();
+}
+
+export async function subscribeEmailReminder({
+  toEmail,
+  actions = [],
+  reminderTime = "18:00",
+  timeZone = "UTC",
+} = {}) {
+  const response = await fetchFromApi("/api/email/subscribe", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      emailAddress: toEmail,
+      actions: extractActionTexts(actions),
+      reminderTime,
+      timeZone,
+      title: "Quiet Actions",
+    }),
+  });
+
+  if (!response.ok) {
+    let message = `Failed to subscribe email reminders (${response.status})`;
+
+    try {
+      const data = await response.json();
+      if (data?.error) {
+        message = data.error;
+      }
+    } catch (_error) {
+      // Ignore JSON parse failures and fall back to the default message.
+    }
+
+    throw new Error(message);
+  }
+
+  return response.json();
+}
+
+export async function sendEmailReminder({
+  toEmail,
+  actions = [],
+  reminderTime = "18:00",
+  timeZone = "UTC",
+} = {}) {
+  const response = await fetchFromApi("/api/email/test", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      emailAddress: toEmail,
+      actions: extractActionTexts(actions),
+      reminderTime,
+      timeZone,
+      title: "Quiet Actions",
+    }),
+  });
+
+  if (!response.ok) {
+    let message = `Failed to send test email (${response.status})`;
+
+    try {
+      const data = await response.json();
+      if (data?.error) {
+        message = data.error;
+      }
+    } catch (_error) {
+      // Ignore JSON parse failures and fall back to the default message.
+    }
+
+    throw new Error(message);
+  }
+
+  return response.json();
+}

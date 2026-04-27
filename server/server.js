@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { connectToDb, getDbStatus } from "./db.js";
+import { startEmailScheduler } from "./services/emailScheduler.js";
 import { startPushScheduler } from "./services/pushScheduler.js";
 
 // ------------------------------------------------------------
@@ -72,6 +73,7 @@ import uploadRoute from "./routes/upload.js";
 import weatherRoutes from "./routes/weather.js";
 import randomImageRoute from "./routes/randomImage.js";
 import pushRoutes from "./routes/push.js";
+import emailRoutes from "./routes/email.js";
 
 // ------------------------------------------------------------
 // BASIC ROUTES
@@ -112,6 +114,7 @@ app.use("/upload", uploadRoute);
 app.use("/api", weatherRoutes);
 app.use("/random-image", randomImageRoute); // <-- Cloudinary randomizer
 app.use("/api/push", pushRoutes);
+app.use("/api/email", emailRoutes);
 
 // ------------------------------------------------------------
 // START SERVER AFTER DB CONNECTS
@@ -129,4 +132,5 @@ app.listen(port, async () => {
   }
 
   startPushScheduler();
+  startEmailScheduler();
 });
