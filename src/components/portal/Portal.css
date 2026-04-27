@@ -85,6 +85,26 @@
   opacity: 0.18;
 }
 
+.portal--orb-open {
+  transform: scale(1.26);
+  filter: brightness(1.12) saturate(1.1);
+}
+
+.portal--orb-open .portal__core {
+  transform: scale(1.07);
+}
+
+.portal--mood.portal--orb-open {
+  box-shadow:
+    0 0 32px rgba(255, 255, 255, 0.3),
+    0 0 68px rgba(170, 188, 255, 0.36),
+    0 0 96px rgba(255, 255, 255, 0.14);
+}
+
+.portal--mood:hover {
+  transform: scale(1.15);
+}
+
 /* Inner core */
 .portal__core {
   position: absolute;
@@ -130,10 +150,11 @@
 
 .portal--clock-open {
   animation: none;
-  transform: scale(1.9) translateY(-0.2rem);
+  transform: scale(2.2) translateY(-0.22rem);
   box-shadow:
-    0 0 26px rgba(255, 255, 255, 0.32),
-    0 0 54px rgba(176, 194, 255, 0.3);
+    0 0 34px rgba(255, 255, 255, 0.38),
+    0 0 72px rgba(176, 194, 255, 0.38),
+    0 16px 40px rgba(0, 0, 0, 0.16);
 }
 
 .portal--clock-open .portal__clock {
@@ -831,8 +852,8 @@
 
 .mood-orb {
   position: absolute;
-  top: -10px;
-  right: -10px;
+  top: 10px;
+  right: 10px;
   width: 28px;
   height: 28px;
   border-radius: 50%;
@@ -903,10 +924,10 @@
 
 .mood-radial-menu {
   position: absolute;
-  top: 0;
-  right: 0;
-  width: 160px;
-  height: 160px;
+  top: 54px;
+  right: 6px;
+  width: min(18rem, calc(100vw - 1.5rem));
+  height: auto;
   pointer-events: auto;
   z-index: 30;
   animation: radialBloom 0.35s ease-out forwards;
@@ -1001,8 +1022,21 @@
 }
 
 @media (max-width: 600px) {
+  .mood-orb {
+    top: 8px;
+    right: 8px;
+    width: 26px;
+    height: 26px;
+  }
+
   .portal--clock-open {
     transform: scale(1.55) translateY(-0.1rem);
+  }
+
+  .mood-radial-menu {
+    top: 46px;
+    right: 0.5rem;
+    width: min(16.5rem, calc(100vw - 1rem));
   }
 
   .portal__clock-time {
@@ -1218,6 +1252,261 @@
   0 0 24px var(--season-mid),
   0 0 36px var(--season-dark);
   transform: translateY(-2px);
+}
+
+/* -------------------------------------------------- */
+/* 12. PRECISION ELEGANCE OVERRIDES                  */
+/* -------------------------------------------------- */
+
+.portal-container--mood-calm {
+  --portal-mood-glow: rgba(174, 234, 255, 0.72);
+  --portal-mood-tint: rgba(174, 234, 255, 0.18);
+  --portal-mood-text: rgba(245, 251, 255, 0.98);
+  --portal-mood-subtext: rgba(225, 237, 255, 0.8);
+}
+
+.portal-container--mood-joyful {
+  --portal-mood-glow: rgba(255, 232, 170, 0.78);
+  --portal-mood-tint: rgba(255, 232, 170, 0.18);
+  --portal-mood-text: rgba(255, 251, 242, 0.98);
+  --portal-mood-subtext: rgba(255, 240, 210, 0.82);
+}
+
+.portal-container--mood-stormy {
+  --portal-mood-glow: rgba(136, 153, 255, 0.76);
+  --portal-mood-tint: rgba(136, 153, 255, 0.18);
+  --portal-mood-text: rgba(247, 248, 255, 0.98);
+  --portal-mood-subtext: rgba(220, 227, 255, 0.8);
+}
+
+.portal-container--mood-reflective {
+  --portal-mood-glow: rgba(208, 208, 213, 0.76);
+  --portal-mood-tint: rgba(208, 208, 213, 0.18);
+  --portal-mood-text: rgba(250, 250, 252, 0.98);
+  --portal-mood-subtext: rgba(232, 232, 240, 0.8);
+}
+
+.portal-container--mood-natural {
+  --portal-mood-glow: rgba(184, 230, 184, 0.76);
+  --portal-mood-tint: rgba(184, 230, 184, 0.18);
+  --portal-mood-text: rgba(247, 251, 247, 0.98);
+  --portal-mood-subtext: rgba(226, 243, 226, 0.8);
+}
+
+button.mood-orb {
+  appearance: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  color: rgba(28, 28, 40, 0.9);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mood-orb__label {
+  font-size: 0.42rem;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+  transform: translateY(0.5px);
+}
+
+.portal-container--mood-calm .portal--mood,
+.portal-container--mood-joyful .portal--mood,
+.portal-container--mood-stormy .portal--mood,
+.portal-container--mood-reflective .portal--mood,
+.portal-container--mood-natural .portal--mood {
+  background:
+    radial-gradient(circle at 36% 32%, rgba(255, 255, 255, 0.38), var(--portal-mood-tint) 42%, rgba(154, 173, 238, 0.08) 68%, transparent 100%);
+  box-shadow:
+    0 0 18px rgba(255, 255, 255, 0.18),
+    0 0 38px var(--portal-mood-glow);
+  backdrop-filter: blur(8px) saturate(1.05);
+}
+
+.portal-container--mood-calm .portal--mood .portal__clock-time,
+.portal-container--mood-joyful .portal--mood .portal__clock-time,
+.portal-container--mood-stormy .portal--mood .portal__clock-time,
+.portal-container--mood-reflective .portal--mood .portal__clock-time,
+.portal-container--mood-natural .portal--mood .portal__clock-time {
+  color: var(--portal-mood-text);
+}
+
+.portal-container--mood-calm .portal--mood .portal__clock-date,
+.portal-container--mood-joyful .portal--mood .portal__clock-date,
+.portal-container--mood-stormy .portal--mood .portal__clock-date,
+.portal-container--mood-reflective .portal--mood .portal__clock-date,
+.portal-container--mood-natural .portal--mood .portal__clock-date {
+  color: var(--portal-mood-subtext);
+}
+
+.portal--clock-open {
+  transform: scale(1.86) translateY(-0.18rem);
+  box-shadow:
+    0 0 24px rgba(255, 255, 255, 0.32),
+    0 0 54px var(--portal-mood-glow),
+    0 16px 38px rgba(0, 0, 0, 0.16);
+}
+
+.portal--clock-open .portal__clock {
+  opacity: 1;
+  backdrop-filter: blur(12px) saturate(1.05);
+}
+
+.mood-radial-menu {
+  position: absolute;
+  top: 112px;
+  right: clamp(0px, 2vw, 10px);
+  width: min(19rem, calc(100vw - 1.5rem));
+  padding: 0.75rem;
+  pointer-events: auto;
+  z-index: 30;
+  animation: menuBloom 0.32s cubic-bezier(0.16, 0.84, 0.44, 1) forwards;
+  opacity: 0;
+  transform-origin: top right;
+  border-radius: 22px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.08));
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  backdrop-filter: blur(18px) saturate(1.18);
+  box-shadow: 0 18px 36px rgba(10, 14, 26, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.32);
+}
+
+.mood-radial-menu__title {
+  margin: 0 0 0.45rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(245, 248, 255, 0.76);
+}
+
+.mood-radial-menu__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.42rem;
+  align-items: stretch;
+  justify-items: stretch;
+}
+
+@keyframes menuBloom {
+  from {
+    transform: translate3d(14px, -12px, 0) scale(0.96);
+    opacity: 0;
+  }
+  to {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 1;
+  }
+}
+
+.mood-option {
+  position: relative;
+  width: 100%;
+  min-height: 1.8rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  color: rgba(26, 28, 40, 0.84);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  font-size: 0.69rem;
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(6px) scale(0.98);
+  animation: moodDrift 0.38s ease forwards;
+}
+
+.mood-radial-menu .mood-option {
+  top: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  left: auto !important;
+  position: relative !important;
+  transform: translateY(6px) scale(0.98) !important;
+}
+
+.mood-option:nth-child(1) { animation-delay: 0.04s; }
+.mood-option:nth-child(2) { animation-delay: 0.08s; }
+.mood-option:nth-child(3) { animation-delay: 0.12s; }
+.mood-option:nth-child(4) { animation-delay: 0.16s; }
+.mood-option:nth-child(5) { animation-delay: 0.2s; }
+
+.mood-reset {
+  position: relative;
+  width: 100%;
+  min-height: 2rem;
+  margin-top: 0.55rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(26, 28, 40, 0.76);
+  font-size: 0.72rem;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(6px) scale(0.98);
+  animation: resetPop 0.38s ease forwards 0.24s;
+}
+
+.mood-reset {
+  display: block;
+  grid-column: 1 / -1;
+}
+
+.mood-radial-menu--calm .mood-option:hover,
+.mood-radial-menu--natural .mood-option:hover {
+  background: rgba(174, 234, 255, 0.22);
+}
+
+.mood-radial-menu--joyful .mood-option:hover {
+  background: rgba(255, 232, 170, 0.24);
+}
+
+.mood-radial-menu--stormy .mood-option:hover {
+  background: rgba(136, 153, 255, 0.22);
+}
+
+.mood-radial-menu--reflective .mood-option:hover {
+  background: rgba(208, 208, 213, 0.22);
+}
+
+@media (max-width: 600px) {
+  .mood-radial-menu {
+    top: 96px;
+    right: 0;
+    left: 0;
+    width: auto;
+    margin-inline: 0.75rem;
+  }
+
+  .mood-radial-menu__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .portal--clock-open {
+    transform: scale(1.62) translateY(-0.12rem);
+  }
+
+  .portal__clock-time {
+    font-size: 0.98rem;
+  }
+
+  .portal__clock-date {
+    font-size: 0.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portal,
+  .mood-orb,
+  .mood-radial-menu,
+  .mood-option,
+  .mood-reset,
+  .portal__shimmer,
+  .portal__clock,
+  .portal__core {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 

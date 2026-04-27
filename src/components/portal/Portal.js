@@ -17,6 +17,9 @@ export function Portal({
   const [isPinnedOpen, setPinnedOpen] = useState(false);
   const [isHovered, setHovered] = useState(false);
   const [clock, setClock] = useState(() => new Date());
+  const resolvedMood = ["calm", "joyful", "stormy", "reflective", "natural"].includes(mood)
+    ? mood
+    : "natural";
 
   useEffect(() => {
     if (!showClock) {
@@ -48,6 +51,8 @@ export function Portal({
   const glowClass = type === "mood" ? "portal--glow" : "";
   const awareClass = portalState === "aware" ? "portal--aware" : "";
   const clockOpenClass = showClock && (isPinnedOpen || isHovered) ? "portal--clock-open" : "";
+  const orbOpenClass = isPinnedOpen || isHovered ? "portal--orb-open" : "";
+  const containerMoodClass = `portal-container--mood-${resolvedMood}`;
   const currentTime = useMemo(
     () =>
       clock.toLocaleTimeString("en-GB", {
@@ -77,38 +82,53 @@ export function Portal({
     awareClass,
     hoverClass,
     macroMood,
+    orbOpenClass,
     clockOpenClass
   ]
     .filter(Boolean)
     .join(" ");
 
   return (
-    <div className="portal-container">
+    <div className={`portal-container ${containerMoodClass}`}>
 
       {/* ⭐ EXISTING MOOD ORB — now interactive */}
-      <div
+      <button
+        type="button"
         className={`mood-orb ${showMoodMenu ? "open" : ""}`}
+        aria-expanded={showMoodMenu}
+        aria-controls="mood-radial-menu"
+        aria-label={showMoodMenu ? "Close mood menu" : "Open mood menu"}
         onClick={() => setShowMoodMenu(!showMoodMenu)}
-      ></div>
+      >
+        <span className="mood-orb__label">Mood</span>
+      </button>
 
       {/* ⭐ RADIAL MOOD MENU */}
       {showMoodMenu && (
-        <div className="mood-radial-menu">
-          {["calm", "joyful", "stormy", "reflective", "natural"].map((m) => (
+        <div id="mood-radial-menu" className={`mood-radial-menu mood-radial-menu--${resolvedMood}`}>
+          <div className="mood-radial-menu__title">Mood</div>
+          <div className="mood-radial-menu__grid">
+          {[
+            ["calm", "Calm"],
+            ["joyful", "Joyful"],
+            ["stormy", "Stormy"],
+            ["reflective", "Reflective"],
+            ["natural", "Natural"]
+          ].map(([value, label]) => (
             <button
-              key={m}
+              key={value}
+              type="button"
               className="mood-option"
               onClick={() => {
-                setMood(m);
+                setMood(value);
                 setShowMoodMenu(false);
               }}
             >
-              {m.charAt(0).toUpperCase() + m.slice(1)}
+              {label}
             </button>
           ))}
-
-          {/* ⭐ RESET BUTTON IN CENTRE */}
           <button
+            type="button"
             className="mood-reset"
             onClick={() => {
               setMood(null);
@@ -117,6 +137,7 @@ export function Portal({
           >
             Reset
           </button>
+          </div>
         </div>
       )}
 

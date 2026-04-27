@@ -4,6 +4,10 @@ import dotenv from "dotenv";
 import uploadRoutes from "./routes/upload.js";
 import dayRoutes from "./routes/days.js";
 import { connectToMongo, getDbStatus } from "./db.js";
+import pushRoutes from "./routes/push.js";
+import emailRoutes from "./routes/email.js";
+import { startPushScheduler } from "./services/pushScheduler.js";
+import { startEmailScheduler } from "./services/emailScheduler.js";
 
 if (process.env.NODE_ENV !== "production") {
   dotenv.config();
@@ -53,6 +57,8 @@ app.get("/health", async (_req, res) => {
 
 app.use("/upload", uploadRoutes);
 app.use("/days", dayRoutes);
+app.use("/api/push", pushRoutes);
+app.use("/api/email", emailRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, async () => {
@@ -64,4 +70,7 @@ app.listen(PORT, async () => {
   } catch (error) {
     console.error("MongoDB connection failed:", error.message);
   }
+
+  startPushScheduler();
+  startEmailScheduler();
 });

@@ -461,22 +461,22 @@
 
 @media (max-width: 640px) {
   .mini-orb-menu {
-    left: 0.5rem;
-    right: 0.5rem;
+    left: calc(env(safe-area-inset-left, 0px) + 0.5rem);
+    right: auto;
     top: auto;
-    bottom: calc(env(safe-area-inset-bottom, 0px) + 0.55rem);
-    justify-items: stretch;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 0.75rem);
+    justify-items: start;
   }
 
   .mini-orb-trigger {
     width: 50px;
     height: 50px;
-    justify-self: end;
+    justify-self: start;
   }
 
   .mini-orb-panel {
-    width: min(100%, 24rem);
-    max-height: min(76vh, 36rem);
+    width: min(86vw, 22rem);
+    max-height: min(72vh, 33rem);
     border-radius: 1.35rem;
     padding: 0.8rem;
   }
