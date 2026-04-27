@@ -1,5 +1,19 @@
 import { fetchFromApi } from "../api";
 
+async function readJsonSafely(response) {
+  const text = await response.text();
+
+  if (!text) {
+    return { ok: true };
+  }
+
+  try {
+    return JSON.parse(text);
+  } catch (error) {
+    throw new Error("The server returned an empty or invalid JSON response.");
+  }
+}
+
 export function isPushSupported() {
   return (
     typeof window !== "undefined" &&
@@ -45,7 +59,7 @@ export async function getVapidPublicKey() {
     throw new Error(`Failed to load VAPID key (${response.status})`);
   }
 
-  const data = await response.json();
+  const data = await readJsonSafely(response);
   return data.publicKey;
 }
 
@@ -71,7 +85,7 @@ export async function postPushSubscription(
     throw new Error(`Failed to store push subscription (${response.status})`);
   }
 
-  return response.json();
+  return readJsonSafely(response);
 }
 
 export async function postPushUnsubscribe(endpoint) {
@@ -91,7 +105,7 @@ export async function postPushUnsubscribe(endpoint) {
     throw new Error(`Failed to remove push subscription (${response.status})`);
   }
 
-  return response.json();
+  return readJsonSafely(response);
 }
 
 export async function sendPushTest(endpoint) {
@@ -107,7 +121,7 @@ export async function sendPushTest(endpoint) {
     throw new Error(`Failed to send test notification (${response.status})`);
   }
 
-  return response.json();
+  return readJsonSafely(response);
 }
 
 export async function previewNextPush(time, timeZone) {
@@ -122,7 +136,7 @@ export async function previewNextPush(time, timeZone) {
     throw new Error(`Failed to preview next send (${response.status})`);
   }
 
-  return response.json();
+  return readJsonSafely(response);
 }
 
 export async function getEmailReminderStatus() {
@@ -132,7 +146,7 @@ export async function getEmailReminderStatus() {
     throw new Error(`Failed to load email reminder status (${response.status})`);
   }
 
-  return response.json();
+  return readJsonSafely(response);
 }
 
 export async function subscribeEmailReminder({
@@ -159,7 +173,7 @@ export async function subscribeEmailReminder({
     let message = `Failed to subscribe email reminders (${response.status})`;
 
     try {
-      const data = await response.json();
+      const data = await readJsonSafely(response);
       if (data?.error) {
         message = data.error;
       }
@@ -170,7 +184,7 @@ export async function subscribeEmailReminder({
     throw new Error(message);
   }
 
-  return response.json();
+  return readJsonSafely(response);
 }
 
 export async function sendEmailReminder({
@@ -197,7 +211,7 @@ export async function sendEmailReminder({
     let message = `Failed to send test email (${response.status})`;
 
     try {
-      const data = await response.json();
+      const data = await readJsonSafely(response);
       if (data?.error) {
         message = data.error;
       }
@@ -208,5 +222,5 @@ export async function sendEmailReminder({
     throw new Error(message);
   }
 
-  return response.json();
+  return readJsonSafely(response);
 }
