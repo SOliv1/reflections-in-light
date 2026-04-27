@@ -9,6 +9,7 @@ import {
   subscribeEmailReminder,
   sendEmailReminder,
   sendPushTest,
+  unsubscribeEmailReminder,
   urlBase64ToUint8Array,
 } from "../utils/pushNotifications";
 
@@ -48,6 +49,7 @@ export default function QuietActionsDrawer({ orbColor, onClose }) {
   const [emailStatus, setEmailStatus] = useState(
     "Email reminders are optional. Add an address to receive a daily note and a test email."
   );
+  const [isEmailSubscribed, setIsEmailSubscribed] = useState(false);
   const [reminderTime, setReminderTime] = useState(DEFAULT_REMINDER_TIME);
   const [timeZone, setTimeZone] = useState(getDefaultTimeZone);
   const [nextReminderPreview, setNextReminderPreview] = useState(null);
@@ -87,6 +89,9 @@ export default function QuietActionsDrawer({ orbColor, onClose }) {
         if (typeof parsed?.emailAddress === "string" && parsed.emailAddress) {
           setEmailAddress(parsed.emailAddress);
         }
+        if (typeof parsed?.subscribed === "boolean") {
+          setIsEmailSubscribed(parsed.subscribed);
+        }
       } catch (error) {
         console.warn("Failed to parse email settings:", error);
       }
@@ -118,9 +123,9 @@ export default function QuietActionsDrawer({ orbColor, onClose }) {
 
     localStorage.setItem(
       EMAIL_STORAGE_KEY,
-      JSON.stringify({ emailAddress })
+      JSON.stringify({ emailAddress, subscribed: isEmailSubscribed })
     );
-  }, [hydrated, emailAddress]);
+  }, [hydrated, emailAddress, isEmailSubscribed]);
 
   useEffect(() => {
     if (!hydrated) {
@@ -236,6 +241,8 @@ export default function QuietActionsDrawer({ orbColor, onClose }) {
             setEmailStatus(
               "Email reminders are not configured on the server yet."
             );
+          } else if (isEmailSubscribed && emailAddress) {
+            setEmailStatus(`Email reminders are active for ${emailAddress}.`);
           }
         }
       } catch (error) {
@@ -315,7 +322,8 @@ export default function QuietActionsDrawer({ orbColor, onClose }) {
         timeZone,
       });
 
-      setEmailStatus("Email reminders are now subscribed for this address.");
+      setIsEmailSubscribed(true);
+      setEmailStatus(`Email reminders are now active for ${emailAddress.trim()}.`);
     } catch (error) {
       console.error("Failed to subscribe email reminders:", error);
       setEmailStatus(error.message || "We could not save the email reminder just yet.");
@@ -344,6 +352,26 @@ export default function QuietActionsDrawer({ orbColor, onClose }) {
     } catch (error) {
       console.error("Failed to send test email:", error);
       setEmailStatus(error.message || "We could not send a test email right now.");
+    } finally {
+      setIsSendingEmail(false);
+    }
+  };
+
+  const handleEmailReminderUnsubscribe = async () => {
+    if (!emailAddress.trim()) {
+      setEmailStatus("Add an email address first.");
+      return;
+    }
+
+    setIsSendingEmail(true);
+
+    try {
+      await unsubscribeEmailReminder(emailAddress.trim());
+      setIsEmailSubscribed(false);
+      setEmailStatus(`Email reminders are now turned off for ${emailAddress.trim()}.`);
+    } catch (error) {
+      console.error("Failed to unsubscribe email reminders:", error);
+      setEmailStatus(error.message || "We could not turn off email reminders right now.");
     } finally {
       setIsSendingEmail(false);
     }
@@ -527,7 +555,7 @@ export default function QuietActionsDrawer({ orbColor, onClose }) {
             onClick={handleEmailReminderSubscribe}
             disabled={isSendingEmail || !isEmailConfigured}
           >
-            Subscribe by email
+            {isEmailSubscribed ? "Update email reminder" : "Subscribe by email"}
           </button>
 
           <button
@@ -537,6 +565,16 @@ export default function QuietActionsDrawer({ orbColor, onClose }) {
           >
             Send test email
           </button>
+
+          {isEmailSubscribed ? (
+            <button
+              className="drawer-btn"
+              onClick={handleEmailReminderUnsubscribe}
+              disabled={isSendingEmail || !isEmailConfigured}
+            >
+              Unsubscribe by email
+            </button>
+          ) : null}
         </div>
       </div>
     </div>

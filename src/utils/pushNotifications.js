@@ -224,3 +224,32 @@ export async function sendEmailReminder({
 
   return readJsonSafely(response);
 }
+
+export async function unsubscribeEmailReminder(toEmail) {
+  const response = await fetchFromApi("/api/email/unsubscribe", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      emailAddress: toEmail,
+    }),
+  });
+
+  if (!response.ok) {
+    let message = `Failed to unsubscribe email reminders (${response.status})`;
+
+    try {
+      const data = await readJsonSafely(response);
+      if (data?.error) {
+        message = data.error;
+      }
+    } catch (_error) {
+      // Ignore JSON parse failures and fall back to the default message.
+    }
+
+    throw new Error(message);
+  }
+
+  return readJsonSafely(response);
+}
