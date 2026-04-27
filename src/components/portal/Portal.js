@@ -1,5 +1,5 @@
 import "./Portal.css";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export function Portal({
   dayIndex,
@@ -10,9 +10,25 @@ export function Portal({
   macroMood,
   setMood,
   cueText,
-  portalState
+  portalState,
+  showClock = false
 }) {
   const [showMoodMenu, setShowMoodMenu] = useState(false);
+  const [isPinnedOpen, setPinnedOpen] = useState(false);
+  const [isHovered, setHovered] = useState(false);
+  const [clock, setClock] = useState(() => new Date());
+
+  useEffect(() => {
+    if (!showClock) {
+      return undefined;
+    }
+
+    const timer = window.setInterval(() => {
+      setClock(new Date());
+    }, 1000);
+
+    return () => window.clearInterval(timer);
+  }, [showClock]);
 
   const dayClass = dayIndex ? `portal--day-${dayIndex}` : "";
   const seasonClass = season ? `portal--season-${season}` : "";
@@ -31,6 +47,24 @@ export function Portal({
   const typeClass = type ? `portal--${type}` : "";
   const glowClass = type === "mood" ? "portal--glow" : "";
   const awareClass = portalState === "aware" ? "portal--aware" : "";
+  const clockOpenClass = showClock && (isPinnedOpen || isHovered) ? "portal--clock-open" : "";
+  const currentTime = useMemo(
+    () =>
+      clock.toLocaleTimeString("en-GB", {
+        hour: "2-digit",
+        minute: "2-digit"
+      }),
+    [clock]
+  );
+  const currentDate = useMemo(
+    () =>
+      clock.toLocaleDateString("en-GB", {
+        weekday: "short",
+        day: "numeric",
+        month: "short"
+      }),
+    [clock]
+  );
 
   const classes = [
     "portal",
@@ -42,7 +76,8 @@ export function Portal({
     glowClass,
     awareClass,
     hoverClass,
-    macroMood
+    macroMood,
+    clockOpenClass
   ]
     .filter(Boolean)
     .join(" ");
@@ -88,7 +123,12 @@ export function Portal({
       {/* ⭐ PORTAL CORE */}
       <div
         className={classes}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
         onClick={() => {
+          if (showClock) {
+            setPinnedOpen((open) => !open);
+          }
           if (type === "mood" && setMood) {
             setMood(mood);
           }
@@ -98,6 +138,12 @@ export function Portal({
         <div className="portal__core">
           <div className="portal__crescent"></div>
           <div className="portal__shimmer"></div>
+          {showClock ? (
+            <div className="portal__clock">
+              <span className="portal__clock-time">{currentTime}</span>
+              <span className="portal__clock-date">{currentDate}</span>
+            </div>
+          ) : null}
         </div>
       </div>
 

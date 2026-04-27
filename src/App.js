@@ -18,10 +18,13 @@ import UnifiedDrawer from "./components/UnifiedDrawer";
 import QuoteDrawer from "./components/QuoteDrawer";
 import LightNotesDrawer from "./components/LightNotesDrawer";
 import { quotes } from "./data/quotes";
-import winterLogo from "./assets/logos/wildCard-PearlLogo.png";
-import springLogo from "./assets/logos/springSeasonal.png";
-import summerLogo from "./assets/logos/reflectionsMarkLogo.png";
-import autumnLogo from "./assets/logos/reflections-mark2.png";
+import moodLogo from "./assets/logos/moodLogo.png";
+import moodLogoTwo from "./assets/logos/moodLogo2.png";
+import reflectionsMarkLogo from "./assets/logos/reflectionsMarkLogo.png";
+import reflectionsMarkAlt from "./assets/logos/reflections-mark2.png";
+import reflectionsScreenLogo from "./assets/logos/reflections-mark-screen1.png";
+import springSeasonalLogo from "./assets/logos/springSeasonal.png";
+import pearlLogo from "./assets/logos/wildCard-PearlLogo.png";
 
 
 function normalizeWeatherClass(condition = "unknown") {
@@ -269,12 +272,6 @@ function AppShell() {
         : month >= 5 && month <= 7
           ? "summer"
           : "autumn";
-  const seasonalLogo = {
-    winter: winterLogo,
-    spring: springLogo,
-    summer: summerLogo,
-    autumn: autumnLogo
-  }[season] || springLogo;
 
   const isNight = hour < 6 || hour >= 18;
   const backgroundImage = useWeatherPhotos(isHomePage);
@@ -286,6 +283,20 @@ function AppShell() {
   const [isReflectionsOpen, setReflectionsOpen] = useState(false);
   const [isQuoteOpen, setQuoteOpen] = useState(false);
   const [isActionsHelpOpen, setActionsHelpOpen] = useState(false);
+  const [selectedLogo, setSelectedLogo] = useState("mood");
+  const [manualPortalMood, setManualPortalMood] = useState(null);
+
+  const logoOptions = {
+    mood: moodLogo,
+    moodTwo: moodLogoTwo,
+    reflectionsMark: reflectionsMarkLogo,
+    reflectionsMarkAlt,
+    reflectionsScreen: reflectionsScreenLogo,
+    springSeasonal: springSeasonalLogo,
+    pearl: pearlLogo,
+    off: null
+  };
+  const currentLogo = logoOptions[selectedLogo] ?? moodLogo;
 
   const openReflections = () => setReflectionsOpen(true);
   const closeReflections = () => setReflectionsOpen(false);
@@ -325,15 +336,21 @@ function AppShell() {
         type="mood"
         dayIndex={1}
         season={season}
-        mood={weatherMood}
+        mood={manualPortalMood || weatherMood}
         cueText=""
         weatherMood={weatherMood}
+        showClock={isHomePage}
+        setMood={setManualPortalMood}
       />
     </div>
 
     <div className={`App mode-${mode} time-${timeOfDay}`}>
       <Link to="/" className="app-home-logo" aria-label="Return home">
-        <img src={seasonalLogo} className="App-logo" alt="Reflections in Light seasonal logo" />
+        {currentLogo ? (
+          <img src={currentLogo} className="App-logo" alt="Reflections in Light selected logo" />
+        ) : (
+          <span className="app-logo-off" aria-hidden="true" />
+        )}
       </Link>
 
       {!isHomePage ? (
@@ -551,6 +568,10 @@ function AppShell() {
           weatherDescription={weatherDescription}
           season={season}
           activeMode={mode}
+          activeLogo={selectedLogo}
+          onSelectLogo={setSelectedLogo}
+          activeMood={manualPortalMood || weatherMood}
+          onSelectMood={setManualPortalMood}
         />
       )}
 

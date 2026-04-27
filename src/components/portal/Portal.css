@@ -65,6 +65,7 @@
     0 0 18px rgba(255, 255, 255, 0.18),
     0 0 38px rgba(170, 188, 255, 0.16);
   backdrop-filter: blur(6px) saturate(1.02);
+  z-index: 20030;
 }
 
 .portal--mood .portal__core {
@@ -92,6 +93,51 @@
   background-color: inherit;
   box-shadow: 0 0 32px rgba(0, 0, 0, 0.6);
   overflow: hidden;
+}
+
+.portal__clock {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.1rem;
+  text-align: center;
+  pointer-events: none;
+  opacity: 0.82;
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+
+.portal__clock-time {
+  font-size: 1.08rem;
+  font-weight: 700;
+  line-height: 1;
+  color: rgba(247, 250, 255, 0.96);
+  text-shadow:
+    0 2px 10px rgba(10, 14, 28, 0.4),
+    0 0 18px rgba(255, 255, 255, 0.18);
+}
+
+.portal__clock-date {
+  font-size: 0.54rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(238, 243, 255, 0.82);
+}
+
+.portal--clock-open {
+  animation: none;
+  transform: scale(1.9) translateY(-0.2rem);
+  box-shadow:
+    0 0 26px rgba(255, 255, 255, 0.32),
+    0 0 54px rgba(176, 194, 255, 0.3);
+}
+
+.portal--clock-open .portal__clock {
+  opacity: 1;
 }
 
 .portal--seasonal .portal__core {
@@ -719,8 +765,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  z-index: 10;
+  z-index: 20020;
   min-height: 150px;
+  pointer-events: auto;
 }
 
 .portal__cue {
@@ -951,6 +998,20 @@
   opacity: 0;
   transform: scale(0.6);
   animation: resetPop 0.4s ease forwards 0.3s;
+}
+
+@media (max-width: 600px) {
+  .portal--clock-open {
+    transform: scale(1.55) translateY(-0.1rem);
+  }
+
+  .portal__clock-time {
+    font-size: 0.92rem;
+  }
+
+  .portal__clock-date {
+    font-size: 0.48rem;
+  }
 }
 
 

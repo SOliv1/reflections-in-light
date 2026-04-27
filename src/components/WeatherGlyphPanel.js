@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./WeatherGlyph.css";
 import "./WeatherGlyphPanel.css";
 import MiniOrbMenu from "./miniOrbMenu";
@@ -19,11 +19,13 @@ export default function WeatherGlyphPanel({
   isNight,
   weatherDescription,
   season = "spring",
-  activeMode = "architectural"
+  activeMode = "architectural",
+  activeLogo = "mood",
+  onSelectLogo,
+  activeMood = "sunny",
+  onSelectMood
 }) {
-  const [expanded, setExpanded] = useState(false);
   const [isMiniOrbOpen, setMiniOrbOpen] = useState(false);
-  const [clock, setClock] = useState(() => new Date());
   const [activePalette, setActivePalette] = useState(season);
   void timestamp;
 
@@ -31,37 +33,12 @@ export default function WeatherGlyphPanel({
     setActivePalette(season);
   }, [season]);
 
-  useEffect(() => {
-    const timer = window.setInterval(() => {
-      setClock(new Date());
-    }, 1000);
-
-    return () => window.clearInterval(timer);
-  }, []);
-
   const resolvedCondition = condition ?? "unknown";
   const mood = weatherMood ?? "unknown";
   const resolvedLocation = location || "Local weather";
   const conditionCopy = weatherDescription || resolvedCondition;
   const panelMoodClass = `weather-glyph-panel--${mood}`;
   const paletteClass = PALETTE_CLASSES[activePalette] || PALETTE_CLASSES.spring;
-  const currentTime = useMemo(
-    () =>
-      clock.toLocaleTimeString("en-GB", {
-        hour: "2-digit",
-        minute: "2-digit"
-      }),
-    [clock]
-  );
-  const currentDate = useMemo(
-    () =>
-      clock.toLocaleDateString("en-GB", {
-        weekday: "short",
-        day: "numeric",
-        month: "short"
-      }),
-    [clock]
-  );
 
   function poeticCondition(conditionValue) {
     const c = String(conditionValue ?? "unknown").toLowerCase();
@@ -109,23 +86,23 @@ export default function WeatherGlyphPanel({
       <MiniOrbMenu
         isOpen={isMiniOrbOpen}
         activePalette={activePalette}
+        activeLogo={activeLogo}
+        activeMood={activeMood}
         onToggle={() => setMiniOrbOpen((open) => !open)}
         onSelectPalette={(palette) => {
           setActivePalette(palette);
-          setMiniOrbOpen(false);
         }}
+        onSelectLogo={onSelectLogo}
+        onSelectMood={onSelectMood}
       />
 
       <div className={`weather-glyph-stage ${paletteClass} mode-${activeMode}`}>
         <div className={`weather-glyph-panel ${panelMoodClass}`}>
-          <button
-            type="button"
+          <div
             className={`weather-glyph ${resolvedCondition} mood-${mood} ${
               isNight ? "night" : "day"
-            } ${expanded ? "expanded" : ""}`}
-            onClick={() => setExpanded(!expanded)}
-            aria-expanded={expanded}
-            aria-label="Expand weather orb"
+            }`}
+            aria-hidden="true"
           >
             <div className="breathing-wrapper">
               <div className="weather-core"></div>
@@ -133,19 +110,19 @@ export default function WeatherGlyphPanel({
               <div className="snow-layer"></div>
               <div className="sparkle-layer"></div>
               <div className="weather-reading">
-                <span className="weather-reading-time">{currentTime}</span>
-                <span className="weather-reading-date">{currentDate}</span>
-                <span className="weather-reading-temp">{displayTemperature(temperature)} deg C</span>
+                <span className="weather-reading-temp weather-reading-temp--center">
+                  {displayTemperature(temperature)} deg C
+                </span>
               </div>
             </div>
-          </button>
+          </div>
 
           <div className="weather-panel-text">
             <div className="condition">{poeticCondition(conditionCopy)}</div>
             <div className="temperature">{poeticTemperature(temperature)}</div>
             <div className="location">{resolvedLocation}</div>
             <div className="weather-panel-note">
-              Tap the orb to open the stage. Use the mini orb to colour the light.
+              Use the mini orb for colours and logos. The centre portal now carries the live time stage.
             </div>
           </div>
         </div>

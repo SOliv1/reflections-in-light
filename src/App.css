@@ -51,6 +51,17 @@ body {
   transition: filter 0.4s ease, transform 0.4s ease;
 }
 
+.app-logo-off {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.96), rgba(223, 231, 250, 0.64) 48%, rgba(142, 162, 212, 0.18) 100%);
+  box-shadow:
+    inset 0 0 12px rgba(255, 255, 255, 0.72),
+    0 0 12px rgba(255, 255, 255, 0.26);
+}
+
 .App-logo:hover {
   filter: brightness(1.2) saturate(1.15) hue-rotate(5deg);
 }
