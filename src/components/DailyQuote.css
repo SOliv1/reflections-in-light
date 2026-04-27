@@ -1,0 +1,287 @@
+/* -----------------------------------------------------------
+   UNIFIED DAILY QUOTE SYSTEM — CINEMATIC + RESPONSIVE
+   Desktop: Floating glass panel
+   Mobile: Medium translucent, borderless, subtle inner glow
+   ----------------------------------------------------------- */
+
+/* ------------------------------
+   BASE QUOTE PANEL (DESKTOP)
+   ------------------------------ */
+.daily-quote.whisper {
+  /* Cinematic variables */
+  --quote-ambient-tint: rgba(228, 220, 205, 0.34);
+  --quote-glass: rgba(36, 40, 54, 0.28);
+  --quote-stroke: rgba(255, 255, 255, 0.34);
+  --quote-shadow: rgba(11, 18, 38, 0.28);
+  --quote-text-surface: rgba(21, 25, 40, 0.56);
+  --quote-author-surface: rgba(16, 20, 33, 0.48);
+  --quote-text: rgba(255, 251, 245, 0.99);
+  --quote-author: rgba(255, 247, 236, 0.96);
+
+  position: absolute;
+  top: clamp(5rem, 9vw, 6rem);
+  left: 50%;
+  width: min(calc(100vw - 2.5rem), 22rem);
+  transform: translateX(-50%) translateY(10px) scale(0.985);
+
+  padding: 0.95rem 1rem 1rem;
+  display: grid;
+  grid-template-rows: auto auto;
+  gap: 0.65rem;
+  box-sizing: border-box;
+
+  border-radius: 26px;
+  border: 1px solid var(--quote-stroke);
+
+  background:
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.18), transparent 56%),
+    color-mix(in srgb, var(--orbColor) 22%, var(--quote-glass));
+
+  box-shadow:
+    0 18px 42px var(--quote-shadow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.24);
+
+  backdrop-filter: blur(16px) saturate(1.12);
+  -webkit-backdrop-filter: blur(16px) saturate(1.12);
+
+  color: var(--quote-text);
+  text-align: center;
+  pointer-events: none;
+  opacity: 0;
+  transition:
+    opacity 0.9s ease,
+    transform 1.1s ease,
+    background 0.45s ease,
+    border-color 0.45s ease,
+    box-shadow 0.45s ease,
+    color 0.45s ease;
+}
+
+/* Soft veil highlight */
+.daily-quote.whisper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0));
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+/* Veil states */
+.daily-quote.veil-on {
+  opacity: 0.72;
+  transform: translateX(-50%) translateY(8px) scale(0.99);
+}
+
+.daily-quote.veil-lift {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0) scale(1);
+}
+
+.daily-quote.veil-off {
+  opacity: 0;
+  transform: translateX(-50%) translateY(-10px) scale(0.98);
+}
+
+/* ------------------------------
+   QUOTE TEXT
+   ------------------------------ */
+.quote-text {
+  font-family: "Cormorant Garamond", serif;
+  font-style: normal;
+  font-weight: 300;
+  letter-spacing: 0.2px;
+
+  position: relative;
+  z-index: 1;
+
+  margin: 0;
+  padding: 0.8rem 0.95rem;
+  border-radius: 18px;
+
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)),
+    var(--quote-text-surface);
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  font-size: clamp(1.12rem, 1rem + 0.8vw, 1.42rem);
+  line-height: 1.38;
+  text-wrap: balance;
+
+  text-shadow:
+    0 1px 4px rgba(0, 0, 0, 0.26),
+    0 2px 14px rgba(0, 0, 0, 0.28);
+}
+
+/* ------------------------------
+   AUTHOR
+   ------------------------------ */
+.quote-person {
+  position: relative;
+  z-index: 200;
+
+  margin: 0;
+  padding: 0.52rem 0.72rem 0.42rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 999px;
+
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03)),
+    var(--quote-author-surface);
+
+  border: 1px solid rgba(255, 255, 255, 0.14);
+
+  font-family: "Cormorant Garamond", serif;
+  font-size: 0.98rem;
+  font-style: italic;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1.35;
+
+  color: var(--quote-author);
+
+  text-shadow:
+    0 1px 4px rgba(0, 0, 0, 0.22),
+    0 0 12px rgba(0, 0, 0, 0.14);
+}
+
+/* Soft divider line above author */
+.quote-person::before {
+  content: "";
+  position: absolute;
+  top: -0.25rem;
+  left: 50%;
+  width: 2.8rem;
+  height: 1px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.7), transparent);
+  transform: translateX(-50%);
+  opacity: 0.92;
+}
+
+/* ------------------------------
+   MOOD VARIANTS
+   ------------------------------ */
+.daily-quote.mood-sunny {
+  --quote-ambient-tint: rgba(255, 224, 175, 0.42);
+  --quote-glass: rgba(92, 63, 27, 0.34);
+  --quote-stroke: rgba(255, 229, 192, 0.34);
+  --quote-shadow: rgba(118, 76, 28, 0.24);
+  --quote-text-surface: rgba(88, 54, 22, 0.58);
+  --quote-author-surface: rgba(77, 48, 20, 0.54);
+  --quote-author: rgba(255, 247, 231, 0.98);
+}
+
+.daily-quote.mood-cloudy,
+.daily-quote.mood-neutral {
+  --quote-ambient-tint: rgba(220, 229, 241, 0.32);
+  --quote-glass: rgba(31, 41, 60, 0.34);
+  --quote-stroke: rgba(218, 229, 244, 0.32);
+  --quote-shadow: rgba(32, 44, 72, 0.24);
+  --quote-text-surface: rgba(24, 34, 55, 0.62);
+  --quote-author-surface: rgba(18, 28, 45, 0.56);
+}
+
+
+/* -----------------------------------------------------------
+   FIX 1 — Restore correct stacking order
+   Quote should sit BELOW orb, weather glyph, and header
+   ----------------------------------------------------------- */
+
+/* Lower the entire quote system */
+.daily-quote-stage {
+  position: relative;
+  z-index: 20; /* BELOW orb, weather glyph, header */
+}
+
+/* Lower the quote panel */
+.daily-quote.whisper {
+  z-index: 25; /* still above background, but below UI */
+}
+
+/* Lower the author bubble */
+.quote-person {
+  z-index: 30;
+}
+
+/* Weather glyph must sit ABOVE quote */
+.weather-glyph {
+  position: relative;
+  z-index: 60;
+}
+
+/* Orb must sit ABOVE quote */
+.mood-orb {
+  position: relative;
+  z-index: 70;
+}
+
+/* Seasonal header must sit ABOVE quote */
+.seasonal-header {
+  position: relative;
+  z-index: 80;
+}
+
+/* -----------------------------------------------------------
+   FIX 2 — Eyebrow readability + correct placement
+   ----------------------------------------------------------- 
+
+.quote-eyebrow {
+  position: relative;
+  z-index: 50; /* above quote panel but below header/orb 
+  opacity: 0.92;
+  color: rgba(255, 255, 255, 0.92);
+  text-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.35),
+    0 2px 6px rgba(0, 0, 0, 0.25);
+} */
+
+/* -----------------------------------------------------------
+   FIX 3 — Soften quote panel tint
+   ----------------------------------------------------------- 
+
+.daily-quote.whisper {
+  background:
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.12), transparent 56%),
+    color-mix(in srgb, var(--orbColor) 6%, var(--quote-glass));
+}
+*/
+
+.top-ui-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.2rem;
+  padding-left: 1.2rem; /* matches your button offset */
+}
+
+.quote-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+/* Legacy quote-container is retired; keep the new quote stage visible */
+.quote-container {
+  display: none !important;
+}
+
+
+@media (max-width: 768px) {
+  .top-ui-row {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  .quote-container {
+    width: 100%;
+    max-width: 20rem;
+    margin: 0 auto;
+  }
+}
+
