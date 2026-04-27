@@ -441,9 +441,6 @@ export default function QuietActionsDrawer({ orbColor, onClose }) {
         "--orbColorRGB": orbRGB
       }}
     >
-      <button className="drawer-close-btn" onClick={onClose}>×</button>
-      <button className="drawer-close-text" onClick={onClose}>Close</button>
-
       <h3 className="panel-title">Quiet Actions</h3>
 
       <div className="push-reminder-panel push-reminder-panel--intro">

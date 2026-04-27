@@ -21,9 +21,6 @@ export default function ShortReflectionsDrawer({
         "--orbColorRGB": orbRGB
       }}
     >
-      <button className="drawer-close-btn" onClick={onClose}>×</button>
-      <button className="drawer-close-text" onClick={onClose}>Close</button>
-
       <h3 className="panel-title">Short Reflections</h3>
       <ReflectionsPanel weatherMood={weatherMood} season={season} />
 

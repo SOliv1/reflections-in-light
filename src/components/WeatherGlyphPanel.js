@@ -1,6 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import "./WeatherGlyph.css";
 import "./WeatherGlyphPanel.css";
+import MiniOrbMenu from "./miniOrbMenu";
+
+const PALETTE_CLASSES = {
+  winter: "weather-glyph-palette--winter",
+  spring: "weather-glyph-palette--spring",
+  summer: "weather-glyph-palette--summer",
+  autumn: "weather-glyph-palette--autumn"
+};
 
 export default function WeatherGlyphPanel({
   condition,
@@ -10,15 +18,50 @@ export default function WeatherGlyphPanel({
   weatherMood,
   isNight,
   weatherDescription,
+  season = "spring",
+  activeMode = "architectural"
 }) {
   const [expanded, setExpanded] = useState(false);
+  const [isMiniOrbOpen, setMiniOrbOpen] = useState(false);
+  const [clock, setClock] = useState(() => new Date());
+  const [activePalette, setActivePalette] = useState(season);
   void timestamp;
+
+  useEffect(() => {
+    setActivePalette(season);
+  }, [season]);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setClock(new Date());
+    }, 1000);
+
+    return () => window.clearInterval(timer);
+  }, []);
 
   const resolvedCondition = condition ?? "unknown";
   const mood = weatherMood ?? "unknown";
   const resolvedLocation = location || "Local weather";
   const conditionCopy = weatherDescription || resolvedCondition;
   const panelMoodClass = `weather-glyph-panel--${mood}`;
+  const paletteClass = PALETTE_CLASSES[activePalette] || PALETTE_CLASSES.spring;
+  const currentTime = useMemo(
+    () =>
+      clock.toLocaleTimeString("en-GB", {
+        hour: "2-digit",
+        minute: "2-digit"
+      }),
+    [clock]
+  );
+  const currentDate = useMemo(
+    () =>
+      clock.toLocaleDateString("en-GB", {
+        weekday: "short",
+        day: "numeric",
+        month: "short"
+      }),
+    [clock]
+  );
 
   function poeticCondition(conditionValue) {
     const c = String(conditionValue ?? "unknown").toLowerCase();
@@ -62,30 +105,51 @@ export default function WeatherGlyphPanel({
   }
 
   return (
-    <div className={`weather-glyph-panel ${panelMoodClass}`}>
-      <div
-        className={`weather-glyph ${resolvedCondition} mood-${mood} ${
-          isNight ? "night" : "day"
-        } ${expanded ? "expanded" : ""}`}
-        onClick={() => setExpanded(!expanded)}
-      >
-        <div className="breathing-wrapper">
-          <div className="weather-core"></div>
-          <div className="rain-layer"></div>
-          <div className="snow-layer"></div>
-          <div className="sparkle-layer"></div>
-          <div className="weather-reading">
-            <span className="weather-reading-value">{displayTemperature(temperature)}</span>
-            <span className="weather-reading-unit">deg C</span>
+    <>
+      <MiniOrbMenu
+        isOpen={isMiniOrbOpen}
+        activePalette={activePalette}
+        onToggle={() => setMiniOrbOpen((open) => !open)}
+        onSelectPalette={(palette) => {
+          setActivePalette(palette);
+          setMiniOrbOpen(false);
+        }}
+      />
+
+      <div className={`weather-glyph-stage ${paletteClass} mode-${activeMode}`}>
+        <div className={`weather-glyph-panel ${panelMoodClass}`}>
+          <button
+            type="button"
+            className={`weather-glyph ${resolvedCondition} mood-${mood} ${
+              isNight ? "night" : "day"
+            } ${expanded ? "expanded" : ""}`}
+            onClick={() => setExpanded(!expanded)}
+            aria-expanded={expanded}
+            aria-label="Expand weather orb"
+          >
+            <div className="breathing-wrapper">
+              <div className="weather-core"></div>
+              <div className="rain-layer"></div>
+              <div className="snow-layer"></div>
+              <div className="sparkle-layer"></div>
+              <div className="weather-reading">
+                <span className="weather-reading-time">{currentTime}</span>
+                <span className="weather-reading-date">{currentDate}</span>
+                <span className="weather-reading-temp">{displayTemperature(temperature)} deg C</span>
+              </div>
+            </div>
+          </button>
+
+          <div className="weather-panel-text">
+            <div className="condition">{poeticCondition(conditionCopy)}</div>
+            <div className="temperature">{poeticTemperature(temperature)}</div>
+            <div className="location">{resolvedLocation}</div>
+            <div className="weather-panel-note">
+              Tap the orb to open the stage. Use the mini orb to colour the light.
+            </div>
           </div>
         </div>
       </div>
-
-      <div className="weather-panel-text">
-        <div className="condition">{poeticCondition(conditionCopy)}</div>
-        <div className="temperature">{poeticTemperature(temperature)}</div>
-        <div className="location">{resolvedLocation}</div>
-      </div>
-    </div>
+    </>
   );
 }

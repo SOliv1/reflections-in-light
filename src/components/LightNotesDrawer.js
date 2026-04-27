@@ -36,11 +36,7 @@ export default function LightNotesDrawer({ orbColor, onClose }) {
           "--orbColor": orbColor,
           "--orbColorRGB": orbRGB
         }}
-      >
-
-      <button className="drawer-close-btn" onClick={onClose}>×</button>
-      <button className="drawer-close-text" onClick={onClose}>Close</button>
-
+    >
       <h3 className="panel-title">Light Notes</h3>
 
       {/* Input area */}

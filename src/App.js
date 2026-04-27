@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Link, Route, Routes, useLocation } from "react-router-dom";
 import "./App.css";
-//import logo from "./assets/logo.png";
 import BackgroundCarousel from "./components/BackgroundCarousel";
 import Calendar from "./components/Calendar";
 import Constellation from "./components/Constellation";
@@ -19,6 +18,10 @@ import UnifiedDrawer from "./components/UnifiedDrawer";
 import QuoteDrawer from "./components/QuoteDrawer";
 import LightNotesDrawer from "./components/LightNotesDrawer";
 import { quotes } from "./data/quotes";
+import winterLogo from "./assets/logos/wildCard-PearlLogo.png";
+import springLogo from "./assets/logos/springSeasonal.png";
+import summerLogo from "./assets/logos/reflectionsMarkLogo.png";
+import autumnLogo from "./assets/logos/reflections-mark2.png";
 
 
 function normalizeWeatherClass(condition = "unknown") {
@@ -266,6 +269,12 @@ function AppShell() {
         : month >= 5 && month <= 7
           ? "summer"
           : "autumn";
+  const seasonalLogo = {
+    winter: winterLogo,
+    spring: springLogo,
+    summer: summerLogo,
+    autumn: autumnLogo
+  }[season] || springLogo;
 
   const isNight = hour < 6 || hour >= 18;
   const backgroundImage = useWeatherPhotos(isHomePage);
@@ -293,6 +302,12 @@ function AppShell() {
   const [isNotesOpen, setNotesOpen] = useState(false);
   const openNotesDrawer = () => setNotesOpen(true);
   const closeNotesDrawer = () => setNotesOpen(false);
+  const todayLabel = new Date().toLocaleDateString("en-GB", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
 
   // When mode changes:
   useEffect(() => {
@@ -318,7 +333,7 @@ function AppShell() {
 
     <div className={`App mode-${mode} time-${timeOfDay}`}>
       <Link to="/" className="app-home-logo" aria-label="Return home">
-        {/*<img src={logo} className="App-logo" alt="My Reflections Glow logo" /> */}
+        <img src={seasonalLogo} className="App-logo" alt="Reflections in Light seasonal logo" />
       </Link>
 
       {!isHomePage ? (
@@ -367,34 +382,32 @@ function AppShell() {
             className={`veil-control-btn veil-control-btn--auto ${autoVeil ? "is-active" : ""}`}
             onClick={() => setAutoVeil(!autoVeil)}
           >
-              {autoVeil ? "Manual Veil" : "Auto Veil"}
+            {autoVeil ? "Manual Veil" : "Auto Veil"}
           </button>
         </div>
+      </div>
 
-        {/* Top UI Row */}
+      <div className="home-hero-stack">
         <div className="top-ui-row">
           <div className="reflections-trigger">
             <div className="inspiration-panel">
-              <button className="inspo-btn" onClick={openReflections}>
+              <button className="inspo-btn" onClick={openReflections} type="button">
                 Reflections
               </button>
 
-          <button className="inspo-btn" onClick={openQuoteDrawer}>
+              <button className="inspo-btn" onClick={openQuoteDrawer} type="button">
                 Quote of the Day
               </button>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Seasonal Header */}
-      <div className="seasonal-header">
-        <h1 className="month-title">A Month of Light</h1>
-        <h2 className="date-subtitle">April 2026</h2>
-      </div>
+        <div className="seasonal-header">
+          <h1 className="month-title">A Month of Light</h1>
+          <h2 className="date-subtitle">{todayLabel}</h2>
+        </div>
 
-      {isHomePage ? (
-        <>
+        {isHomePage ? (
           <div className="actions-help-trigger-row">
             <button
               type="button"
@@ -407,6 +420,11 @@ function AppShell() {
               How it works
             </button>
           </div>
+        ) : null}
+      </div>
+
+      {isHomePage ? (
+        <>
 
           {isActionsHelpOpen ? (
             <div
@@ -531,6 +549,8 @@ function AppShell() {
           weatherMood={weatherMood}
           isNight={isNight}
           weatherDescription={weatherDescription}
+          season={season}
+          activeMode={mode}
         />
       )}
 

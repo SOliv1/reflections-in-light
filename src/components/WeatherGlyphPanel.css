@@ -1,3 +1,17 @@
+.weather-glyph-stage {
+  position: relative;
+  z-index: 20040;
+  display: grid;
+  justify-items: center;
+  margin: 0.2rem auto 1.1rem;
+  padding: 0 1rem;
+  pointer-events: none;
+}
+
+.weather-glyph-stage .weather-glyph-panel {
+  pointer-events: auto;
+}
+
 .weather-glyph-panel {
   --ambient-tint: rgba(255, 240, 200, 0.25);
   --panel-glass: rgba(255, 255, 255, 0.06);
@@ -5,8 +19,8 @@
   --panel-shadow: rgba(11, 18, 38, 0.14);
   --panel-text-surface: rgba(9, 14, 30, 0.34);
   width: min(100%, 22rem);
-  margin: 0 auto 2rem;
-  padding: 1rem 1rem 1.2rem;
+  margin: 0 auto;
+  padding: 0.9rem 1rem 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -18,6 +32,30 @@
     0 16px 40px var(--panel-shadow),
     inset 0 1px 0 rgba(255, 255, 255, 0.22);
   backdrop-filter: blur(14px);
+}
+
+.weather-glyph-palette--winter .weather-glyph-panel {
+  --ambient-tint: rgba(209, 224, 255, 0.36);
+  --panel-glass: rgba(242, 247, 255, 0.15);
+  --panel-stroke: rgba(214, 228, 255, 0.3);
+}
+
+.weather-glyph-palette--spring .weather-glyph-panel {
+  --ambient-tint: rgba(213, 239, 214, 0.3);
+  --panel-glass: rgba(243, 255, 245, 0.12);
+  --panel-stroke: rgba(214, 242, 219, 0.26);
+}
+
+.weather-glyph-palette--summer .weather-glyph-panel {
+  --ambient-tint: rgba(255, 223, 165, 0.38);
+  --panel-glass: rgba(255, 245, 222, 0.16);
+  --panel-stroke: rgba(255, 226, 176, 0.3);
+}
+
+.weather-glyph-palette--autumn .weather-glyph-panel {
+  --ambient-tint: rgba(232, 191, 161, 0.34);
+  --panel-glass: rgba(255, 239, 233, 0.14);
+  --panel-stroke: rgba(240, 204, 186, 0.28);
 }
 
 .weather-glyph-panel--sunny {
@@ -55,6 +93,10 @@
 }
 
 .weather-glyph-panel .weather-glyph {
+  margin-right: 0;
+  padding: 0;
+  border: none;
+  background-color: transparent;
   box-shadow:
     0 0 0 1px var(--glyph-mood-ring, rgba(255, 255, 255, 0.16)),
     0 0 28px var(--glyph-mood-glow, rgba(255, 255, 255, 0.22));
@@ -73,8 +115,8 @@
   pointer-events: none;
 }
 
-.weather-reading-value {
-  font-size: 1.65rem;
+.weather-reading-time {
+  font-size: 1.6rem;
   font-weight: 700;
   line-height: 1;
   color: rgba(255, 255, 255, 0.95);
@@ -83,12 +125,21 @@
     0 0 18px rgba(255, 255, 255, 0.16);
 }
 
-.weather-reading-unit {
+.weather-reading-date {
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.8);
+}
+
+.weather-reading-temp {
+  margin-top: 0.18rem;
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(247, 250, 255, 0.86);
 }
 
 .weather-panel-text {
@@ -132,6 +183,16 @@
   color: rgba(234, 240, 255, 0.72);
 }
 
+.weather-panel-note {
+  width: 100%;
+  margin-top: 0.45rem;
+  font-size: 0.72rem;
+  line-height: 1.5;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: rgba(236, 242, 255, 0.7);
+}
+
 .weather-glyph-panel--sunny .weather-panel-text {
   color: rgba(255, 250, 242, 0.96);
 }
@@ -142,14 +203,18 @@
 }
 
 @media (max-width: 600px) {
+  .weather-glyph-stage {
+    margin-top: 0.15rem;
+    padding: 0 0.75rem;
+  }
+
   .weather-glyph-panel {
     width: min(100%, 18rem);
     padding: 0.85rem;
-    margin-bottom: 1.4rem;
   }
 
-  .weather-reading-value {
-    font-size: 1.45rem;
+  .weather-reading-time {
+    font-size: 1.34rem;
   }
 
   .weather-panel-text {

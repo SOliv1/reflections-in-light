@@ -230,21 +230,77 @@
 }
 
 .unified-drawer-panel {
+    position: relative;
     width: min(100%, 34rem);
     margin: 0 auto;
-    padding: 0.8rem 1.05rem 0.85rem;
+    padding: 0.55rem 0.9rem 0.8rem;
     background: rgba(12, 18, 34, 0.28);
     border: 1px solid rgba(255, 255, 255, 0.14);
     border-radius: 1.4rem 1.4rem 0 0;
     box-shadow: 0 -18px 50px rgba(4, 10, 24, 0.24);
-    max-height: min(92vh, 52rem);
+    max-height: min(84vh, 46rem);
     overflow-y: auto;
     overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+    touch-action: pan-y;
 }
 
 .unified-drawer-close {
+    position: static;
+    margin-right: 0;
+    width: 2.2rem;
+    height: 2.2rem;
+    padding: 0;
+    border-radius: 999px;
     z-index: 2;
     color: rgba(245, 248, 255, 0.92);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    line-height: 1;
+    font-size: 1.2rem;
+    display: inline-grid;
+    place-items: center;
+}
+
+.unified-drawer-topbar {
+    position: sticky;
+    top: 0;
+    z-index: 4;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
+    margin: -0.1rem 0 0.35rem;
+    padding: 0.35rem 0 0.45rem;
+    background: linear-gradient(180deg, rgba(12, 18, 34, 0.82), rgba(12, 18, 34, 0.4));
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.unified-drawer-scrollhint {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.45rem 0.75rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: rgba(242, 246, 255, 0.82);
+    font-size: 0.76rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.unified-drawer-scrollhint-arrows {
+    font-size: 0.82rem;
+    letter-spacing: 0.18em;
+}
+
+.unified-drawer-closehint {
+    margin: 0 0 0.55rem;
+    color: rgba(236, 242, 255, 0.68);
+    font-size: 0.78rem;
+    line-height: 1.35;
 }
 
 .unified-drawer-panel .short-reflections-drawer {
@@ -263,13 +319,13 @@
 }
 
 .unified-drawer-panel .panel-title {
-    margin-bottom: 0.8rem;
-    font-size: 1.22rem;
+    margin-bottom: 0.6rem;
+    font-size: 1.14rem;
 }
 
 .unified-drawer-panel .drawer-inner-buttons,
 .unified-drawer-panel .todo-input-row {
-    margin-top: 0.8rem;
+    margin-top: 0.6rem;
 }
 
 .unified-drawer-panel .notes-list,
