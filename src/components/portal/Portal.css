@@ -44,16 +44,16 @@
   height: 120px;
   border-radius: 50%;
   transform: scale(1);
-  transition: transform 0.6s ease, box-shadow 0.8s ease;
   background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.35), transparent 60%);
   box-shadow: 0 0 24px rgba(0, 0, 0, 0.45);
   overflow: visible;
   cursor: pointer;
+  /* Cinematic ease — mirrors WeatherGlyph expansion feel */
   transition:
-    background-color 1.4s ease,
-    box-shadow 1.4s ease,
-    transform 0.6s ease,
-    filter 1.4s ease;
+    transform 1.1s cubic-bezier(0.16, 0.84, 0.44, 1),
+    filter 1.1s ease-in-out,
+    box-shadow 1.1s ease-in-out,
+    background-color 1.4s ease;
 }
 
 .portal--mood {
@@ -86,8 +86,9 @@
 }
 
 .portal--orb-open {
-  transform: scale(1.26);
-  filter: brightness(1.12) saturate(1.1);
+  /* Single full expansion — same scale and lift as WeatherGlyph .expanded */
+  transform: scale(1.85) translateY(-10px);
+  filter: brightness(1.12) saturate(1.08);
 }
 
 .portal--orb-open .portal__core {
@@ -102,7 +103,8 @@
 }
 
 .portal--mood:hover {
-  transform: scale(1.15);
+  /* Glow only — transform is owned by JS orb-open class, not CSS :hover */
+  filter: brightness(1.06);
 }
 
 /* Inner core */
@@ -117,7 +119,11 @@
 
 .portal__clock {
   position: absolute;
-  inset: 0;
+  /* Always centred — pill background fades in, no position jump */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: max-content;
   z-index: 3;
   display: flex;
   flex-direction: column;
@@ -126,18 +132,29 @@
   gap: 0.1rem;
   text-align: center;
   pointer-events: none;
+  /* Pill shell always present, starts transparent */
+  border-radius: 10px;
+  padding: 0.28rem 0.72rem 0.32rem;
+  background: rgba(6, 10, 22, 0);
+  border: 1px solid rgba(255, 255, 255, 0);
+  /* Slow, gentle cross-fade — no swipe, no snap */
   opacity: 0.82;
-  transition: opacity 0.45s ease, transform 0.45s ease;
+  transition:
+    opacity 0.85s ease-in-out,
+    background 0.85s ease-in-out,
+    border-color 0.85s ease-in-out;
 }
 
 .portal__clock-time {
   font-size: 1.08rem;
   font-weight: 700;
   line-height: 1;
-  color: rgba(247, 250, 255, 0.96);
+  color: rgba(247, 250, 255, 0.98);
+  /* Deeper shadow stack so white text reads on the bright orb core */
   text-shadow:
-    0 2px 10px rgba(10, 14, 28, 0.4),
-    0 0 18px rgba(255, 255, 255, 0.18);
+    0 1px 6px rgba(6, 10, 22, 0.72),
+    0 2px 14px rgba(6, 10, 22, 0.55),
+    0 0 22px rgba(255, 255, 255, 0.22);
 }
 
 .portal__clock-date {
@@ -145,20 +162,16 @@
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(238, 243, 255, 0.82);
+  color: rgba(238, 243, 255, 0.92);
+  text-shadow: 0 1px 6px rgba(6, 10, 22, 0.65);
 }
 
-.portal--clock-open {
-  animation: none;
-  transform: scale(2.2) translateY(-0.22rem);
-  box-shadow:
-    0 0 34px rgba(255, 255, 255, 0.38),
-    0 0 72px rgba(176, 194, 255, 0.38),
-    0 16px 40px rgba(0, 0, 0, 0.16);
-}
-
+/* clock-open: pill fades in softly — position/size already set on base */
 .portal--clock-open .portal__clock {
   opacity: 1;
+  /* Softer, translucent backdrop — feathered rather than solid */
+  background: rgba(6, 10, 22, 0.30);
+  border-color: rgba(255, 255, 255, 0.16);
 }
 
 .portal--seasonal .portal__core {
@@ -239,12 +252,10 @@
   bottom: -30%;
   left: -20%;
   width: 25%;
-  background: linear-gradient(
-    to right,
-    transparent,
-    rgba(255,255,255,0.18),
-    transparent
-  );
+  background: linear-gradient(to right,
+      transparent,
+      rgba(255, 255, 255, 0.18),
+      transparent);
   mix-blend-mode: screen;
   opacity: 0.18;
   animation: seasonal-parallax 22s ease-in-out infinite;
@@ -252,9 +263,17 @@
 }
 
 @keyframes seasonal-parallax {
-  0%   { transform: translateX(0) translateY(0); }
-  50%  { transform: translateX(140%) translateY(6%); }
-  100% { transform: translateX(0) translateY(0); }
+  0% {
+    transform: translateX(0) translateY(0);
+  }
+
+  50% {
+    transform: translateX(140%) translateY(6%);
+  }
+
+  100% {
+    transform: translateX(0) translateY(0);
+  }
 }
 
 /* Interior breathing ember */
@@ -263,20 +282,29 @@
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    rgba(var(--season-rgb), 0.35),
-    transparent 70%
-  );
+  background: radial-gradient(circle,
+      rgba(var(--season-rgb), 0.35),
+      transparent 70%);
   opacity: 0.35;
   animation: seasonal-ember 6.5s ease-in-out infinite;
   pointer-events: none;
 }
 
 @keyframes seasonal-ember {
-  0%   { opacity: 0.28; transform: scale(1); }
-  50%  { opacity: 0.48; transform: scale(1.06); }
-  100% { opacity: 0.28; transform: scale(1); }
+  0% {
+    opacity: 0.28;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.48;
+    transform: scale(1.06);
+  }
+
+  100% {
+    opacity: 0.28;
+    transform: scale(1);
+  }
 }
 
 
@@ -299,23 +327,19 @@
   0% {
     transform: scale(1.16) translateY(-4px);
     filter:
-      drop-shadow(0 0 18px var(--season-glow-inner))
-      drop-shadow(0 0 32px var(--season-glow-outer))
-      brightness(1.2);
+      drop-shadow(0 0 18px var(--season-glow-inner)) drop-shadow(0 0 32px var(--season-glow-outer)) brightness(1.2);
   }
+
   50% {
     transform: scale(1.22) translateY(-6px);
     filter:
-      drop-shadow(0 0 28px var(--season-glow-inner))
-      drop-shadow(0 0 52px var(--season-glow-outer))
-      brightness(1.35);
+      drop-shadow(0 0 28px var(--season-glow-inner)) drop-shadow(0 0 52px var(--season-glow-outer)) brightness(1.35);
   }
+
   100% {
     transform: scale(1.16) translateY(-4px);
     filter:
-      drop-shadow(0 0 18px var(--season-glow-inner))
-      drop-shadow(0 0 32px var(--season-glow-outer))
-      brightness(1.2);
+      drop-shadow(0 0 18px var(--season-glow-inner)) drop-shadow(0 0 32px var(--season-glow-outer)) brightness(1.2);
   }
 }
 
@@ -326,7 +350,7 @@
   left: 50%;
   transform: translate(-50%, 12px);
   color: #27219e;
-  text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
   font-size: 0.8rem;
   letter-spacing: 0.04em;
   opacity: 1;
@@ -387,6 +411,14 @@
 
 .portal--mood-playful {
   background-color: var(--mood-playful-neon-rose);
+}
+
+/* Unknown/unresolved mood — inherit current season’s palette tint */
+.portal--mood-unknown {
+  background-color: rgba(var(--season-rgb), 0.55);
+  box-shadow:
+    0 0 18px rgba(var(--season-rgb), 0.22),
+    0 0 38px rgba(var(--season-rgb), 0.14);
 }
 
 /* Mood portal sizes */
@@ -468,23 +500,23 @@
 
 /* Season-specific glow tuning */
 .portal--season-winter {
-  --season-glow-outer: rgba(150,185,220,0.45);
-  --season-glow-inner: rgba(150,185,220,0.28);
+  --season-glow-outer: rgba(150, 185, 220, 0.45);
+  --season-glow-inner: rgba(150, 185, 220, 0.28);
 }
 
 .portal--season-spring {
-  --season-glow-outer: rgba(140,190,150,0.45);
-  --season-glow-inner: rgba(140,190,150,0.28);
+  --season-glow-outer: rgba(140, 190, 150, 0.45);
+  --season-glow-inner: rgba(140, 190, 150, 0.28);
 }
 
 .portal--season-summer {
-  --season-glow-outer: rgba(240,185,90,0.45);
-  --season-glow-inner: rgba(240,185,90,0.28);
+  --season-glow-outer: rgba(240, 185, 90, 0.45);
+  --season-glow-inner: rgba(240, 185, 90, 0.28);
 }
 
 .portal--season-autumn {
-  --season-glow-outer: rgba(205,135,75,0.45);
-  --season-glow-inner: rgba(205,135,75,0.28);
+  --season-glow-outer: rgba(205, 135, 75, 0.45);
+  --season-glow-inner: rgba(205, 135, 75, 0.28);
 }
 
 
@@ -624,7 +656,8 @@
 
 /* Heightened interior enclave — richer glow, deeper presence */
 .portal--seasonal .portal__core {
-  opacity: 0.72; /* was 0.55 */
+  opacity: 0.72;
+  /* was 0.55 */
   box-shadow:
     0 0 32px rgba(var(--season-rgb), 0.45),
     0 0 48px rgba(var(--season-rgb), 0.28),
@@ -632,13 +665,17 @@
 }
 
 .portal--seasonal .portal__crescent {
-  opacity: 0.42; /* was 0.32 */
-  transform: translateX(12%); /* slightly more centered */
+  opacity: 0.42;
+  /* was 0.32 */
+  transform: translateX(12%);
+  /* slightly more centered */
 }
 
 .portal--seasonal .portal__shimmer {
-  opacity: 0.32; /* was 0.22 */
-  animation-duration: 11s; /* slightly faster shimmer */
+  opacity: 0.32;
+  /* was 0.22 */
+  animation-duration: 11s;
+  /* slightly faster shimmer */
 }
 
 .portal--seasonal.portal--mood-warm-spotlight .portal__core {
@@ -719,9 +756,9 @@
 }
 
 .portal {
-  box-shadow: 0 0 24px var(--mode-shadow, rgba(0,0,0,0.45));
+  box-shadow: 0 0 24px var(--mode-shadow, rgba(0, 0, 0, 0.45));
   background: radial-gradient(circle at 30% 30%,
-      var(--mode-glow, rgba(255,255,255,0.35)),
+      var(--mode-glow, rgba(255, 255, 255, 0.35)),
       transparent 60%);
 }
 
@@ -729,9 +766,7 @@
 .portal--aware {
   transform: scale(1.18) translateY(-4px) !important;
   filter:
-    drop-shadow(0 0 22px var(--season-glow-inner))
-    drop-shadow(0 0 42px var(--season-glow-outer))
-    brightness(1.25) !important;
+    drop-shadow(0 0 22px var(--season-glow-inner)) drop-shadow(0 0 42px var(--season-glow-outer)) brightness(1.25) !important;
   animation: portal-aware-pulse 1.6s ease-in-out infinite !important;
 }
 
@@ -739,11 +774,7 @@
 .portal--aware.portal--hover {
   transform: scale(1.32) translateY(-10px);
   filter:
-    drop-shadow(0 0 48px var(--season-glow-inner))
-    drop-shadow(0 0 96px var(--season-glow-outer))
-    saturate(2.8)
-    brightness(1.65)
-    contrast(1.3);
+    drop-shadow(0 0 48px var(--season-glow-inner)) drop-shadow(0 0 96px var(--season-glow-outer)) saturate(2.8) brightness(1.65) contrast(1.3);
   transition:
     transform 0.35s ease,
     filter 0.35s ease;
@@ -751,7 +782,7 @@
 
 .portal__cue,
 .portal-subtitle {
-  text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
 }
 
 .portal-wrapper {
@@ -814,7 +845,7 @@
 }
 
 /* Subtitle fade */
-.portal-wrapper.aware + .portal-subtitle {
+.portal-wrapper.aware+.portal-subtitle {
   opacity: 1;
 }
 
@@ -911,9 +942,17 @@
 /* -------------------------------------------------- */
 
 @keyframes orbPulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.08); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.08);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
 
@@ -945,6 +984,7 @@
     transform: scale(0.6);
     opacity: 0;
   }
+
   to {
     transform: scale(1);
     opacity: 1;
@@ -974,18 +1014,53 @@
 }
 
 /* Radial positions */
-.mood-option:nth-child(1) { top: 10px; left: 50%; transform: translateX(-50%); }
-.mood-option:nth-child(2) { top: 40px; right: 10px; }
-.mood-option:nth-child(3) { top: 90px; right: 0; }
-.mood-option:nth-child(4) { top: 120px; left: 50%; transform: translateX(-50%); }
-.mood-option:nth-child(5) { top: 90px; left: 0; }
+.mood-option:nth-child(1) {
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.mood-option:nth-child(2) {
+  top: 40px;
+  right: 10px;
+}
+
+.mood-option:nth-child(3) {
+  top: 90px;
+  right: 0;
+}
+
+.mood-option:nth-child(4) {
+  top: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.mood-option:nth-child(5) {
+  top: 90px;
+  left: 0;
+}
 
 /* Staggered delays */
-.mood-option:nth-child(1) { animation-delay: 0.05s; }
-.mood-option:nth-child(2) { animation-delay: 0.1s; }
-.mood-option:nth-child(3) { animation-delay: 0.15s; }
-.mood-option:nth-child(4) { animation-delay: 0.2s; }
-.mood-option:nth-child(5) { animation-delay: 0.25s; }
+.mood-option:nth-child(1) {
+  animation-delay: 0.05s;
+}
+
+.mood-option:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.mood-option:nth-child(3) {
+  animation-delay: 0.15s;
+}
+
+.mood-option:nth-child(4) {
+  animation-delay: 0.2s;
+}
+
+.mood-option:nth-child(5) {
+  animation-delay: 0.25s;
+}
 
 
 
@@ -1067,30 +1142,34 @@
     linear-gradient(25deg,
       rgba(70, 180, 255, 0.55) 20%,
       rgba(70, 180, 255, 0.25) 40%,
-      transparent 60%
-    ),
+      transparent 60%),
     linear-gradient(150deg,
       rgba(255, 120, 180, 0.45) 20%,
       rgba(255, 120, 180, 0.15) 40%,
-      transparent 60%
-    ),
+      transparent 60%),
     linear-gradient(75deg,
       rgba(255, 220, 140, 0.45) 15%,
       rgba(255, 220, 140, 0.12) 35%,
-      transparent 55%
-    ),
+      transparent 55%),
     radial-gradient(circle at 32% 28%,
       rgba(255, 255, 255, 0.85),
-      rgba(200, 200, 200, 0.15)
-    );
+      rgba(200, 200, 200, 0.15));
   background-size: 200% 200%;
   animation: portal-orb-drift 14s ease-in-out infinite;
 }
 
 @keyframes portal-orb-drift {
-  0% { background-position: 0% 0%; }
-  50% { background-position: 100% 100%; }
-  100% { background-position: 0% 0%; }
+  0% {
+    background-position: 0% 0%;
+  }
+
+  50% {
+    background-position: 100% 100%;
+  }
+
+  100% {
+    background-position: 0% 0%;
+  }
 }
 
 /* Portal orb season echo */
@@ -1113,22 +1192,22 @@
 /* Season-tinted portal glow when aware */
 .season-winter .portal--aware {
   box-shadow: 0 0 40px rgba(120, 180, 255, 0.55),
-              0 0 80px rgba(120, 180, 255, 0.35);
+    0 0 80px rgba(120, 180, 255, 0.35);
 }
 
 .season-spring .portal--aware {
   box-shadow: 0 0 40px rgba(160, 240, 160, 0.55),
-              0 0 80px rgba(160, 240, 160, 0.35);
+    0 0 80px rgba(160, 240, 160, 0.35);
 }
 
 .season-summer .portal--aware {
   box-shadow: 0 0 40px rgba(255, 200, 120, 0.55),
-              0 0 80px rgba(255, 200, 120, 0.35);
+    0 0 80px rgba(255, 200, 120, 0.35);
 }
 
 .season-autumn .portal--aware {
   box-shadow: 0 0 40px rgba(255, 150, 120, 0.55),
-              0 0 80px rgba(255, 150, 120, 0.35);
+    0 0 80px rgba(255, 150, 120, 0.35);
 }
 
 /* Portal orb season tint */
@@ -1235,22 +1314,26 @@
 }
 
 .mood-option {
-  background: rgba(255, 255, 255, 0.05);   /* brighter, more visible */
+  background: rgba(255, 255, 255, 0.05);
+  /* brighter, more visible */
   backdrop-filter: blur(6px);
-  border: 1px solid rgba(0, 0, 0, 0.15);   /* subtle dark border */
-  color: rgba(30, 30, 30, 0.9);            /* darker, readable text */
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  /* subtle dark border */
+  color: rgba(30, 30, 30, 0.9);
+  /* darker, readable text */
   padding: 8px 14px;
   border-radius: 12px;
   font-size: 0.95rem;
-  font-weight: 600;                        /* clearer text weight */
+  font-weight: 600;
+  /* clearer text weight */
   transition: box-shadow 0.4s ease;
 }
 
 .mood-option:hover {
   box-shadow:
-  0 0 12px rgba(var(--season-light), 0.22),
-  0 0 24px var(--season-mid),
-  0 0 36px var(--season-dark);
+    0 0 12px rgba(var(--season-light), 0.22),
+    0 0 24px var(--season-mid),
+    0 0 36px var(--season-dark);
   transform: translateY(-2px);
 }
 
@@ -1342,17 +1425,14 @@ button.mood-orb {
   color: var(--portal-mood-subtext);
 }
 
+/* Consolidated portal state for clock-open — animation pause + mood glow only.
+   Transform is handled by portal--orb-open so there is no scale conflict. */
 .portal--clock-open {
-  transform: scale(1.86) translateY(-0.18rem);
+  animation: none;
   box-shadow:
     0 0 24px rgba(255, 255, 255, 0.32),
     0 0 54px var(--portal-mood-glow),
     0 16px 38px rgba(0, 0, 0, 0.16);
-}
-
-.portal--clock-open .portal__clock {
-  opacity: 1;
-  backdrop-filter: blur(12px) saturate(1.05);
 }
 
 .mood-radial-menu {
@@ -1394,6 +1474,7 @@ button.mood-orb {
     transform: translate3d(14px, -12px, 0) scale(0.96);
     opacity: 0;
   }
+
   to {
     transform: translate3d(0, 0, 0) scale(1);
     opacity: 1;
@@ -1425,11 +1506,25 @@ button.mood-orb {
   transform: translateY(6px) scale(0.98) !important;
 }
 
-.mood-option:nth-child(1) { animation-delay: 0.04s; }
-.mood-option:nth-child(2) { animation-delay: 0.08s; }
-.mood-option:nth-child(3) { animation-delay: 0.12s; }
-.mood-option:nth-child(4) { animation-delay: 0.16s; }
-.mood-option:nth-child(5) { animation-delay: 0.2s; }
+.mood-option:nth-child(1) {
+  animation-delay: 0.04s;
+}
+
+.mood-option:nth-child(2) {
+  animation-delay: 0.08s;
+}
+
+.mood-option:nth-child(3) {
+  animation-delay: 0.12s;
+}
+
+.mood-option:nth-child(4) {
+  animation-delay: 0.16s;
+}
+
+.mood-option:nth-child(5) {
+  animation-delay: 0.2s;
+}
 
 .mood-reset {
   position: relative;
@@ -1496,6 +1591,7 @@ button.mood-orb {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   .portal,
   .mood-orb,
   .mood-radial-menu,
@@ -1508,5 +1604,3 @@ button.mood-orb {
     transition-duration: 0.01ms !important;
   }
 }
-
-

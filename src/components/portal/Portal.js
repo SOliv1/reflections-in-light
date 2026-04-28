@@ -1,5 +1,5 @@
 import "./Portal.css";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 export function Portal({
   dayIndex,
@@ -17,6 +17,9 @@ export function Portal({
   const [isPinnedOpen, setPinnedOpen] = useState(false);
   const [isHovered, setHovered] = useState(false);
   const [clock, setClock] = useState(() => new Date());
+  // Refs for hover debounce and post-unpin cooldown
+  const hoverEnterTimer = useRef(null);
+  const unpinCooldown = useRef(false);
   const resolvedMood = ["calm", "joyful", "stormy", "reflective", "natural"].includes(mood)
     ? mood
     : "natural";
@@ -32,6 +35,11 @@ export function Portal({
 
     return () => window.clearInterval(timer);
   }, [showClock]);
+
+  // Cancel any pending hover timer if the orb unmounts mid-hover
+  useEffect(() => {
+    return () => clearTimeout(hoverEnterTimer.current);
+  }, []);
 
   const dayClass = dayIndex ? `portal--day-${dayIndex}` : "";
   const seasonClass = season ? `portal--season-${season}` : "";
@@ -50,8 +58,10 @@ export function Portal({
   const typeClass = type ? `portal--${type}` : "";
   const glowClass = type === "mood" ? "portal--glow" : "";
   const awareClass = portalState === "aware" ? "portal--aware" : "";
-  const clockOpenClass = showClock && (isPinnedOpen || isHovered) ? "portal--clock-open" : "";
-  const orbOpenClass = isPinnedOpen || isHovered ? "portal--orb-open" : "";
+  // Hover → gentle float (orb-open). Click/pin → full clock expansion (clock-open).
+  // Never both simultaneously — clock-open wins and orb-open would conflict on transform.
+  const clockOpenClass = showClock && isPinnedOpen ? "portal--clock-open" : "";
+  const orbOpenClass = !isPinnedOpen && isHovered ? "portal--orb-open" : "";
   const containerMoodClass = `portal-container--mood-${resolvedMood}`;
   const currentTime = useMemo(
     () =>
@@ -144,11 +154,30 @@ export function Portal({
       {/* ⭐ PORTAL CORE */}
       <div
         className={classes}
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
+        onMouseEnter={() => {
+          // Ignore hover while pinned — avoids class conflict on transform
+          if (isPinnedOpen) return;
+          // Small delay kills false-triggers from quick mouse passes
+          hoverEnterTimer.current = setTimeout(() => {
+            if (!unpinCooldown.current) setHovered(true);
+          }, 150);
+        }}
+        onMouseLeave={() => {
+          clearTimeout(hoverEnterTimer.current);
+          setHovered(false);
+        }}
         onClick={() => {
           if (showClock) {
-            setPinnedOpen((open) => !open);
+            const nextPinned = !isPinnedOpen;
+            setPinnedOpen(nextPinned);
+            // Always clear hover on click so states never overlap
+            clearTimeout(hoverEnterTimer.current);
+            setHovered(false);
+            if (!nextPinned) {
+              // Brief cooldown after close prevents instant re-hover
+              unpinCooldown.current = true;
+              setTimeout(() => { unpinCooldown.current = false; }, 700);
+            }
           }
           if (type === "mood" && setMood) {
             setMood(mood);

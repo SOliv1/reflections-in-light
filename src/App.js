@@ -285,6 +285,7 @@ function AppShell() {
   const [isActionsHelpOpen, setActionsHelpOpen] = useState(false);
   const [selectedLogo, setSelectedLogo] = useState("moodTwo");
   const [manualPortalMood, setManualPortalMood] = useState(null);
+  const [manualSeason, setManualSeason] = useState(null);
 
   const logoOptions = {
     mood: moodLogo,
@@ -297,6 +298,7 @@ function AppShell() {
     off: null
   };
   const currentLogo = logoOptions[selectedLogo] ?? moodLogoTwo;
+  const activeSeason = manualSeason || season;
   const activePortalMood = manualPortalMood || weatherMood || "natural";
   const appShellClass = `App mode-${mode} time-${timeOfDay} App--season-${season} App--mood-${activePortalMood}`;
 
@@ -337,7 +339,7 @@ function AppShell() {
       <Portal
         type="mood"
         dayIndex={1}
-        season={season}
+        season={activeSeason}
         mood={activePortalMood}
         cueText=""
         weatherMood={weatherMood}
@@ -574,6 +576,7 @@ function AppShell() {
           onSelectLogo={setSelectedLogo}
           activeMood={activePortalMood}
           onSelectMood={setManualPortalMood}
+          onSelectPalette={setManualSeason}
         />
       )}
 

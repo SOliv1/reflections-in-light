@@ -23,7 +23,8 @@ export default function WeatherGlyphPanel({
   activeLogo = "mood",
   onSelectLogo,
   activeMood = "sunny",
-  onSelectMood
+  onSelectMood,
+  onSelectPalette
 }) {
   const [isMiniOrbOpen, setMiniOrbOpen] = useState(false);
   const [activePalette, setActivePalette] = useState(season);
@@ -94,6 +95,7 @@ export default function WeatherGlyphPanel({
         onToggle={() => setMiniOrbOpen((open) => !open)}
         onSelectPalette={(palette) => {
           setActivePalette(palette);
+          onSelectPalette?.(palette);
         }}
         onSelectLogo={onSelectLogo}
         onSelectMood={onSelectMood}
