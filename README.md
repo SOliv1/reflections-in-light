@@ -1,7 +1,11 @@
-# My Reflections App (React)
-[![Jekyll site CI](https://github.com/SOliv1/reflections-in-light/actions/workflows/jekyll-docker.yml/badge.svg)](https://github.com/SOliv1/reflections-in-light/actions/workflows/jekyll-docker.yml)[![CodeQL](https://github.com/SOliv1/reflections-in-light/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/SOliv1/reflections-in-light/actions/workflows/github-code-scanning/codeql)
+# My Reflections Apps (React)
+## Reflections-in-light
 
-## View the Reflections Project [Here](https://reflections-in-light.onrender.com/)
+[![Jekyll site CI](https://github.com/SOliv1/reflections-in-light/actions/workflows/jekyll-docker.yml/badge.svg)](https://github.com/SOliv1/reflections-in-light/actions/workflows/jekyll-docker.yml)[![CodeQL](https://github.com/SOliv1/reflections-in-light/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/SOliv1/reflections-in-light/actions/workflows/github-code-scanning/codeql)[![wakatime](https://wakatime.com/badge/github/SOliv1/reflections-in-light.svg)](https://wakatime.com/badge/github/SOliv1/reflections-in-light)
+## A part of my Collection of Reflections Apps
+## Github: reflections-in-light-constellations [Here](https://github.com/SOliv1/reflections-in-light-constellations)  / reflections-in-light [Here](https://reflections-in-light.onrender.com/)
+
+### View the Reflections Project [Here](https://reflections-in-light.onrender.com/) / and on the published site reflections-in-light.com [Here](https://reflections-in-light.com/)
 
 ## Deployment Notes
 
