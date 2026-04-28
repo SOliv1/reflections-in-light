@@ -2,6 +2,7 @@
 [![Jekyll site CI](https://github.com/SOliv1/reflections-in-light/actions/workflows/jekyll-docker.yml/badge.svg)](https://github.com/SOliv1/reflections-in-light/actions/workflows/jekyll-docker.yml)[![CodeQL](https://github.com/SOliv1/reflections-in-light/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/SOliv1/reflections-in-light/actions/workflows/github-code-scanning/codeql)[![wakatime](https://wakatime.com/badge/github/SOliv1/reflections-in-light.svg)](https://wakatime.com/badge/github/SOliv1/reflections-in-light)[![Copilot cloud agent](https://github.com/SOliv1/reflections-in-light/actions/workflows/copilot-swe-agent/copilot/badge.svg)](https://github.com/SOliv1/reflections-in-light/actions/workflows/copilot-swe-agent/copilot)[![Dependabot Updates](https://github.com/SOliv1/reflections-in-light/actions/workflows/dependabot/dependabot-updates/badge.svg)](https://github.com/SOliv1/reflections-in-light/actions/workflows/dependabot/dependabot-updates)
 
 ## View the Reflections Project [Here](https://reflections-in-light.onrender.com/)
+#### FootNote: The project can be viewed on Branch Twilight-Veil. Switch branches from master to codex-twilight-veil to view the published site.
 
 ## Deployment Notes
 
