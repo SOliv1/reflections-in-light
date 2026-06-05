@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/static/css/main.23ae950b.css",
+    "main.js": "/static/js/main.1090859a.js",
+    "static/js/453.bc8f4d16.chunk.js": "/static/js/453.bc8f4d16.chunk.js",
+    "static/media/reflections-mark-screen1.png": "/static/media/reflections-mark-screen1.fc8d47f9142be4f17a26.png",
+    "static/media/reflectionsMarkLogo.png": "/static/media/reflectionsMarkLogo.4b43f5efafd2ed009707.png",
+    "static/media/moodLogo.png": "/static/media/moodLogo.014d341c0f23546b61ad.png",
+    "static/media/moodLogo2.png": "/static/media/moodLogo2.37bd12d0a6c58a648649.png",
+    "static/media/springSeasonal.png": "/static/media/springSeasonal.69d169f0a855232a8cac.png",
+    "static/media/reflections-mark2.png": "/static/media/reflections-mark2.a916eaf8e94790e05c59.png",
+    "static/media/wildCard-PearlLogo.png": "/static/media/wildCard-PearlLogo.d8233dd92f754919b70b.png",
+    "index.html": "/index.html",
+    "main.23ae950b.css.map": "/static/css/main.23ae950b.css.map",
+    "main.1090859a.js.map": "/static/js/main.1090859a.js.map",
+    "453.bc8f4d16.chunk.js.map": "/static/js/453.bc8f4d16.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.23ae950b.css",
+    "static/js/main.1090859a.js"
+  ]
+}

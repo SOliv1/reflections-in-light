@@ -1,5 +1,7 @@
 import "./miniOrbMenu.css";
+import MoodBoardMap from "./MoodBoardMap";
 import SeasonalControls from "./SeasonalControls";
+import { CURATED_MOOD_SWATCHES } from "../data/moodBoardMap";
 
 export default function MiniOrbMenu({
   isOpen,
@@ -21,14 +23,6 @@ export default function MiniOrbMenu({
     { id: "pearl", label: "Pearl Logo" },
     { id: "off", label: "Logo Off" }
   ];
-  const moodOptions = [
-    { id: "calm", label: "Calm", swatchClass: "mood-swatch--calm" },
-    { id: "joyful", label: "Joyful", swatchClass: "mood-swatch--joyful" },
-    { id: "stormy", label: "Stormy", swatchClass: "mood-swatch--stormy" },
-    { id: "reflective", label: "Reflective", swatchClass: "mood-swatch--reflective" },
-    { id: "natural", label: "Natural", swatchClass: "mood-swatch--natural" }
-  ];
-
   return (
     <div className={`mini-orb-menu ${isOpen ? "is-open" : ""}`}>
       <button
@@ -53,7 +47,7 @@ export default function MiniOrbMenu({
           <div className="mini-orb-mood-section">
             <p className="mini-orb-subtitle">Mood colours</p>
             <div className="mini-orb-mood-grid">
-              {moodOptions.map((mood) => (
+              {CURATED_MOOD_SWATCHES.map((mood) => (
                 <button
                   key={mood.id}
                   type="button"
@@ -66,6 +60,7 @@ export default function MiniOrbMenu({
               ))}
             </div>
           </div>
+          <MoodBoardMap />
           <div className="mini-orb-logo-section">
             <p className="mini-orb-subtitle">Logo choice</p>
             <div className="mini-orb-logo-grid">
