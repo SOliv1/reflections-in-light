@@ -2,13 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./WeatherGlyph.css";
 import "./WeatherGlyphPanel.css";
 import MiniOrbMenu from "./miniOrbMenu";
-
-const PALETTE_CLASSES = {
-  winter: "weather-glyph-palette--winter",
-  spring: "weather-glyph-palette--spring",
-  summer: "weather-glyph-palette--summer",
-  autumn: "weather-glyph-palette--autumn"
-};
+import { SEASONAL_PALETTE_CLASS_MAP } from "../data/moodBoardMap";
 
 export default function WeatherGlyphPanel({
   condition,
@@ -38,7 +32,8 @@ export default function WeatherGlyphPanel({
   const resolvedLocation = location || "Local weather";
   const conditionCopy = weatherDescription || resolvedCondition;
   const panelMoodClass = `weather-glyph-panel--${mood}`;
-  const paletteClass = PALETTE_CLASSES[activePalette] || PALETTE_CLASSES.spring;
+  const paletteClass =
+    SEASONAL_PALETTE_CLASS_MAP[activePalette] || SEASONAL_PALETTE_CLASS_MAP.spring;
 
   function poeticCondition(conditionValue) {
     const c = String(conditionValue ?? "unknown").toLowerCase();
