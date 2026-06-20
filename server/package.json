@@ -19,7 +19,7 @@
     "express": "^5.2.1",
     "mongodb": "^7.1.0",
     "mongoose": "^9.3.3",
-    "multer": "^2.1.1",
+    "multer": "^2.2.0",
     "web-push": "^3.6.7"
   }
 }
